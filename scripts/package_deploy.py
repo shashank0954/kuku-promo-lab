@@ -5,7 +5,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ['app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.md',
          'SOLUTION_DOC.md','SOLUTION_DOC.html','.gitignore','.streamlit/config.toml',
-         'SOLUTION_DOC.pdf','REQUIREMENTS_REVIEW.md','INTERVIEW_GUIDE.md',
+         'SOLUTION_DOC.pdf','REQUIREMENTS_REVIEW.md','INTERVIEW_GUIDE.md','FREE_API_TESTING.md',
          'examples/demo_screenplay.txt','scripts/package_deploy.py','scripts/review_editorial_cases.py']
 FILES += [str(p.relative_to(ROOT)) for folder in ('src','tests') for p in sorted((ROOT/folder).glob('*.py'))]
 FILES += ['raw_outputs/'+name for name in ('all_episodes_promos_ranked.json',

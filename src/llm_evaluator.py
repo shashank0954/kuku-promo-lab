@@ -9,7 +9,8 @@ from .candidate_generator import hook, cliff, hits, physical_conflict, ARCHETYPE
 
 DIMENSIONS = ['hook_3s_score','cliffhanger_score','standalone_clarity_score','emotional_arousal_score','pacing_density_score']
 DEFAULT_WEIGHTS = dict(zip(DIMENSIONS,[.3,.3,.2,.1,.1]))
-MODELS = {'Gemini':['gemini-3.8-flash','gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
+GEMINI_FREE_TEST_MODEL = 'gemini-3.8-flash'
+MODELS = {'Gemini':[GEMINI_FREE_TEST_MODEL,'gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
           'Anthropic':['claude-sonnet-4-5','claude-haiku-4-5','claude-3-5-sonnet-20241022','claude-3-5-haiku-20241022']}
 ENV_KEYS = {'Gemini':'GEMINI_API_KEY','OpenAI':'OPENAI_API_KEY','Anthropic':'ANTHROPIC_API_KEY'}
 

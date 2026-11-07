@@ -90,3 +90,17 @@ def test_cloud_saved_results_without_confidential_sources(tmp_path):
             assert any('Full timeline requires' in x.value for x in app.info)
     finally:
         st.cache_data.clear()
+
+
+def test_small_gemini_setup_selects_sample_and_one_candidate_without_api_call():
+    from streamlit.testing.v1 import AppTest
+    from unittest.mock import patch
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
+    next(x for x in app.selectbox if x.label=='Provider').select('Gemini').run()
+    assert any('free standard text' in x.value for x in app.info)
+    with patch('src.llm_evaluator.JudgeProvider.request') as request:
+        next(x for x in app.button if x.label=='Prepare small Gemini test').click().run()
+    assert not app.exception and request.call_count==0
+    assert app.radio[0].value=='Try a sample screenplay'
+    assert next(x for x in app.slider if x.label=='Maximum AI-judged finalists').value==1
+    assert any('placeholder' in x.value for x in app.info)

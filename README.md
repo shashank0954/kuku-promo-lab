@@ -93,4 +93,8 @@ For an interview: select **Try a sample screenplay** → **Find promos** to demo
 
 Build a distribution with `python scripts/package_deploy.py`. It contains the original synthetic demo and the two-page solution PDF, with the confidential original pack excluded. See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) for a short presentation and explanations you should understand.
 
-Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. All 31 tests pass there. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
+Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. All 32 tests pass there. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
+
+## Free Gemini API test
+
+Google lists `gemini-3.8-flash` with a free tier (official pricing checked 7 November 2026). See [FREE_API_TESTING.md](FREE_API_TESTING.md) for official sources and the complete test sequence. Choose Gemini, enter your own AI Studio key, then click **Prepare small Gemini test** to select the public sample and budget one. Project eligibility/quota and billing tier apply; documentation placeholders are not working API keys.

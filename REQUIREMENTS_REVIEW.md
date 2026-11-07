@@ -45,7 +45,7 @@ This review follows the actual six-page Kuku brief. It separates mandatory submi
 ## Verification performed
 
 - Full-pack offline run: **50 episodes; 64 shortlisted / 231 rejected; 295/295 hard checks passed**.
-- **31 automated tests passed** in a clean Python 3.11 environment using Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0.
+- **32 automated tests passed** in a clean Python 3.11 environment using Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0.
 - Source beat coverage, overlap preservation, whole-dialogue boundaries, ellipsis joins, tampered timestamps/durations and reproducible offline promo outputs are tested.
 - Eleven selected script-review regressions match expected shortlist/reject decisions. The cases were used during development, so 11/11 is not a general quality claim.
 - Provider request/response contracts, invalid judge output, token accounting and the API connection-test UI are mocked; no paid API success is invented.

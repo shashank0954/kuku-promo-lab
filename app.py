@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 from src.parser import parse_folder
 from src.inputs import read_uploads
-from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error
+from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error,GEMINI_FREE_TEST_MODEL
 from src.economics import estimate,cost,RATES
 from run_pipeline import execute,DEFAULT_INPUT,format_segments
 
@@ -36,6 +36,17 @@ with st.expander('AI provider & API key', expanded=True):
     else:
         st.caption('Upload screenplay TXT files or a ZIP in the sidebar, then click Find promos to run with this provider. Saved results stay unchanged until you run again.')
     if provider=='Anthropic': st.caption('Claude 3.5 presets are legacy and may be retired. Use an available model ID; API errors are reported with offline fallback.')
+    if provider=='Gemini':
+        st.info('Free-tier testing: Google lists gemini-3.8-flash with free standard text input/output, subject to project eligibility and quota. Create your own AI Studio key; YOUR_API_KEY in the docs is a placeholder, not a working shared key.')
+        st.markdown('[Create or manage your API key](https://aistudio.google.com/apikey) · [Official free-tier pricing](https://ai.google.dev/gemini-api/docs/pricing) · [Check project limits](https://ai.google.dev/gemini-api/docs/rate-limits)')
+        st.caption('Use a project shown as Free Tier in AI Studio. Paid-project keys may be billed; this app cannot determine billing tier from the key.')
+        if st.button('Prepare small Gemini test'):
+            if model!=GEMINI_FREE_TEST_MODEL:
+                st.warning('Select gemini-3.8-flash above, then prepare the test again.')
+            else:
+                st.session_state['input_source']='Try a sample screenplay'
+                st.session_state['judge_budget']=1
+                st.success('Sample screenplay selected; AI budget set to 1. Test your API connection, then click Find promos in the sidebar. Preparing this setup makes no API call.')
     if st.button('Test API connection',disabled=provider=='Heuristic/Offline'):
         test_key=key or os.getenv(ENV_KEYS.get(provider,''),'')
         if not test_key:
@@ -67,12 +78,13 @@ with st.sidebar:
     saved_label = 'Preloaded 50 episodes' if DEFAULT_INPUT.exists() else 'Saved 50-episode playbook'
     options = [saved_label, 'Upload screenplay files'] if DEFAULT_INPUT.exists() or SAVED_OUTPUT.exists() else ['Upload screenplay files']
     if (DEMO_INPUT/'demo_screenplay.txt').exists(): options.append('Try a sample screenplay')
-    source=st.radio('Input',options)
+    source=st.radio('Input',options,key='input_source')
     uploads=st.file_uploader('TXT files or a ZIP pack',type=['txt','zip'],accept_multiple_files=True) if source.startswith('Upload') else []
     minimum,maximum=st.slider('Total duration (seconds)',20,60,(20,60))
     st.caption('Rubric weights (normalized on run)')
     weights={k:st.slider(k.replace('_score','').replace('_',' ').title(),0,100,int(v*100),key=k) for k,v in DEFAULT_WEIGHTS.items()}
-    budget=st.slider('Maximum AI-judged finalists',0,20,8,help='Remaining candidates keep labeled heuristic scores.')
+    if 'judge_budget' not in st.session_state: st.session_state['judge_budget']=8
+    budget=st.slider('Maximum AI-judged finalists',0,20,key='judge_budget',help='Remaining candidates keep labeled heuristic scores. Use 1 for an initial free-tier test.')
     run=st.button('Find promos',type='primary',use_container_width=True)
     st.caption('Offline is reproducible and free. AI calls send shortlisted script excerpts to the selected provider.')
 
