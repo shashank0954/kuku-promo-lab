@@ -26,6 +26,8 @@ def test_dashboard_load_run_and_provider_switch():
     from streamlit.testing.v1 import AppTest
     app=AppTest.from_file('app.py',default_timeout=40).run()
     assert not app.exception
+    assert any(x.label=='API key (session only)' for x in app.text_input)
+    assert not any(x.label=='API key (session only)' for x in app.sidebar.text_input)
 
     assert len(app.tabs)==4
     app.button[0].click().run()
@@ -34,6 +36,9 @@ def test_dashboard_load_run_and_provider_switch():
     provider.select('Gemini').run()
     assert not app.exception
     assert next(x for x in app.text_input if x.label=='Model name (editable)').value=='gemini-2.5-flash'
+    next(x for x in app.text_input if x.label=='API key (session only)').input('test-not-a-real-key').run()
+    assert not app.exception
+    assert 'test-not-a-real-key' not in str(app.session_state['result'])
     # No network inference is triggered by selecting a provider.
     kind=next(x for x in app.selectbox if x.label=='Edit type')
     kind.select('mashup').run()

@@ -9,13 +9,30 @@ from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS
 from src.economics import estimate,cost,RATES
 from run_pipeline import execute,DEFAULT_INPUT,format_segments
 
-st.set_page_config(page_title='Kuku | Promo Lab',page_icon='🎬',layout='wide')
+st.set_page_config(page_title='Kuku | Promo Lab',page_icon='🎬',layout='wide',initial_sidebar_state='expanded')
 st.markdown('''<style>.block-container{padding-top:2rem;max-width:1450px}div[data-testid="stMetric"]{background:#141e2d;padding:16px;border-radius:12px} .hook{border-left:4px solid #21b879;padding-left:12px}.cut{border-left:4px solid #f76e70;padding-left:12px}</style>''',unsafe_allow_html=True)
 st.caption('KUKU  /  GROWTH EDITORIAL WORKBENCH')
 st.title('Find the moment. Leave them wanting more.')
 st.write('Source-grounded promo cuts, ranked for a viewer who has never seen the show.')
 APP_ROOT = Path(__file__).resolve().parent
 SAVED_OUTPUT = APP_ROOT / 'raw_outputs/all_episodes_promos_ranked.json'
+
+with st.expander('AI provider & API key', expanded=True):
+    provider_col, model_col, key_col = st.columns(3)
+    with provider_col:
+        provider=st.selectbox('Provider',['Heuristic/Offline',*MODELS])
+    with model_col:
+        model=st.selectbox('Model preset',MODELS[provider]) if provider in MODELS else None
+        if model: model=st.text_input('Model name (editable)',model)
+        else: st.caption('Choose Gemini, OpenAI or Anthropic to use your own model.')
+    with key_col:
+        key=st.text_input('API key (session only)',type='password',key=f'api_key_{provider}',
+                          help='Used only for the selected provider. Keys are never written into exported results. A configured environment key also works.')
+    if provider=='Heuristic/Offline':
+        st.caption('Offline mode selected. To use an API key, choose Gemini, OpenAI or Anthropic above.')
+    else:
+        st.caption('Upload screenplay TXT files or a ZIP in the sidebar, then click Find promos to run with this provider. Saved results stay unchanged until you run again.')
+    if provider=='Anthropic': st.caption('Claude 3.5 presets are legacy and may be retired. Use an available model ID; API errors are reported with offline fallback.')
 
 @st.cache_data
 def preload():
@@ -29,11 +46,6 @@ with st.sidebar:
     options = [saved_label, 'Upload screenplay files'] if DEFAULT_INPUT.exists() or SAVED_OUTPUT.exists() else ['Upload screenplay files']
     source=st.radio('Input',options)
     uploads=st.file_uploader('TXT files or a ZIP pack',type=['txt','zip'],accept_multiple_files=True) if source.startswith('Upload') else []
-    provider=st.selectbox('Provider',['Heuristic/Offline',*MODELS])
-    model=st.selectbox('Model preset',MODELS[provider]) if provider in MODELS else None
-    if model: model=st.text_input('Model name (editable)',model)
-    key=st.text_input('API key (session only)',type='password',help='Sent only to the selected provider; never written into outputs. Environment keys also work.') if model else None
-    if provider=='Anthropic': st.caption('Claude 3.5 presets are legacy and may be retired. Use an available model ID; API errors are reported with offline fallback.')
     minimum,maximum=st.slider('Total duration (seconds)',20,60,(20,60))
     st.caption('Rubric weights (normalized on run)')
     weights={k:st.slider(k.replace('_score','').replace('_',' ').title(),0,100,int(v*100),key=k) for k,v in DEFAULT_WEIGHTS.items()}
