@@ -85,6 +85,13 @@ def test_rest_adapters(provider):
         def __exit__(self,*args):pass
         def read(self):return json.dumps(response).encode()
     with patch('urllib.request.urlopen',return_value=Reply()) as call:
-        data,usage=JudgeProvider(provider,'test-model','secret').request('prompt')
+        model='gemini-3.8-flash' if provider=='Gemini' else 'test-model'
+        data,usage=JudgeProvider(provider,model,'secret').request('prompt')
     assert data=={'results':[]} and usage=={'input_tokens':10,'output_tokens':5}
     assert call.call_args[0][0].full_url.startswith('https://')
+    if provider=='Gemini':
+        request=call.call_args[0][0]
+        assert 'gemini-3.8-flash:generateContent' in request.full_url
+        config=json.loads(request.data)['generationConfig']
+        assert config['thinkingConfig']=={'thinkingLevel':'low'}
+        assert config['maxOutputTokens']==4096

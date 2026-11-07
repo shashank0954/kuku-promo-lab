@@ -35,7 +35,7 @@ def test_dashboard_load_run_and_provider_switch():
     provider=next(x for x in app.selectbox if x.label=='Provider')
     provider.select('Gemini').run()
     assert not app.exception
-    assert next(x for x in app.text_input if x.label=='Model name (editable)').value=='gemini-2.5-flash'
+    assert next(x for x in app.text_input if x.label=='Model name (editable)').value=='gemini-3.8-flash'
     next(x for x in app.text_input if x.label=='API key (session only)').input('test-not-a-real-key').run()
     assert not app.exception
     assert 'test-not-a-real-key' not in str(app.session_state['result'])

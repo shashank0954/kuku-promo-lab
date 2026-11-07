@@ -9,7 +9,7 @@ from .candidate_generator import hook, cliff, hits, ARCHETYPE, LORE, RESOLUTION,
 
 DIMENSIONS = ['hook_3s_score','cliffhanger_score','standalone_clarity_score','emotional_arousal_score','pacing_density_score']
 DEFAULT_WEIGHTS = dict(zip(DIMENSIONS,[.3,.3,.2,.1,.1]))
-MODELS = {'Gemini':['gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
+MODELS = {'Gemini':['gemini-3.8-flash','gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
           'Anthropic':['claude-sonnet-4-5','claude-haiku-4-5','claude-3-5-sonnet-20241022','claude-3-5-haiku-20241022']}
 ENV_KEYS = {'Gemini':'GEMINI_API_KEY','OpenAI':'OPENAI_API_KEY','Anthropic':'ANTHROPIC_API_KEY'}
 
@@ -83,6 +83,8 @@ class JudgeProvider:
             headers={'x-goog-api-key':self.key}
             payload={'contents':[{'parts':[{'text':prompt}]}],'generationConfig':{'temperature':0,'maxOutputTokens':1800,'responseMimeType':'application/json'}}
             if self.model=='gemini-2.5-flash': payload['generationConfig']['thinkingConfig']={'thinkingBudget':0}
+            elif self.model.startswith('gemini-3'):
+                payload['generationConfig'].update(thinkingConfig={'thinkingLevel':'low'},maxOutputTokens=4096)
         elif self.name=='OpenAI':
             url='https://api.openai.com/v1/chat/completions'; headers={'Authorization':f'Bearer {self.key}'}
             payload={'model':self.model,'messages':[{'role':'user','content':prompt}],'temperature':0,'max_tokens':1800,'response_format':{'type':'json_object'}}
@@ -148,7 +150,13 @@ def judge(episodes,items,provider='auto',model=None,api_key=None,weights=None,bu
                     stats['judged_candidates']+=1
             except Exception as exc:
                 # Never log exception bodies / URLs: they may contain keys or source text.
-                stats['errors'].append(f'{provider}: {type(exc).__name__}; batch retained heuristic scores')
+                code=getattr(exc,'code',None)
+                hint={404:'Model unavailable for this account. Select an available model ID.',
+                      401:'Authentication failed. Check the selected provider and API key.',
+                      403:'Access denied. Check API key restrictions and model access.',
+                      429:'Quota or rate limit reached. Check provider quota and retry.'}.get(code,'')
+                status=f' HTTP {code}' if isinstance(code,int) else ''
+                stats['errors'].append(f'{provider}: {type(exc).__name__}{status}; {hint} Batch retained heuristic scores.')
     items.sort(key=lambda x:(-x['composite_score'],x['id']))
     for rank,item in enumerate(items,1): item['rank']=rank
     return items,stats

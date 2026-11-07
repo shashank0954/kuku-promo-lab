@@ -43,7 +43,7 @@ CLI automatically selects the first configured environment key in Gemini → Ope
 
 ```bash
 export GEMINI_API_KEY='your-key'
-python run_pipeline.py --provider Gemini --model gemini-2.5-flash --judge-budget 8
+python run_pipeline.py --provider Gemini --model gemini-3.8-flash --judge-budget 8
 # Or configure OPENAI_API_KEY / ANTHROPIC_API_KEY and select that provider.
 python run_pipeline.py --provider Heuristic/Offline
 python run_pipeline.py --input /path/to/new/scripts --output /tmp/promo-run --min-duration 25 --max-duration 45
@@ -51,7 +51,7 @@ python run_pipeline.py --input /path/to/new/scripts --output /tmp/promo-run --mi
 
 The judge receives exact shortlisted excerpts, not all 50 full scripts. Defaults: at most 8 candidates, in batches of 4; all other candidates retain labeled heuristic scores. Malformed JSON, wrong IDs, invalid scores, authentication failures, timeouts, and retired models produce a visible warning and keep the offline evaluation. No silent claims of successful AI judgment. Provider responses cannot change edit timestamps. Temperature zero reduces variation but does not guarantee deterministic live AI output.
 
-Gemini presets: `gemini-2.5-flash`, `gemini-2.5-pro`. OpenAI: `gpt-4o-mini`, `gpt-4o`. Anthropic has editable current-generation presets and exact legacy Claude 3.5 IDs; the latter may be retired and error on the live API. Model availability depends on the account; use the editable model field. APIs were tested with mocked contracts, not paid live requests.
+Gemini defaults to `gemini-3.8-flash`; legacy presets `gemini-2.5-flash` and `gemini-2.5-pro` remain selectable for accounts that still have access. Use the editable model ID if your account exposes different models. OpenAI: `gpt-4o-mini`, `gpt-4o`. Anthropic has editable current-generation presets and exact legacy Claude 3.5 IDs; the latter may be retired and error on the live API. Model availability depends on the account; use the editable model field. APIs were tested with mocked contracts, not paid live requests.
 
 References: [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing), [OpenAI Chat Completions](https://developers.openai.com/api/reference/chat-completions/overview), [Anthropic Messages](https://platform.claude.com/docs/en/api/messages/create), [Claude lifecycle](https://platform.claude.com/docs/en/about-claude/model-deprecations).
 
