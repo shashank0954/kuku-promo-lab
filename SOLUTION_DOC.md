@@ -26,7 +26,7 @@ I treat the supplied timestamps as authoritative. Cuts last 20–60 seconds, inc
 **Editor:** confirm the action/words occur in the opening three seconds, test whether a stranger understands the conflict, check that the ending remains unresolved, and approve mashup continuity. A high score does not replace footage review. Posting priority favors clearer continuous cuts before uncertain hooks and trailers; composite rank remains separately visible.
 
 ## 3. Scale, latency & cost
-The measured offline run costs **$0 in API fees**. Parallelize independent shows, cache by input/model version, bound the AI shortlist, and rate-limit provider calls. Current candidate construction is quadratic per episode; a 60-second sliding index is the next optimization.
+The measured offline run costs **$0 in API fees**. Parallelize independent shows, cache by input/model version, bound the AI shortlist, and rate-limit provider calls. Current candidate construction enumerates boundary pairs and rescans candidate beats; a 60-second sliding index is the next optimization.
 
 Planning example: 8 × 1,800 input + 8 × 160 output tokens at reference rates $0.30/$2.50 per million = **$0.00752/show**, or ~$1.50 for 200 shows/week. This is an editable historical-rate scenario, **not a current Gemini 3.8 price quote**. Usage is collected from API responses; unknown model rates remain unpriced.
 

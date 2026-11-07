@@ -14,3 +14,6 @@ __pycache__/
 # Submission PDF is a deliverable, not an original input document
 !SOLUTION_DOC.pdf
 /.deployment/
+
+# Explicit public submission bundle; original input archives remain excluded
+!SUBMISSION_BUNDLE.zip

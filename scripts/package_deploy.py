@@ -1,5 +1,7 @@
 """Build a whitelist-only deployment ZIP, without confidential original scripts."""
 from pathlib import Path
+import hashlib
+import json
 from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -7,11 +9,17 @@ FILES = ['app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.m
          'SOLUTION_DOC.md','SOLUTION_DOC.html','.gitignore','.streamlit/config.toml',
          'SOLUTION_DOC.pdf','REQUIREMENTS_REVIEW.md','INTERVIEW_GUIDE.md','FREE_API_TESTING.md',
          'examples/demo_screenplay.txt','scripts/package_deploy.py','scripts/review_editorial_cases.py']
+FILES += ['scripts/build_visual_deliverables.py','scripts/render_visuals.py','deliverables/README.md','deliverables/visual_playbook.html','deliverables/visual_source.json','deliverables/visual_manifest.json']
+FILES += [str(p.relative_to(ROOT)) for p in sorted((ROOT/'assets').iterdir()) if p.suffix in ('.svg','.png')]
 FILES += [str(p.relative_to(ROOT)) for folder in ('src','tests') for p in sorted((ROOT/folder).glob('*.py'))]
 FILES += ['raw_outputs/'+name for name in ('all_episodes_promos_ranked.json',
           'top_promos_ranked.csv','top_promos_report.md','quality_and_failure_audit.md','editorial_regression_review.json','manifest.json')]
 
 def main():
+    visual=json.loads((ROOT/'deliverables/visual_manifest.json').read_text())
+    assert visual['source_sha256']==hashlib.sha256((ROOT/'raw_outputs/all_episodes_promos_ranked.json').read_bytes()).hexdigest(),'Rebuild visual deliverables for this raw snapshot before packaging.'
+    for name,digest in visual['files'].items():
+        assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,f'Stale visual artifact: {name}. Run the visual renderer before packaging.'
     target=ROOT/'streamlit_deploy.zip'
     with ZipFile(target,'w',ZIP_DEFLATED) as archive:
         for name in FILES:

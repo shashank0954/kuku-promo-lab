@@ -1,0 +1,9 @@
+{
+  "source_file": "raw_outputs/all_episodes_promos_ranked.json",
+  "source_sha256": "1717fc91a19490b93924b49417298359acb2c29754ea331008c344a08c46761b",
+  "episodes": 50,
+  "promos": 64,
+  "source_checks": 295,
+  "tests_passed": 56,
+  "presentation_only": true
+}

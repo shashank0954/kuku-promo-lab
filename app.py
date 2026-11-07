@@ -6,13 +6,14 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 from src.parser import parse_folder
+from src.presentation import promo_timeline_svg
 from src.inputs import read_uploads,parse_episode_selection
 from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error,GEMINI_FREE_TEST_MODELS
 from src.economics import estimate,cost,RATES
 from run_pipeline import execute,DEFAULT_INPUT,format_segments
 
 st.set_page_config(page_title='Kuku | Promo Lab',page_icon='🎬',layout='wide',initial_sidebar_state='expanded')
-st.markdown('''<style>.block-container{padding-top:2rem;max-width:1450px}div[data-testid="stMetric"]{background:#141e2d;padding:16px;border-radius:12px} .hook{border-left:4px solid #21b879;padding-left:12px}.cut{border-left:4px solid #f76e70;padding-left:12px}</style>''',unsafe_allow_html=True)
+st.markdown('''<style>.block-container{padding-top:3.5rem;max-width:1450px}div[data-testid="stMetric"]{background:#141e2d;padding:16px;border-radius:12px} .hook{border-left:4px solid #21b879;padding-left:12px}.cut{border-left:4px solid #f76e70;padding-left:12px}</style>''',unsafe_allow_html=True)
 st.caption('KUKU  /  GROWTH EDITORIAL WORKBENCH')
 st.title('Find the moment. Leave them wanting more.')
 st.write('Source-grounded promo cuts, ranked for a viewer who has never seen the show.')
@@ -136,7 +137,7 @@ with episode_controls:
         st.caption('Upload once. Change this selection and click Find promos for each new run.')
     else:
         st.caption('Upload screenplay files to choose episodes for a new run.')
-    run=st.button('Find promos',type='primary',use_container_width=True)
+    run=st.button('Find promos',type='primary',width='stretch')
 episodes=[e for e in loaded_episodes if selected_numbers is None or e.number in selected_numbers]
 input_signature=source_signature+(tuple(selected_numbers) if selected_numbers is not None else None,)
 
@@ -189,7 +190,7 @@ def timeline(item):
         def shade(row):
             color='#123d2b' if row['Window'].startswith('🟩') else '#51242a' if row['Window'].startswith('🟥') else ''
             return [f'background-color: {color}' if color else '' for _ in row]
-        st.dataframe(frame.style.apply(shade,axis=1),hide_index=True,use_container_width=True)
+        st.dataframe(frame.style.apply(shade,axis=1),hide_index=True,width='stretch')
         with st.container():
             st.caption('Unified audiovisual slices (simultaneous tracks)')
             for t in lookup[s['episode']].timeline:
@@ -200,6 +201,7 @@ def detail(item):
     st.subheader(f"#{item['rank']} · {format_segments(item)}")
     st.write(item['posting_strategy']);st.caption(item['posting_reason'])
     st.caption(f"Posting priority: {item.get('posting_priority',item['rank'])} · Score source: {item['evaluation_source']}")
+    st.image(promo_timeline_svg(item),width='stretch',alt='Timeline showing the opening hook window, any segment joins, and the final cliffhanger window')
     a,b=st.columns(2);a.success('FIRST 3s · '+item['hook_text']);b.error('CLIFFHANGER · '+item['cliffhanger_text'])
     st.write(item['why_it_works']);st.caption(item['ranking_rationale'])
     st.bar_chart(pd.DataFrame({'Score':item['scores']}))
@@ -216,7 +218,7 @@ with tabs[0]:
     items=[x for x in r['promos'] if (not tier or x['posting_strategy'] in tier) and x['composite_score']>=threshold and (kind=='All' or x['kind']==kind)]
     items=sorted(items,key=lambda x:x.get('posting_priority',x['rank']) if ordering=='Posting priority' else x['rank'])
     rows=[dict(Rank=x['rank'],Posting_order=x.get('posting_priority',x['rank']),Priority=x['posting_strategy'],Posting_reason=x['posting_reason'],Score_source=x['evaluation_source'],Episodes=', '.join(str(s['episode']) for s in x['segments']),Cuts=format_segments(x),Seconds=x['duration'],Score=x['composite_score'],Hook=x['hook_text'],Cliffhanger=x['cliffhanger_text'],Why=x['why_it_works'],**x['scores']) for x in items]
-    st.dataframe(pd.DataFrame(rows),hide_index=True,use_container_width=True)
+    st.dataframe(pd.DataFrame(rows),hide_index=True,width='stretch')
     if items:
         labels=[f"#{x['rank']} · {format_segments(x)}" for x in items]
         chosen=st.selectbox('Inspect a promo',labels)

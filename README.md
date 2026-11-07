@@ -1,6 +1,38 @@
-# Kuku · Find the Promos / Ads
+![Kuku Promo Lab — verified submission overview](assets/submission_overview.svg)
 
-A complete Problem 1 submission: deterministic screenplay parsing and safe edit points, signal-based candidate retrieval, a swappable AI critique layer, a Streamlit editorial workbench, and real outputs from all 50 episodes.
+# Kuku · Promo Lab
+
+Find **20–60 second** microdrama ads with an immediate hook, an unresolved ending and exact source cut points. A runnable Problem 1 submission with reproducible offline scoring and swappable AI critique.
+
+**[Download the complete submission bundle](SUBMISSION_BUNDLE.zip)** — extract it to open the visual playbook locally.
+
+**Required deliverables:** [Two-page solution PDF](SOLUTION_DOC.pdf) · [Prototype & run steps](#run) · [Full unedited raw outputs](raw_outputs/)
+
+**Read the evidence first.** All 50 episodes are analyzed. The saved run contains 64 shortlisted promos and 295/295 passing source audits; scores are editorial estimates, not measured campaign performance. Optional live AI reviews only the configured finalist budget, and every score's origin is labeled.
+
+## The solution, in two pages
+
+<a href="SOLUTION_DOC.pdf"><img src="assets/solution_page_1.png" width="49%" alt="Solution page 1: problem framing, hybrid architecture, rubric and scaling economics"></a>
+<a href="SOLUTION_DOC.pdf"><img src="assets/solution_page_2.png" width="49%" alt="Solution page 2: actual posting order, exact source timeline and honest failure cases"></a>
+
+## What the editor receives
+
+![Exact hook-to-cliffhanger timeline from the first recommended promo](assets/promo_timeline.svg)
+
+The first recommendation is **Episode 1, 00:39.10–01:14.30 (35.2s)**: “Because he is marrying me” opens the wedding betrayal; “How long?” is left unanswered. The timeline highlights review windows while preserving the original edit points.
+
+![Visual playbook with the actual first-ranked promo](assets/playbook_preview.png)
+
+The companion [visual playbook](deliverables/visual_playbook.html) contains all 64 real promos, with search, episode/type filters, exact cuts, score breakdowns and review flags. **Open the downloaded HTML in your browser**; GitHub displays HTML source rather than running it. It works offline and makes no model API calls. The raw folder remains the complete unedited submission result.
+
+<details>
+<summary>See the actual Streamlit prototype</summary>
+
+![Actual Streamlit app running locally with the full saved input-pack results](assets/app_preview.png)
+
+Upload the pack once, select episodes such as `2, 5, 8-10`, and rerun. Provider keys stay out of exports; the connection test, bounded retries and labeled fallback make live interviews inspectable.
+
+</details>
 
 ## Run
 
@@ -8,16 +40,21 @@ Python 3.11+ required (3.11 tested). From this directory:
 
 ```bash
 pip install -r requirements.txt
-python run_pipeline.py
 streamlit run app.py
 ```
 
 Open http://localhost:8501. The dashboard loads the saved playbook immediately; choose **Try a sample screenplay** for a fresh public demo input; **Find promos** reruns with the selected input and settings. Offline mode needs no account, API key, or network. Outputs are overwritten only by the CLI, never by dashboard runs.
 
-For isolated installation, optionally run `python -m venv .venv` and activate it first. One-command end-to-end launch after Python setup:
+For isolated installation, optionally run `python -m venv .venv` and activate it first. One-command launch after Python setup (works without the confidential pack):
 
 ```bash
-pip install -r requirements.txt && python run_pipeline.py && streamlit run app.py
+pip install -r requirements.txt && streamlit run app.py
+```
+
+To regenerate the full-show outputs, restore the original source folder and run `python run_pipeline.py --provider Heuristic/Offline`. For a fresh public example without the pack:
+
+```bash
+python run_pipeline.py --input examples --provider Heuristic/Offline --output /tmp/kuku-demo
 ```
 
 ## Submission map
@@ -35,7 +72,7 @@ pip install -r requirements.txt && python run_pipeline.py && streamlit run app.p
 | `raw_outputs/` | Unedited generated JSON, CSV, report, failure audit, SHA-256 manifest |
 | `tests/` | Source-losslessness, safety, regressions, deterministic runs, provider contracts, UI smoke test |
 
-The sample source directory is `I Married a Broken Soldier. He was a Duke/`. It is deliberately excluded from Git along with ZIPs and PDFs. To run elsewhere, restore that directory or pass `--input /path/to/scripts`; upload your own scripts in the app. Generated outputs contain selected script quotations, not sanitized synthetic examples.
+The sample source directory is `I Married a Broken Soldier. He was a Duke/`. It is deliberately excluded from Git along with the original archives and assignment PDF; the submission PDF and deployment bundle are included. To run elsewhere, restore that directory or pass `--input /path/to/scripts`; upload your own scripts in the app. Generated outputs contain selected script quotations, not sanitized synthetic examples.
 
 ## Choose an AI judge
 
@@ -57,7 +94,7 @@ References: [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing), [Op
 
 ## Reading the results
 
-`all_episodes_promos_ranked.json` includes run telemetry, all 50 episode coverage entries, accepted `promos`, complete `rejected_candidates`, the audit, and economics assumptions. Each promo has immutable source cuts, total duration, hook / cliff evidence, scores, a composite rank, posting tier, rationale, and review flags. The CSV and Markdown report contain every shortlisted promo, not just the first ten. The manifest fingerprints the four generated deliverables.
+`all_episodes_promos_ranked.json` includes run telemetry, all 50 episode coverage entries, accepted `promos`, complete `rejected_candidates`, the audit, and economics assumptions. Each promo has immutable source cuts, total duration, hook / cliff evidence, scores, a composite rank, posting tier, rationale, and review flags. The CSV and Markdown report contain every shortlisted promo, not just the first ten. The manifest fingerprints the generated raw output files; presentation assets have a separate manifest.
 
 Scoring weights: hook 30%, unresolved cut 30%, standalone clarity 20%, arousal 10%, pacing 10%. UI weights normalize automatically. Editorial gates require hook ≥55, cliff ≥55, clarity ≥55, and no detected de-escalation or music-only ending. A scene may have no qualifying promo; the explorer still lists it. Mashups contain two segments (within the allowed 2–3), total 20–60s, ordered chronologically, with shared role signals and no reused overlapping footage. They still need human continuity checks.
 
@@ -112,3 +149,18 @@ After loading the full TXT/ZIP pack, use **Choose episodes → Episodes to analy
 An explicit manual selection permits compatible two-part mashups between any selected episode numbers, even distant ones; it does not force every selected episode into one promo. The default all-episode mode retains its nearby-episode search. Every promo still totals 20–60 seconds and passes source-boundary checks. Saved results show a stale-result notice until the selected input is rerun.
 
 The CLI supports the same selection: `python run_pipeline.py --episodes "2,5,8-10" --output /tmp/selected-promos`. Keep the default full-pack outputs separate from these exploratory subset runs.
+
+## Rebuild the visual deliverables
+
+The diagrams and playbook are generated from the saved output JSON, without modifying `raw_outputs/`. The solution PDF remains exactly two pages; its source hash is printed in the footer.
+
+```bash
+python scripts/build_visual_deliverables.py --tests-passed 56
+python scripts/render_visuals.py
+```
+
+The optional renderer uses local Chrome and the installed `websockets` dependency. Set `CHROME_BIN` if Chrome is not discovered. Alternatively open `SOLUTION_DOC.html` and print to A4 PDF with backgrounds enabled and browser headers/footers disabled. The supplied PDF is already rendered and checked.
+
+`deliverables/visual_source.json` records the source snapshot. The full development narrative remains in `SOLUTION_DOC.md`; the generated HTML/PDF is its concise visual submission layout. No show footage or generated screenshots of fictional scenes are used. The prototype screenshot is a real offline browser capture.
+
+If you regenerate raw outputs, rebuild the visual HTML and render the PDF before packaging. The package builder verifies both the source snapshot and visual-file checksums to prevent mixing old presentation assets with new results.

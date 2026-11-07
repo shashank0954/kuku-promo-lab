@@ -1,0 +1,17 @@
+{
+  "source_sha256": "1717fc91a19490b93924b49417298359acb2c29754ea331008c344a08c46761b",
+  "presentation_only": true,
+  "files": {
+    "SOLUTION_DOC.pdf": "5df628453110991e5da4ce27d2a6addc3731f15f38fa2e92b03331833192b9c7",
+    "SOLUTION_DOC.html": "8ccdb4ee86bb2d4feb49747eb11a1a232bb2302836bfc13b06fb05c7a853ca54",
+    "deliverables/visual_playbook.html": "869de206f43851049082bb912dc30f38edeb02311ba9f81248f6e202e682e7a1",
+    "deliverables/visual_source.json": "13c030825de71083350e1d390338aeba329f1f08df6a52868763e57141db3d0f",
+    "assets/app_preview.png": "485efaddc24c8dae3d0d431b35fa1ff49b82f319ba6cfcc950327df87fd69b87",
+    "assets/architecture.svg": "bbb82d73653cda460f454e958467423b9c2405da130cb2472de0c8482a898333",
+    "assets/playbook_preview.png": "ad8a9003bdc1c202bf3296d5e598fdcd7d863dcc7b40f894092d6b26b996887f",
+    "assets/promo_timeline.svg": "5e090289f5c85be775fd1b26c4ae2f87f8d26ef54d5eb11414297073fca66a45",
+    "assets/solution_page_1.png": "53dde0af27adfd407198731bb41959953f22f506e6a3c9016eb5cc51794a9c76",
+    "assets/solution_page_2.png": "e52465cf6fd996890ddb83e8cc57870543ebc681fa952fdaa4f5792627a58e9e",
+    "assets/submission_overview.svg": "8e95cf771b936de8f4ade8a6151c15f32c1212ea597948f1ebb34a22e027f197"
+  }
+}
