@@ -1,8 +1,28 @@
 """Bounded TXT/ZIP loading without filesystem extraction."""
 import io
+import re
 import zipfile
 from pathlib import Path
 from .parser import parse_text
+
+def parse_episode_selection(value,available):
+    """Parse an explicit subset, rejecting unavailable episodes and unbounded ranges."""
+    available=set(available)
+    text=re.sub(r'\s*-\s*','-',value.strip().replace('–','-').replace('—','-'))
+    if not text: raise ValueError('Enter episode numbers, for example 2, 5, 8-10.')
+    selected=set()
+    for token in re.split(r'[,;\s]+',text):
+        if not token: continue
+        match=re.fullmatch(r'(\d+)(?:-(\d+))?',token)
+        if not match: raise ValueError(f'Invalid episode selection: {token}. Use numbers and ranges such as 2, 5, 8-10.')
+        low=int(match[1]);high=int(match[2] or match[1])
+        if low<1 or high<low: raise ValueError(f'Invalid episode range: {token}.')
+        if high-low+1>len(available): raise ValueError(f'Range {token} includes episodes that are not in this input.')
+        selected.update(range(low,high+1))
+    if not selected: raise ValueError('Choose at least one episode.')
+    missing=sorted(selected-available)
+    if missing: raise ValueError('Not in this input: '+', '.join(map(str,missing[:15]))+'. Choose from the available episodes shown above.')
+    return sorted(selected)
 
 def read_uploads(files):
     episodes=[];total_bytes=0;expanded_bytes=0;file_count=0

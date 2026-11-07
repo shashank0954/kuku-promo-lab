@@ -45,7 +45,7 @@ This review follows the actual six-page Kuku brief. It separates mandatory submi
 ## Verification performed
 
 - Full-pack offline run: **50 episodes; 64 shortlisted / 231 rejected; 295/295 hard checks passed**.
-- **42 automated tests passed** in a clean Python 3.11 environment using Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0.
+- **56 automated tests passed** in a clean Python 3.11 environment using Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0.
 - Source beat coverage, overlap preservation, whole-dialogue boundaries, ellipsis joins, tampered timestamps/durations and reproducible offline promo outputs are tested.
 - Eleven selected script-review regressions match expected shortlist/reject decisions. The cases were used during development, so 11/11 is not a general quality claim.
 - Provider request/response contracts, invalid judge output, token accounting and the API connection-test UI are mocked; no paid API success is invented.
@@ -62,3 +62,7 @@ This review follows the actual six-page Kuku brief. It separates mandatory submi
 5. **Personal submission:** Submit the form with your own name/roll/branch, Problem 1, PDF link, prototype link and raw-output folder link. Learn the explanation in the interview guide. The optional own-voice video remains your task.
 
 Not required by this assignment: a separate REST endpoint for the whole pipeline, video rendering, music or text overlays, paid inference, or a specific model. The extra dashboard/calculator features are useful only insofar as they support the required editorial result.
+
+## Manual episode scope
+
+The app now lets users upload the full pack once and select a subset by numbers/ranges or a picker. Selection is enforced before candidate retrieval and AI judging, not just in the leaderboard. Run metadata records loaded count and selected episode numbers. Invalid selections never trigger a pipeline run. Explicitly chosen distant episodes may form compatible two-part mashups; the default full-show search retains the original nearby-episode limit. Tests cover valid/invalid ranges, source isolation, distant-episode matching, switching subsets without reuploading and the episode picker.

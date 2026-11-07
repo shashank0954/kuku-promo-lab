@@ -53,7 +53,7 @@ def make_candidate(segments,index):
     return dict(id=index,kind='single' if len(segments)==1 else 'mashup',segments=segments,
                 duration=round(sum(s['duration'] for s in segments),3))
 
-def generate(episodes,minimum=20,maximum=60,per_episode=8):
+def generate(episodes,minimum=20,maximum=60,per_episode=8,max_episode_gap=3):
     if not 20<=minimum<=maximum<=60: raise ValueError('Duration bounds must stay within 20–60s')
     singles, rejected, short = [], [], []
     for ep in episodes:
@@ -94,7 +94,7 @@ def generate(episodes,minimum=20,maximum=60,per_episode=8):
         a,b=left['segments'][0],right['segments'][0]
         if (a['episode'],a['start'])>(b['episode'],b['start']): a,b=b,a
         if a['episode']==b['episode'] and a['end']>b['start']: continue
-        if b['episode']-a['episode']>3: continue
+        if max_episode_gap is not None and b['episode']-a['episode']>max_episode_gap: continue
         ta=' '.join(x['text'] for x in lookup[a['episode']].excerpt(a['start'],a['end']))
         tb=' '.join(x['text'] for x in lookup[b['episode']].excerpt(b['start'],b['end']))
         roles=set(re.findall(ARCHETYPE,ta.lower())) & set(re.findall(ARCHETYPE,tb.lower()))

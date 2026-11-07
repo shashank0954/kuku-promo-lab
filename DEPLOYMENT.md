@@ -45,6 +45,7 @@ Root-level Streamlit secrets are available as environment variables. Never commi
 - Select **Try a sample screenplay**, click **Find promos**, and verify the result changes to one episode (Episode 101).
 - All four tabs open; Episode 25 is selectable.
 - Upload the original ZIP, choose offline mode, and click **Find promos**.
+- Under **Choose episodes**, enter `2, 5, 8-10`, rerun, and verify the result lists only those episode numbers. Change the selection without uploading again.
 - Verbatim timeline opens after the uploaded source run.
 - Download JSON / CSV.
 - Check the reviewer link without your owner session.

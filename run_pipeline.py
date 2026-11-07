@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from time import perf_counter
 from src.parser import parse_folder
+from src.inputs import parse_episode_selection
 from src.candidate_generator import generate
 from src.llm_evaluator import judge,evaluate_offline,DEFAULT_WEIGHTS,validate_weights
 from src.quality_auditor import audit,audit_markdown
@@ -14,10 +15,17 @@ from src.economics import estimate,cost,RATES
 
 DEFAULT_INPUT=Path(__file__).parent/'I Married a Broken Soldier. He was a Duke'
 
-def execute(episodes,provider='auto',model=None,api_key=None,minimum=20,maximum=60,weights=None,budget=8):
+def execute(episodes,provider='auto',model=None,api_key=None,minimum=20,maximum=60,weights=None,budget=8,episode_numbers=None):
     if not episodes: raise ValueError('At least one parsed episode is required')
+    loaded_episode_count=len(episodes)
+    if episode_numbers is not None:
+        selected=set(episode_numbers)
+        if not selected: raise ValueError('Choose at least one episode')
+        missing=selected-{e.number for e in episodes}
+        if missing: raise ValueError('Selected episodes are not in this input: '+', '.join(map(str,sorted(missing))))
+        episodes=[e for e in episodes if e.number in selected]
     weights=validate_weights(weights or DEFAULT_WEIGHTS)
-    start=perf_counter(); candidates,rejected=generate(episodes,minimum,maximum)
+    start=perf_counter(); candidates,rejected=generate(episodes,minimum,maximum,max_episode_gap=None if episode_numbers is not None else 3)
     items,usage=judge(episodes,candidates,provider,model,api_key,weights,budget)
     rejected=[evaluate_offline(x,episodes,weights) for x in rejected]
     eligible=[]
@@ -36,7 +44,9 @@ def execute(episodes,provider='auto',model=None,api_key=None,minimum=20,maximum=
     if quality['hard_failures']: raise ValueError(f"Hard audit failed: {quality['hard_failures']}")
     rates=RATES.get(usage['model'])
     usage['actual_cost_at_reference_rates_usd']=cost(usage['input_tokens'],usage['output_tokens'],*rates) if rates else (0 if usage['calls']==0 else None)
-    return dict(schema_version='1.0',run=dict(episode_count=len(episodes),beat_count=sum(len(e.beats) for e in episodes),
+    return dict(schema_version='1.0',run=dict(episode_count=len(episodes),loaded_episode_count=loaded_episode_count,
+                selected_episode_numbers=sorted(e.number for e in episodes),episode_selection='manual' if episode_numbers is not None else 'all',
+                beat_count=sum(len(e.beats) for e in episodes),
                 rejected_candidate_count=len(rejected),timeline_slice_count=sum(len(e.timeline) for e in episodes),provider=usage,weights=weights or DEFAULT_WEIGHTS,
                 minimum=minimum,maximum=maximum,elapsed_seconds=round(perf_counter()-start,4),
                 raw_script_token_estimate=sum(len(b.text) for e in episodes for b in e.beats)//4,
@@ -79,9 +89,14 @@ def main():
     ap.add_argument('--provider',default='auto',choices=['auto','Heuristic/Offline','Gemini','OpenAI','Anthropic'])
     ap.add_argument('--model');ap.add_argument('--min-duration',type=float,default=20);ap.add_argument('--max-duration',type=float,default=60)
     ap.add_argument('--judge-budget',type=int,default=8)
+    ap.add_argument('--episodes',help='Analyze only these episode numbers, for example "2,5,8-10"')
     args=ap.parse_args()
     if args.judge_budget<0: ap.error('judge-budget must be nonnegative')
-    result=execute(parse_folder(args.input),args.provider,args.model,minimum=args.min_duration,maximum=args.max_duration,budget=args.judge_budget)
+    episodes=parse_folder(args.input)
+    try:
+        selected=parse_episode_selection(args.episodes,[e.number for e in episodes]) if args.episodes is not None else None
+    except ValueError as exc: ap.error(str(exc))
+    result=execute(episodes,args.provider,args.model,minimum=args.min_duration,maximum=args.max_duration,budget=args.judge_budget,episode_numbers=selected)
     write_outputs(result,args.output)
     print(f"Parsed {result['run']['episode_count']} episodes / {result['run']['beat_count']} beats. Ranked {len(result['promos'])} promos; audit {result['audit']['passed']}/{result['audit']['hard_checks']} passed. Outputs: {args.output}")
     for error in result['run']['provider']['errors']: print('Judge warning:',error)

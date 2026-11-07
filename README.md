@@ -93,7 +93,7 @@ For an interview: select **Try a sample screenplay** → **Find promos** to demo
 
 Build a distribution with `python scripts/package_deploy.py`. It contains the original synthetic demo and the two-page solution PDF, with the confidential original pack excluded. See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) for a short presentation and explanations you should understand.
 
-Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. All 42 tests pass there. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
+Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. All 56 tests pass there. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
 
 ## Free Gemini API test
 
@@ -104,3 +104,11 @@ Google lists `gemini-3.8-flash` with a free tier (official pricing checked 7 Nov
 HTTP 500/502/503/504 responses now retry up to three HTTP attempts with exponential backoff and jitter. Long Retry-After values stop the request rather than triggering an early retry. The API test shows retry progress and a clear warning if the provider remains unavailable; it never reports success on exhaustion. Authentication, model-not-found and quota errors are not retried automatically. Judging telemetry separates logical `calls`, `http_attempts` and `retries`; usage/cost totals remain based on reported provider usage, not an invoice.
 
 For a persistent Gemini 3.8 Flash outage, manually select the officially listed `gemini-3.5-flash-lite` preset and test it. Both have listed free tiers subject to project eligibility and quota; neither is guaranteed to be available. No automatic model or paid-provider fallback is performed.
+
+## Upload once, select episodes
+
+After loading the full TXT/ZIP pack, use **Choose episodes → Episodes to analyze** in the sidebar. Keep **All loaded episodes**, choose **Enter episode numbers** (for example `2, 5, 8-10`), or **Pick from list**. Click **Find promos**. Only selected episodes reach candidate generation, AI judging and exported results. Change the selection and rerun without uploading the pack again. Invalid/missing episode numbers block the run rather than being silently ignored.
+
+An explicit manual selection permits compatible two-part mashups between any selected episode numbers, even distant ones; it does not force every selected episode into one promo. The default all-episode mode retains its nearby-episode search. Every promo still totals 20–60 seconds and passes source-boundary checks. Saved results show a stale-result notice until the selected input is rerun.
+
+The CLI supports the same selection: `python run_pipeline.py --episodes "2,5,8-10" --output /tmp/selected-promos`. Keep the default full-pack outputs separate from these exploratory subset runs.

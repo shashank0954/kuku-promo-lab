@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 from src.parser import parse_folder
-from src.inputs import read_uploads
+from src.inputs import read_uploads,parse_episode_selection
 from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error,GEMINI_FREE_TEST_MODELS
 from src.economics import estimate,cost,RATES
 from run_pipeline import execute,DEFAULT_INPUT,format_segments
@@ -90,15 +90,15 @@ with st.sidebar:
     if (DEMO_INPUT/'demo_screenplay.txt').exists(): options.append('Try a sample screenplay')
     source=st.radio('Input',options,key='input_source')
     uploads=st.file_uploader('TXT files or a ZIP pack',type=['txt','zip'],accept_multiple_files=True) if source.startswith('Upload') else []
+    episode_controls=st.container()
     minimum,maximum=st.slider('Total duration (seconds)',20,60,(20,60))
     st.caption('Rubric weights (normalized on run)')
     weights={k:st.slider(k.replace('_score','').replace('_',' ').title(),0,100,int(v*100),key=k) for k,v in DEFAULT_WEIGHTS.items()}
     if 'judge_budget' not in st.session_state: st.session_state['judge_budget']=8
     budget=st.slider('Maximum AI-judged finalists',0,20,key='judge_budget',help='Remaining candidates keep labeled heuristic scores. Use 1 for an initial free-tier test.')
-    run=st.button('Find promos',type='primary',use_container_width=True)
     st.caption('Offline is reproducible and free. AI calls send shortlisted script excerpts to the selected provider.')
 
-input_signature=(source,tuple((f.name,hashlib.sha256(f.getvalue()).hexdigest()) for f in uploads))
+source_signature=(source,tuple((f.name,hashlib.sha256(f.getvalue()).hexdigest()) for f in uploads))
 try:
     if source=='Try a sample screenplay':
         episodes=parse_folder(DEMO_INPUT)
@@ -107,13 +107,47 @@ try:
 except Exception as exc:
     st.error(f'Input validation: {exc}');episodes=[]
 
+loaded_episodes=episodes
+selected_numbers=None
+selection_error=None
+with episode_controls:
+    st.subheader('Choose episodes')
+    if loaded_episodes:
+        available=sorted(e.number for e in loaded_episodes)
+        st.caption(f'{len(available)} episodes loaded: '+', '.join(map(str,available)))
+        if st.session_state.get('episode_selection_dataset')!=source_signature:
+            st.session_state['episode_selection_dataset']=source_signature
+            st.session_state['episode_selection_mode']='All loaded episodes'
+            st.session_state['episode_selection_text']=''
+            st.session_state['episode_selection_list']=[]
+        selection_mode=st.selectbox('Episodes to analyze',['All loaded episodes','Enter episode numbers','Pick from list'],key='episode_selection_mode')
+        try:
+            if selection_mode=='Enter episode numbers':
+                selection_text=st.text_input('Episode numbers',placeholder='2, 5, 8-10',key='episode_selection_text',help='Use commas or ranges. Only these episodes will be analyzed; the full upload stays available.')
+                selected_numbers=parse_episode_selection(selection_text,available)
+            elif selection_mode=='Pick from list':
+                selected_numbers=sorted(st.multiselect('Select episodes',available,format_func=lambda n:f'Episode {n}',key='episode_selection_list'))
+                if not selected_numbers: raise ValueError('Select at least one episode from the list.')
+        except ValueError as exc:
+            selection_error=str(exc);selected_numbers=[];st.error(selection_error)
+        if selected_numbers:
+            st.success('Will analyze episodes: '+', '.join(map(str,selected_numbers)))
+            st.caption('Finds single clips and compatible two-part mashups within your selection. Mashups need not use every selected episode, and may connect distant episode numbers.')
+        st.caption('Upload once. Change this selection and click Find promos for each new run.')
+    else:
+        st.caption('Upload screenplay files to choose episodes for a new run.')
+    run=st.button('Find promos',type='primary',use_container_width=True)
+episodes=[e for e in loaded_episodes if selected_numbers is None or e.number in selected_numbers]
+input_signature=source_signature+(tuple(selected_numbers) if selected_numbers is not None else None,)
+
 if run:
-    if not episodes: st.error('Upload TXT screenplay files or their ZIP pack to run the pipeline. Saved results can be browsed without the source files.')
+    if selection_error: st.error(selection_error)
+    elif not episodes: st.error('Upload TXT screenplay files or their ZIP pack to run the pipeline. Saved results can be browsed without the source files.')
     elif not sum(weights.values()): st.error('At least one rubric weight must be positive.')
     else:
         with st.spinner(f'Parsing, slicing, scoring and auditing {len(episodes)} episodes…'):
             try:
-                st.session_state['result']=execute(episodes,provider,model,key,minimum,maximum,weights,budget)
+                st.session_state['result']=execute(loaded_episodes,provider,model,key,minimum,maximum,weights,budget,episode_numbers=selected_numbers)
                 st.session_state['episodes']=episodes
                 st.session_state['run_input']=source
                 st.session_state['run_input_signature']=input_signature
@@ -124,7 +158,7 @@ if 'result' not in st.session_state and source not in ('Upload screenplay files'
         st.session_state['result']=json.loads(SAVED_OUTPUT.read_text());st.session_state['episodes']=episodes;st.session_state['run_input']=source
     elif episodes:
         st.session_state['result']=execute(episodes,'Heuristic/Offline');st.session_state['episodes']=episodes;st.session_state['run_input']=source
-    if 'result' in st.session_state: st.session_state['run_input_signature']=input_signature
+    if 'result' in st.session_state: st.session_state['run_input_signature']=source_signature+(None,)
 
 if 'result' not in st.session_state:
     st.info('Load screenplay files and choose Find promos to create your playbook.');st.stop()
@@ -136,6 +170,7 @@ if st.session_state.get('run_input_signature')!=input_signature: st.info('Showin
 metrics=st.columns(4)
 for col,label,value in zip(metrics,['Episodes analyzed','Ranked cuts','Source checks passed','Run time'],[r['run']['episode_count'],len(r['promos']),f"{r['audit']['passed']}/{r['audit']['hard_checks']}",f"{r['run']['elapsed_seconds']:.2f}s"]): col.metric(label,value)
 st.caption(f"Results: {r['run']['provider']['provider']} · {r['run']['beat_count']:,} source beats · Scores are editorial estimates, not measured ad performance.")
+st.caption('Episodes in this result: '+', '.join(str(e['episode']) for e in r['run']['episode_coverage']))
 st.caption(f"AI-judged candidates before editorial gates: {r['run']['provider']['judged_candidates']}. Each promo shows its own score source; the remaining candidates use heuristics.")
 for warning in r['run']['provider']['errors']: st.warning(warning)
 
