@@ -51,3 +51,7 @@ Root-level Streamlit secrets are available as environment variables. Never commi
 - Check the reviewer link without your owner session.
 
 If the app cannot import `src`, confirm that the full `src/` directory sits beside `app.py`. If no saved playbook appears, confirm `raw_outputs/all_episodes_promos_ranked.json` is present. Cloud logs appear in the app's management panel.
+
+## Current security controls
+
+See `API_KEY_SECURITY.md`. The provider panel now includes **Clear API keys from this session**. Keep app access over the HTTPS Streamlit URL. No API key is required in GitHub or in deployment settings for reviewer-entered keys. Updating `main` updates an existing Community Cloud app connected to that branch; a new app still needs creation through the owner's Streamlit account.

@@ -5,13 +5,16 @@ import json
 from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.md',
+FILES = ['API_KEY_SECURITY.md','app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.md',
          'SOLUTION_DOC.md','SOLUTION_DOC.html','.gitignore','.streamlit/config.toml',
          'SOLUTION_DOC.pdf','REQUIREMENTS_REVIEW.md','INTERVIEW_GUIDE.md','FREE_API_TESTING.md',
          'examples/demo_screenplay.txt','scripts/package_deploy.py','scripts/review_editorial_cases.py']
-FILES += ['scripts/build_visual_deliverables.py','scripts/render_visuals.py','deliverables/README.md','deliverables/visual_playbook.html','deliverables/visual_source.json','deliverables/visual_manifest.json']
+FILES += ['scripts/build_visual_deliverables.py','scripts/render_visuals.py','deliverables/README.md','deliverables/EDITORIAL_CHANGES.md','deliverables/visual_playbook.html','deliverables/visual_source.json','deliverables/visual_manifest.json']
 FILES += [str(p.relative_to(ROOT)) for p in sorted((ROOT/'assets').iterdir()) if p.suffix in ('.svg','.png')]
 FILES += [str(p.relative_to(ROOT)) for folder in ('src','tests') for p in sorted((ROOT/folder).glob('*.py'))]
+FILES += ['scripts/evaluate_frozen.py']
+FILES += [str(p.relative_to(ROOT)) for p in sorted((ROOT/'evaluation').glob('*')) if p.is_file()]
+FILES += [str(p.relative_to(ROOT)) for p in sorted((ROOT/'raw_outputs/history').rglob('*')) if p.is_file()]
 FILES += ['raw_outputs/'+name for name in ('all_episodes_promos_ranked.json',
           'top_promos_ranked.csv','top_promos_report.md','quality_and_failure_audit.md','editorial_regression_review.json','manifest.json')]
 

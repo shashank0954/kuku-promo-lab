@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import pandas as pd
 import streamlit as st
+from src.reviews import fingerprint,identity,export_reviews,import_reviews
 from src.parser import parse_folder
 from src.presentation import promo_timeline_svg
 from src.inputs import read_uploads,parse_episode_selection
@@ -21,7 +22,11 @@ APP_ROOT = Path(__file__).resolve().parent
 SAVED_OUTPUT = APP_ROOT / 'raw_outputs/all_episodes_promos_ranked.json'
 DEMO_INPUT = APP_ROOT / 'examples'
 
-with st.expander('AI provider & API key', expanded=True):
+def clear_api_keys():
+    for name in list(st.session_state):
+        if name.startswith('api_key_'): st.session_state[name]=''
+
+with st.expander('AI provider & API key', expanded=False):
     provider_col, model_col, key_col = st.columns(3)
     with provider_col:
         provider=st.selectbox('Provider',['Heuristic/Offline',*MODELS])
@@ -32,6 +37,8 @@ with st.expander('AI provider & API key', expanded=True):
     with key_col:
         key=st.text_input('API key (session only)',type='password',key=f'api_key_{provider}',
                           help='Used only for the selected provider. Keys are never written into exported results. A configured environment key also works.')
+    st.button('Clear API keys from this session',on_click=clear_api_keys)
+    st.caption('Keys are held in this session, never saved in app files or exports. Requests go through the hosting server to the selected AI provider over HTTPS. Use Clear API keys when finished.')
     if provider=='Heuristic/Offline':
         st.caption('Offline mode selected. To use an API key, choose Gemini, OpenAI or Anthropic above.')
     else:
@@ -55,7 +62,7 @@ with st.expander('AI provider & API key', expanded=True):
         else:
             retry_status=st.empty()
             try:
-                with st.spinner('Checking the selected model with a short JSON request…'):
+                with st.spinner('Checking the selected model with a short JSON request…',show_time=True):
                     adapter=JudgeProvider(provider,model,test_key,on_retry=retry_status.info)
                     reply,usage=adapter.request('Return only a JSON object with status set to ok.')
                 if not isinstance(reply,dict) or reply.get('status')!='ok':
@@ -92,19 +99,21 @@ with st.sidebar:
     source=st.radio('Input',options,key='input_source')
     uploads=st.file_uploader('TXT files or a ZIP pack',type=['txt','zip'],accept_multiple_files=True) if source.startswith('Upload') else []
     episode_controls=st.container()
-    minimum,maximum=st.slider('Total duration (seconds)',20,60,(20,60))
-    st.caption('Rubric weights (normalized on run)')
-    weights={k:st.slider(k.replace('_score','').replace('_',' ').title(),0,100,int(v*100),key=k) for k,v in DEFAULT_WEIGHTS.items()}
-    if 'judge_budget' not in st.session_state: st.session_state['judge_budget']=8
-    budget=st.slider('Maximum AI-judged finalists',0,20,key='judge_budget',help='Remaining candidates keep labeled heuristic scores. Use 1 for an initial free-tier test.')
+    with st.expander('Advanced duration, rubric & AI budget'):
+        minimum,maximum=st.slider('Total duration (seconds)',20,60,(20,60))
+        st.caption('Rubric weights (normalized on run)')
+        weights={k:st.slider(k.replace('_score','').replace('_',' ').title(),0,100,int(v*100),key=k) for k,v in DEFAULT_WEIGHTS.items()}
+        if 'judge_budget' not in st.session_state: st.session_state['judge_budget']=8
+        budget=st.slider('Maximum AI-judged finalists',0,20,key='judge_budget',help='Remaining candidates keep labeled heuristic scores. Use 1 for an initial free-tier test.')
     st.caption('Offline is reproducible and free. AI calls send shortlisted script excerpts to the selected provider.')
 
 source_signature=(source,tuple((f.name,hashlib.sha256(f.getvalue()).hexdigest()) for f in uploads))
 try:
-    if source=='Try a sample screenplay':
-        episodes=parse_folder(DEMO_INPUT)
-    else:
-        episodes=read_uploads(uploads) if source.startswith('Upload') and uploads else (preload() if not source.startswith('Upload') else [])
+    with st.spinner('Reading and validating screenplay files…',show_time=True):
+        if source=='Try a sample screenplay':
+            episodes=parse_folder(DEMO_INPUT)
+        else:
+            episodes=read_uploads(uploads) if source.startswith('Upload') and uploads else (preload() if not source.startswith('Upload') else [])
 except Exception as exc:
     st.error(f'Input validation: {exc}');episodes=[]
 
@@ -146,19 +155,31 @@ if run:
     elif not episodes: st.error('Upload TXT screenplay files or their ZIP pack to run the pipeline. Saved results can be browsed without the source files.')
     elif not sum(weights.values()): st.error('At least one rubric weight must be positive.')
     else:
-        with st.spinner(f'Parsing, slicing, scoring and auditing {len(episodes)} episodes…'):
+        with st.status(f'Finding promos across {len(episodes)} episodes…',expanded=True) as run_status:
+            run_progress=st.progress(0,text='Starting promo analysis…')
+            def update_progress(step,message):
+                run_progress.progress((step-1)/5,text=f'Step {step}/5 · {message}')
+                run_status.update(label=message)
             try:
-                st.session_state['result']=execute(loaded_episodes,provider,model,key,minimum,maximum,weights,budget,episode_numbers=selected_numbers)
+                st.session_state['result']=execute(loaded_episodes,provider,model,key,minimum,maximum,weights,budget,episode_numbers=selected_numbers,on_progress=update_progress)
                 st.session_state['episodes']=episodes
                 st.session_state['run_input']=source
                 st.session_state['run_input_signature']=input_signature
-            except Exception as exc: st.error(f'Run failed: {type(exc).__name__}: {exc}')
+                count=len(st.session_state['result']['promos'])
+                run_progress.progress(1.0,text=f'Complete · {count} promos ready to review')
+                run_status.update(label=f'Analysis complete · {count} promos ready',state='complete',expanded=False)
+            except Exception as exc:
+                run_progress.empty()
+                run_status.update(label='Promo analysis failed',state='error',expanded=True)
+                st.error('Promo analysis failed. '+describe_error(provider,exc))
 
 if 'result' not in st.session_state and source not in ('Upload screenplay files','Try a sample screenplay'):
     if SAVED_OUTPUT.exists():
-        st.session_state['result']=json.loads(SAVED_OUTPUT.read_text());st.session_state['episodes']=episodes;st.session_state['run_input']=source
+        with st.spinner('Loading the saved promo playbook…',show_time=True):
+            st.session_state['result']=json.loads(SAVED_OUTPUT.read_text());st.session_state['episodes']=episodes;st.session_state['run_input']=source
     elif episodes:
-        st.session_state['result']=execute(episodes,'Heuristic/Offline');st.session_state['episodes']=episodes;st.session_state['run_input']=source
+        with st.spinner('Preparing the initial promo playbook…',show_time=True):
+            st.session_state['result']=execute(episodes,'Heuristic/Offline');st.session_state['episodes']=episodes;st.session_state['run_input']=source
     if 'result' in st.session_state: st.session_state['run_input_signature']=source_signature+(None,)
 
 if 'result' not in st.session_state:
@@ -204,12 +225,54 @@ def detail(item):
     st.image(promo_timeline_svg(item),width='stretch',alt='Timeline showing the opening hook window, any segment joins, and the final cliffhanger window')
     a,b=st.columns(2);a.success('FIRST 3s · '+item['hook_text']);b.error('CLIFFHANGER · '+item['cliffhanger_text'])
     st.write(item['why_it_works']);st.caption(item['ranking_rationale'])
-    st.bar_chart(pd.DataFrame({'Score':item['scores']}))
+    st.bar_chart(pd.DataFrame({'Heuristic':item.get('heuristic_scores',item['scores']),**({'AI (uncalibrated)':item['ai_scores']} if item.get('ai_scores') else {})}))
+    if item.get('ai_assessment'): st.json(item['ai_assessment'],expanded=False)
+    st.info('Script decision: '+item.get('decision',{}).get('status','legacy result; rerun for policy')+' · '+'; '.join(item.get('decision',{}).get('reasons',[])))
     if item['editorial_flags']: st.warning('Editor review: '+'; '.join(item['editorial_flags']))
     with st.expander('Verbatim script timeline viewer'): timeline(item)
 
 tabs=st.tabs(['01 · Ranked playbook','02 · Episode explorer','03 · Where it fails','04 · Scale & economics'])
 with tabs[0]:
+    st.subheader('Three promos to review first')
+    st.caption(r['run'].get('ranking_policy','Legacy saved ranking; rerun to use the current editorial policy.'))
+    st.caption(f"AI assessed {r['run']['provider']['judged_candidates']} candidates; {sum(bool(x.get('ai_assessment')) for x in r['promos'])} shortlisted candidates have structured AI assessments. Scores are not calibrated against each other.")
+    leaders=sorted(r['promos'],key=lambda x:x.get('posting_priority',x['rank']))[:3]
+    for column,item in zip(st.columns(3),leaders):
+        with column:
+            st.markdown('**'+format_segments(item)+'**')
+            st.write(f"{item['duration']:.2f}s · {item.get('decision',{}).get('status','legacy assessment')}")
+            st.success('Opening: '+item['hook_text'])
+            st.error('Unresolved ending: '+item['cliffhanger_text'])
+            st.write(item['why_it_works'])
+            st.caption('Review: '+'; '.join(item.get('decision',{}).get('reasons',item.get('editorial_flags',[])))+' · Footage approval required')
+    scope=fingerprint(list(lookup.values()),r)
+    store=st.session_state.setdefault('editor_reviews',{})
+    decisions=store.setdefault(scope,{})
+    with st.expander('Compare candidates & record editor decisions'):
+        byid={x['id']:x for x in r['promos']}
+        if byid:
+            choices=st.multiselect('Compare up to two promos',list(byid),max_selections=2)
+            for col,cid in zip(st.columns(2),choices):
+                with col:
+                    item=byid[cid];uid=identity(scope,item);old=decisions.get(uid,dict(script='Unreviewed',footage='Unreviewed',notes=''))
+                    st.write(format_segments(item));st.write(item['hook_text']);st.write('Cut: '+item['cliffhanger_text'])
+                    st.write(item.get('decision',{}));st.write({'heuristic':item.get('heuristic_scores',item['scores']),'AI':item.get('ai_scores')})
+                    script=st.selectbox('Script decision',['Unreviewed','Approve','Reject'],index=['Unreviewed','Approve','Reject'].index(old['script']),key=uid+'script')
+                    footage=st.selectbox('Footage decision',['Unreviewed','Approve','Reject'],index=['Unreviewed','Approve','Reject'].index(old['footage']),key=uid+'footage')
+                    notes=st.text_area('Editor notes',value=old['notes'],key=uid+'notes')
+                    decisions[uid]=dict(script=script,footage=footage,notes=notes)
+            imported=st.file_uploader('Import review decisions',type=['json'],key='review_import')
+            if imported and st.button('Apply imported decisions'):
+                try:
+                    with st.spinner('Validating and importing editor decisions…',show_time=True):
+                        decisions.update(import_reviews(imported.getvalue(),scope,r['promos']))
+                    for uid in decisions:
+                        for field in ('script','footage','notes'):st.session_state.pop(uid+field,None)
+                    st.rerun()
+                except (ValueError,TypeError,KeyError) as exc:st.error(str(exc))
+            st.download_button('Download review decisions',export_reviews(scope,decisions),file_name='editor_review_decisions.json')
+            selected=[dict(candidate=x,review=decisions[identity(scope,x)]) for x in r['promos'] if decisions.get(identity(scope,x),{}).get('script')=='Approve']
+            st.download_button('Download editor-selected shortlist',json.dumps(dict(input_fingerprint=scope,notice='Script approval and footage approval are separate; original pipeline output preserved.',shortlist=selected),indent=2),file_name='editor_selected_shortlist.json')
     left,right=st.columns(2)
     tier=left.multiselect('Posting tiers',sorted({x['posting_strategy'] for x in r['promos']}))
     threshold=right.slider('Minimum composite score',0,100,0)

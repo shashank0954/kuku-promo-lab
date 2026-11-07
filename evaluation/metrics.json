@@ -1,0 +1,12 @@
+{
+  "status": "pending human labels",
+  "sample_size": 24,
+  "labeled_candidates": 0,
+  "predicted_accepts_labeled": 0,
+  "acceptance_precision": null,
+  "pairwise_n": 0,
+  "pairwise_agreement": null,
+  "limits": "No recall estimate. Ties excluded from pairwise denominator. Development regressions are not independent human labels.",
+  "selection_method": "Frozen before policy changes: first 8 prior-ranked shortlisted, 8 rejected nearest score 55, 8 ID-sorted rejected; duplicate IDs filled in source order. Development cases may overlap; not an unseen benchmark.",
+  "frozen_source_sha256": "1717fc91a19490b93924b49417298359acb2c29754ea331008c344a08c46761b"
+}

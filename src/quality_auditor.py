@@ -55,7 +55,7 @@ def audit(episodes,items,rejected,minimum=20,maximum=60):
     return dict(ranked_checks=len(items),rejected_checks=len(rejected),hard_checks=len(checks),hard_failures=failures,passed=len(checks)-len(failures),
                 source_warnings=[w for e in episodes for w in e.warnings],
                 editorial_flagged=sum(bool(x.get('editorial_flags')) for x in items),
-                failure_examples=diverse,method='Hard source validity is proven; hook, clarity, and unresolved tension remain heuristic/editorial judgments.')
+                failure_examples=diverse,method='Structural cut checks pass when reported; hook, clarity, and unresolved tension remain heuristic/editorial judgments.')
 
 def audit_markdown(result):
     out=['# Quality & honest failure audit','',f"Validated {result['hard_checks']} candidates ({result['ranked_checks']} shortlisted / {result['rejected_checks']} rejected); {result['passed']} passed hard constraints; {len(result['hard_failures'])} failed.",

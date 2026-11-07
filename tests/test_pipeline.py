@@ -65,11 +65,11 @@ def test_provider_schema_and_error_fallback(episodes):
     assert all(x['evaluation_source']=='heuristic' for x in ranked)
     def valid_request(self,prompt):
         evidence=json.loads(prompt.split('Evidence: ',1)[1])
-        return {'results':[{'id':x['id'],'scores':{k:77 for k in DIMENSIONS},'rationale':'Test critique','why':'Test evidence','flags':[]} for x in evidence]}, {'input_tokens':100,'output_tokens':20}
+        return {'results':[{'id':x['id'],'scores':{k:77 for k in DIMENSIONS},'rationale':'Test critique','why':'Test evidence','flags':[],'assessments':{k:{'text':'Mock grounded finding','verdict':'no' if k=='already_answered' else 'supported','evidence':[x['segments'][-1]['beats'][-1]['id'] if k=='unresolved' else x['segments'][0]['beats'][0]['id']]} for k in ('opening','conflict','unresolved','already_answered','missing_context','continuity')}} for x in evidence]}, {'input_tokens':100,'output_tokens':20}
     with patch.object(JudgeProvider,'request',valid_request):
         ranked,stats=judge(episodes,items[:4],'OpenAI','gpt-4o-mini','fake-key',budget=4)
     assert stats['judged_candidates']==4 and stats['input_tokens']==100
-    assert all(x['composite_score']==77 for x in ranked)
+    assert all(x['ai_composite_score']==77 and x['scores']==x['heuristic_scores'] for x in ranked)
     assert all(not validate(x,episodes) for x in ranked)
 
 def test_invalid_input():
@@ -88,7 +88,7 @@ def test_rest_adapters(provider):
         def __enter__(self):return self
         def __exit__(self,*args):pass
         def read(self):return json.dumps(response).encode()
-    with patch('urllib.request.urlopen',return_value=Reply()) as call:
+    with patch('src.llm_evaluator.secure_open',return_value=Reply()) as call:
         model='gemini-3.8-flash' if provider=='Gemini' else 'test-model'
         data,usage=JudgeProvider(provider,model,'secret').request('prompt')
     assert data=={'results':[]} and usage=={'input_tokens':10,'output_tokens':5}
@@ -130,8 +130,7 @@ def test_reviewed_editorial_regressions(episodes,number,start,end,expected):
     ep=next(e for e in episodes if e.number==number)
     item=evaluate_offline(make_candidate([segment(ep,start,end)],'review-case'),episodes)
     scores=item['scores']
-    eligible=(scores['hook_3s_score']>=55 and scores['cliffhanger_score']>=55 and scores['standalone_clarity_score']>=55
-              and not any('De-escalation' in f or 'Main conflict resolves' in f or 'Music sting alone' in f for f in item['editorial_flags']))
+    eligible=item['decision']['eligible']
     assert eligible==expected
     assert not validate(item,episodes)
 
@@ -144,7 +143,7 @@ def test_malformed_ai_json_keeps_billed_usage():
         def __enter__(self):return self
         def __exit__(self,*args):pass
         def read(self):return json.dumps(response).encode()
-    with patch('urllib.request.urlopen',return_value=Reply()):
+    with patch('src.llm_evaluator.secure_open',return_value=Reply()):
         with pytest.raises(InvalidJudgeResponse) as err:
             JudgeProvider('Gemini','gemini-3.8-flash','fake-key').request('prompt')
     assert err.value.usage=={'input_tokens':23,'output_tokens':7}
@@ -178,7 +177,7 @@ def test_transient_503_recovers_with_bounded_backoff():
     from urllib.error import HTTPError
     messages=[];adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key',on_retry=messages.append)
     failures=[HTTPError('https://example.test',503,'unavailable',{},None) for _ in range(2)]
-    with patch('urllib.request.urlopen',side_effect=[*failures,gemini_ok_response()]) as call, \
+    with patch('src.llm_evaluator.secure_open',side_effect=[*failures,gemini_ok_response()]) as call, \
          patch('src.llm_evaluator.time.sleep') as sleep,patch('src.llm_evaluator.random.uniform',return_value=0):
         reply,usage=adapter.request('Return JSON status ok')
     assert reply=={'status':'ok'} and usage['input_tokens']==10
@@ -192,7 +191,7 @@ def test_persistent_503_stops_and_explains_outage():
     from src.llm_evaluator import describe_error
     adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key')
     failures=[HTTPError('https://example.test?key=never-display',503,'private response body',{},None) for _ in range(3)]
-    with patch('urllib.request.urlopen',side_effect=failures) as call,patch('src.llm_evaluator.time.sleep'), \
+    with patch('src.llm_evaluator.secure_open',side_effect=failures) as call,patch('src.llm_evaluator.time.sleep'), \
          pytest.raises(HTTPError) as error:
         adapter.request('Return JSON')
     assert call.call_count==3
@@ -205,7 +204,7 @@ def test_persistent_503_stops_and_explains_outage():
 def test_auth_model_and_quota_failures_are_not_retried(code):
     from urllib.error import HTTPError
     adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key')
-    with patch('urllib.request.urlopen',side_effect=HTTPError('https://example.test',code,'error',{},None)) as call, \
+    with patch('src.llm_evaluator.secure_open',side_effect=HTTPError('https://example.test',code,'error',{},None)) as call, \
          patch('src.llm_evaluator.time.sleep') as sleep,pytest.raises(HTTPError):
         adapter.request('Return JSON')
     assert call.call_count==1 and not sleep.called
@@ -214,7 +213,7 @@ def test_auth_model_and_quota_failures_are_not_retried(code):
 def test_long_retry_after_does_not_retry_early():
     from urllib.error import HTTPError
     adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key')
-    with patch('urllib.request.urlopen',side_effect=HTTPError('https://example.test',503,'busy',{'Retry-After':'120'},None)) as call, \
+    with patch('src.llm_evaluator.secure_open',side_effect=HTTPError('https://example.test',503,'busy',{'Retry-After':'120'},None)) as call, \
          patch('src.llm_evaluator.time.sleep') as sleep,pytest.raises(HTTPError):
         adapter.request('Return JSON')
     assert call.call_count==1 and not sleep.called

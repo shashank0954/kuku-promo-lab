@@ -1,0 +1,1245 @@
+{
+  "version": 1,
+  "source_sha256": "1717fc91a19490b93924b49417298359acb2c29754ea331008c344a08c46761b",
+  "method": "Frozen before policy changes: first 8 prior-ranked shortlisted, 8 rejected nearest score 55, 8 ID-sorted rejected; duplicate IDs filled in source order. Development cases may overlap; not an unseen benchmark.",
+  "cases": [
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E1-39.1-74.3",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 1,
+            "filename": "episode-001-Episode 1671703.txt",
+            "start": 39.1,
+            "end": 74.3,
+            "start_timestamp": "00:39.10",
+            "end_timestamp": "01:14.30",
+            "duration": 35.2
+          }
+        ],
+        "duration": 35.2,
+        "retrieval_score": 180,
+        "scores": {
+          "hook_3s_score": 100,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 68
+        },
+        "composite_score": 85.1,
+        "hook_text": "\"Because he is marrying me.\"",
+        "cliffhanger_text": "\"How long?\"",
+        "hook_evidence": {
+          "beat_id": "1:27",
+          "kind": "DIALOGUE",
+          "start": 39.1,
+          "end": 41.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "1:50",
+          "kind": "DIALOGUE",
+          "start": 73.1,
+          "end": 74.3
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: \u201cBecause he is marrying me.\u201d \u2192 \u201cHow long?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 100/100; cut tension 80/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 100/100, unresolved cut 80/100, clarity 96/100.",
+        "rank": 1,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 1
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E21-11.2-35.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 21,
+            "filename": "episode-021-Episode 1678574.txt",
+            "start": 11.2,
+            "end": 35.8,
+            "start_timestamp": "00:11.20",
+            "end_timestamp": "00:35.80",
+            "duration": 24.6
+          }
+        ],
+        "duration": 24.6,
+        "retrieval_score": 170,
+        "scores": {
+          "hook_3s_score": 100,
+          "cliffhanger_score": 70,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 59,
+          "pacing_density_score": 98
+        },
+        "composite_score": 84.7,
+        "hook_text": "\"My little brother Toby... his chest is burning! He cannot breathe!\"",
+        "cliffhanger_text": "\"He is only seven! If you do not come, he will die! You are his only hope, Lady Juliana!\"",
+        "hook_evidence": {
+          "beat_id": "21:10",
+          "kind": "DIALOGUE",
+          "start": 11.2,
+          "end": 15.0
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "21:22",
+          "kind": "DIALOGUE",
+          "start": 31.0,
+          "end": 35.8
+        },
+        "editorial_flags": [
+          "Hook line exceeds 3s; verify exact word onset in footage"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A loved one in danger: \u201cMy little brother Toby... his chest is burning! He cannot breathe!\u201d \u2192 \u201cHe is only seven! If you do not come, he will die! You are his only hope, Lady Juliana!\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 100/100; cut tension 70/100; cold-viewer clarity 90/100. Review: Hook line exceeds 3s; verify exact word onset in footage",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 100/100, unresolved cut 70/100, clarity 90/100.",
+        "rank": 2,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 28
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E37-92.0-119.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 37,
+            "filename": "episode-037-Episode 1681370.txt",
+            "start": 92.0,
+            "end": 119.8,
+            "start_timestamp": "01:32.00",
+            "end_timestamp": "01:59.80",
+            "duration": 27.8
+          }
+        ],
+        "duration": 27.8,
+        "retrieval_score": 180,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 100,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 83,
+          "pacing_density_score": 68
+        },
+        "composite_score": 84.7,
+        "hook_text": "Close-up on Juliana's bruised hand, locked in a heavy iron shackle chained to the wall, trembling as she hesitates inches away from a dirty earthen bowl filled with murky liquid.",
+        "cliffhanger_text": "\"Do you think she'll actually be executed?\"",
+        "hook_evidence": {
+          "beat_id": "37:51",
+          "kind": "CAMERA",
+          "start": 92.0,
+          "end": 95.5
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "37:65",
+          "kind": "DIALOGUE",
+          "start": 117.2,
+          "end": 119.8
+        },
+        "editorial_flags": [
+          "Visual action onset uncertain within long source beat"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cClose-up on Juliana's bruised hand, locked in a heavy iron shackle chained to the wall, trembling as s\u2026\u201d \u2192 \u201cDo you think she'll actually be executed?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 100/100; cold-viewer clarity 78/100. Review: Visual action onset uncertain within long source beat",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 100/100, clarity 78/100.",
+        "rank": 3,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 29
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "M-28-70.5-81.9-31-108.8-122.0",
+        "kind": "mashup",
+        "segments": [
+          {
+            "episode": 28,
+            "filename": "episode-028-Episode 1678581.txt",
+            "start": 70.5,
+            "end": 81.9,
+            "start_timestamp": "01:10.50",
+            "end_timestamp": "01:21.90",
+            "duration": 11.4
+          },
+          {
+            "episode": 31,
+            "filename": "episode-031-Episode 1681364.txt",
+            "start": 108.8,
+            "end": 122.0,
+            "start_timestamp": "01:48.80",
+            "end_timestamp": "02:02.00",
+            "duration": 13.2
+          }
+        ],
+        "duration": 24.6,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 95,
+          "standalone_clarity_score": 65,
+          "emotional_arousal_score": 75,
+          "pacing_density_score": 86
+        },
+        "composite_score": 81.6,
+        "hook_text": "Tight close-up of Catherine's gloved hands grabbing the delicate chain around Juliana's neck.",
+        "cliffhanger_text": "\"Then why are you so desperate to make me kneel?\"",
+        "hook_evidence": {
+          "beat_id": "28:52",
+          "kind": "CAMERA",
+          "start": 70.5,
+          "end": 72.0
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "31:66",
+          "kind": "DIALOGUE",
+          "start": 118.4,
+          "end": 122.0
+        },
+        "editorial_flags": [
+          "Mashup continuity requires editor review"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cTight close-up of Catherine's gloved hands grabbing the delicate chain around Juliana's neck.\u201d \u2192 \u201cThen why are you so desperate to make me kneel?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 95/100; cold-viewer clarity 65/100. Review: Mashup continuity requires editor review",
+        "posting_strategy": "Tier 3: Multi-Segment Trailer Mashup",
+        "posting_reason": "Use after singles: an editor must verify that the joined scenes preserve one causal conflict.",
+        "rank": 4,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 52
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E9-6.3-54.0",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 9,
+            "filename": "episode-009-Episode 1671711.txt",
+            "start": 6.3,
+            "end": 54.0,
+            "start_timestamp": "00:06.30",
+            "end_timestamp": "00:54.00",
+            "duration": 47.7
+          }
+        ],
+        "duration": 47.7,
+        "retrieval_score": 160,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 67,
+          "pacing_density_score": 68
+        },
+        "composite_score": 80.7,
+        "hook_text": "\"Please! They told me there was a woman here who knows herbs. My boy is burning with fever!\"",
+        "cliffhanger_text": "\"Why isn't it working?\"",
+        "hook_evidence": {
+          "beat_id": "9:9",
+          "kind": "DIALOGUE",
+          "start": 6.3,
+          "end": 11.1
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "9:42",
+          "kind": "DIALOGUE",
+          "start": 52.5,
+          "end": 54.0
+        },
+        "editorial_flags": [
+          "Hook line exceeds 3s; verify exact word onset in footage"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A loved one in danger: \u201cPlease! They told me there was a woman here who knows herbs. My boy is burning with fever!\u201d \u2192 \u201cWhy isn't it working?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 96/100. Review: Hook line exceeds 3s; verify exact word onset in footage",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 96/100.",
+        "rank": 5,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 30
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E3-84.0-112.5",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 3,
+            "filename": "episode-003-Episode 1671705.txt",
+            "start": 84.0,
+            "end": 112.5,
+            "start_timestamp": "01:24.00",
+            "end_timestamp": "01:52.50",
+            "duration": 28.5
+          }
+        ],
+        "duration": 28.5,
+        "retrieval_score": 160,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 67,
+          "pacing_density_score": 79
+        },
+        "composite_score": 80.6,
+        "hook_text": "The Bearded Stranger effortlessly blocks the guard's strike and drives a devastating strike into him, dropping the armed guard instantly to the floor.",
+        "cliffhanger_text": "\"Why are you doing this?\"",
+        "hook_evidence": {
+          "beat_id": "3:71",
+          "kind": "ACTION",
+          "start": 84.0,
+          "end": 85.5
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "3:94",
+          "kind": "DIALOGUE",
+          "start": 110.9,
+          "end": 112.5
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cThe Bearded Stranger effortlessly blocks the guard's strike and drives a devastating strike into him, \u2026\u201d \u2192 \u201cWhy are you doing this?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 90/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 90/100.",
+        "rank": 6,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 2
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E28-47.4-81.9",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 28,
+            "filename": "episode-028-Episode 1678581.txt",
+            "start": 47.4,
+            "end": 81.9,
+            "start_timestamp": "00:47.40",
+            "end_timestamp": "01:21.90",
+            "duration": 34.5
+          }
+        ],
+        "duration": 34.5,
+        "retrieval_score": 150,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 70,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 75,
+          "pacing_density_score": 87
+        },
+        "composite_score": 80.4,
+        "hook_text": "Wide shot as Juliana lunges across the room toward the bed, but the armed guard seizes her from behind and drags her back.",
+        "cliffhanger_text": "\"A witch has no need for family heirlooms in the gallows.\"",
+        "hook_evidence": {
+          "beat_id": "28:37",
+          "kind": "CAMERA",
+          "start": 47.4,
+          "end": 52.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "28:61",
+          "kind": "DIALOGUE",
+          "start": 79.0,
+          "end": 81.9
+        },
+        "editorial_flags": [
+          "Visual action onset uncertain within long source beat"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cWide shot as Juliana lunges across the room toward the bed, but the armed guard seizes her from behind\u2026\u201d \u2192 \u201cA witch has no need for family heirlooms in the gallows.\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 70/100; cold-viewer clarity 96/100. Review: Visual action onset uncertain within long source beat",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 70/100, clarity 96/100.",
+        "rank": 7,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 31
+      }
+    },
+    {
+      "stratum": "shortlisted",
+      "candidate": {
+        "id": "E3-8.8-40.4",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 3,
+            "filename": "episode-003-Episode 1671705.txt",
+            "start": 8.8,
+            "end": 40.4,
+            "start_timestamp": "00:08.80",
+            "end_timestamp": "00:40.40",
+            "duration": 31.6
+          }
+        ],
+        "duration": 31.6,
+        "retrieval_score": 160,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 81
+        },
+        "composite_score": 80.4,
+        "hook_text": "\"You stole my wedding.\"",
+        "cliffhanger_text": "\"And what happens to me?\"",
+        "hook_evidence": {
+          "beat_id": "3:7",
+          "kind": "DIALOGUE",
+          "start": 8.8,
+          "end": 10.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "3:29",
+          "kind": "DIALOGUE",
+          "start": 38.5,
+          "end": 40.4
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: \u201cYou stole my wedding.\u201d \u2192 \u201cAnd what happens to me?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 96/100.",
+        "rank": 8,
+        "editorial_status": "Shortlisted \u2014 confirm in footage",
+        "posting_priority": 3
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E16-19.2-75.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 16,
+            "filename": "episode-016-Episode 1671718.txt",
+            "start": 19.2,
+            "end": 75.8,
+            "start_timestamp": "00:19.20",
+            "end_timestamp": "01:15.80",
+            "duration": 56.6
+          }
+        ],
+        "duration": 56.6,
+        "retrieval_score": 145,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 0,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 67,
+          "pacing_density_score": 64
+        },
+        "composite_score": 55.1,
+        "hook_text": "Alexander strikes the thug across the chest and slams him violently into the muddy ground beside the stone wall.",
+        "cliffhanger_text": "\"Are you hurt?\"",
+        "hook_evidence": {
+          "beat_id": "16:17",
+          "kind": "ACTION",
+          "start": 19.2,
+          "end": 21.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "16:59",
+          "kind": "DIALOGUE",
+          "start": 74.8,
+          "end": 75.8
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "De-escalation near cut"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cAlexander strikes the thug across the chest and slams him violently into the muddy ground beside the s\u2026\u201d \u2192 \u201cAre you hurt?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 0/100; cold-viewer clarity 90/100. Review: Weak or resolved endpoint; De-escalation near cut",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E7-0.0-37.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 7,
+            "filename": "episode-007-Episode 1671709.txt",
+            "start": 0.0,
+            "end": 37.8,
+            "start_timestamp": "00:00.00",
+            "end_timestamp": "00:37.80",
+            "duration": 37.8
+          }
+        ],
+        "duration": 37.8,
+        "retrieval_score": 105,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 25,
+          "standalone_clarity_score": 69,
+          "emotional_arousal_score": 43,
+          "pacing_density_score": 58
+        },
+        "composite_score": 55.4,
+        "hook_text": "Medium shot of Juliana kneeling on the cold, damp ground outside the stone cottage, pulling weeds from the dirt with her bare hands.",
+        "cliffhanger_text": "\"Home? Look at your hands, Juliana.\"",
+        "hook_evidence": {
+          "beat_id": "7:1",
+          "kind": "CAMERA",
+          "start": 0.0,
+          "end": 4.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "7:15",
+          "kind": "DIALOGUE",
+          "start": 33.2,
+          "end": 37.8
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "Rhetorical question or answer contained in endpoint line",
+          "Visual action onset uncertain within long source beat"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cMedium shot of Juliana kneeling on the cold, damp ground outside the stone cottage, pulling weeds from\u2026\u201d \u2192 \u201cHome? Look at your hands, Juliana.\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 25/100; cold-viewer clarity 69/100. Review: Weak or resolved endpoint; Rhetorical question or answer contained in endpoint line; Visual action onset uncertain within long source beat",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 69/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E16-38.2-83.19",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 16,
+            "filename": "episode-016-Episode 1671718.txt",
+            "start": 38.2,
+            "end": 83.19,
+            "start_timestamp": "00:38.20",
+            "end_timestamp": "01:23.19",
+            "duration": 44.99
+          }
+        ],
+        "duration": 44.99,
+        "retrieval_score": 102,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 0,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 74
+        },
+        "composite_score": 54.5,
+        "hook_text": "Close-up of Juliana's trembling, soil-stained hands wrapped in blood-soaked bandages.",
+        "cliffhanger_text": "Slow, resonant emotional cello melody swelling to a dramatic cliffhanger hold.",
+        "hook_evidence": {
+          "beat_id": "16:32",
+          "kind": "CAMERA",
+          "start": 38.2,
+          "end": 40.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "16:64",
+          "kind": "SOUND FX",
+          "start": 80.0,
+          "end": 83.19
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "De-escalation near cut",
+          "Music sting alone does not prove unresolved narrative tension"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cClose-up of Juliana's trembling, soil-stained hands wrapped in blood-soaked bandages.\u201d \u2192 \u201cSlow, resonant emotional cello melody swelling to a dramatic cliffhanger hold.\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 0/100; cold-viewer clarity 90/100. Review: Weak or resolved endpoint; De-escalation near cut; Music sting alone does not prove unresolved narrative tension",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E16-38.2-75.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 16,
+            "filename": "episode-016-Episode 1671718.txt",
+            "start": 38.2,
+            "end": 75.8,
+            "start_timestamp": "00:38.20",
+            "end_timestamp": "01:15.80",
+            "duration": 37.6
+          }
+        ],
+        "duration": 37.6,
+        "retrieval_score": 145,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 0,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 71
+        },
+        "composite_score": 54.2,
+        "hook_text": "Close-up of Juliana's trembling, soil-stained hands wrapped in blood-soaked bandages.",
+        "cliffhanger_text": "\"Are you hurt?\"",
+        "hook_evidence": {
+          "beat_id": "16:32",
+          "kind": "CAMERA",
+          "start": 38.2,
+          "end": 40.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "16:59",
+          "kind": "DIALOGUE",
+          "start": 74.8,
+          "end": 75.8
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "De-escalation near cut"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cClose-up of Juliana's trembling, soil-stained hands wrapped in blood-soaked bandages.\u201d \u2192 \u201cAre you hurt?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 0/100; cold-viewer clarity 90/100. Review: Weak or resolved endpoint; De-escalation near cut",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory.",
+        "rank": 82,
+        "rejection_reason": "Editorial gate: hook, unresolved endpoint or cold-viewer clarity below threshold"
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E15-56.5-86.0",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 15,
+            "filename": "episode-015-Episode 1671717.txt",
+            "start": 56.5,
+            "end": 86.0,
+            "start_timestamp": "00:56.50",
+            "end_timestamp": "01:26.00",
+            "duration": 29.5
+          }
+        ],
+        "duration": 29.5,
+        "retrieval_score": 160,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 22,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 43,
+          "pacing_density_score": 56
+        },
+        "composite_score": 56.1,
+        "hook_text": "Low-angle wide shot of the three thugs pointing and laughing hysterically at her kneeling form.",
+        "cliffhanger_text": "Tense, low dramatic cello swell holding into an abrupt cliffhanger cut.",
+        "hook_evidence": {
+          "beat_id": "15:40",
+          "kind": "CAMERA",
+          "start": 56.5,
+          "end": 60.0
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "15:55",
+          "kind": "SOUND FX",
+          "start": 84.0,
+          "end": 86.0
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "Music sting alone does not prove unresolved narrative tension",
+          "Visual action onset uncertain within long source beat"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cLow-angle wide shot of the three thugs pointing and laughing hysterically at her kneeling form.\u201d \u2192 \u201cTense, low dramatic cello swell holding into an abrupt cliffhanger cut.\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 22/100; cold-viewer clarity 78/100. Review: Weak or resolved endpoint; Music sting alone does not prove unresolved narrative tension; Visual action onset uncertain within long source beat",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 78/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E30-125.5-151.21",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 30,
+            "filename": "episode-030-Episode 1678583.txt",
+            "start": 125.5,
+            "end": 151.21,
+            "start_timestamp": "02:05.50",
+            "end_timestamp": "02:31.21",
+            "duration": 25.71
+          }
+        ],
+        "duration": 25.71,
+        "retrieval_score": 87,
+        "scores": {
+          "hook_3s_score": 65,
+          "cliffhanger_score": 22,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 75,
+          "pacing_density_score": 71
+        },
+        "composite_score": 56.3,
+        "hook_text": "\"She will hang. A perfect solution. The town will cheer as the witch's disgraced daughter faces the noose.\"",
+        "cliffhanger_text": "Echoing, hollow water droplets splashing into dark pools beneath stone vaults, accompanied by a somber orchestral swell.",
+        "hook_evidence": {
+          "beat_id": "30:63",
+          "kind": "DIALOGUE",
+          "start": 125.5,
+          "end": 133.0
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "30:69",
+          "kind": "SOUND FX",
+          "start": 144.5,
+          "end": 151.21
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "Music sting alone does not prove unresolved narrative tension",
+          "Hook line exceeds 3s; verify exact word onset in footage"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cShe will hang. A perfect solution. The town will cheer as the witch's disgraced daughter faces the noose.\u201d \u2192 \u201cEchoing, hollow water droplets splashing into dark pools beneath stone vaults, accompanied by a somber\u2026\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 65/100; cut tension 22/100; cold-viewer clarity 78/100. Review: Weak or resolved endpoint; Music sting alone does not prove unresolved narrative tension; Hook line exceeds 3s; verify exact word onset in footage",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 78/100; confirm the conflict without backstory.",
+        "rank": 81,
+        "rejection_reason": "Editorial gate: hook, unresolved endpoint or cold-viewer clarity below threshold"
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "E15-44.8-86.0",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 15,
+            "filename": "episode-015-Episode 1671717.txt",
+            "start": 44.8,
+            "end": 86.0,
+            "start_timestamp": "00:44.80",
+            "end_timestamp": "01:26.00",
+            "duration": 41.2
+          }
+        ],
+        "duration": 41.2,
+        "retrieval_score": 145,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 65,
+          "cliffhanger_score": 22,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 59,
+          "pacing_density_score": 65
+        },
+        "composite_score": 56.5,
+        "hook_text": "\"Get out of the way!\"",
+        "cliffhanger_text": "Tense, low dramatic cello swell holding into an abrupt cliffhanger cut.",
+        "hook_evidence": {
+          "beat_id": "15:31",
+          "kind": "DIALOGUE",
+          "start": 44.8,
+          "end": 46.4
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "15:55",
+          "kind": "SOUND FX",
+          "start": 84.0,
+          "end": 86.0
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint",
+          "Music sting alone does not prove unresolved narrative tension"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cGet out of the way!\u201d \u2192 \u201cTense, low dramatic cello swell holding into an abrupt cliffhanger cut.\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 65/100; cut tension 22/100; cold-viewer clarity 90/100. Review: Weak or resolved endpoint; Music sting alone does not prove unresolved narrative tension",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "borderline",
+      "candidate": {
+        "id": "OPEN-28",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 28,
+            "filename": "episode-028-Episode 1678581.txt",
+            "start": 0,
+            "end": 20.3,
+            "start_timestamp": "00:00.00",
+            "end_timestamp": "00:20.30",
+            "duration": 20.3
+          }
+        ],
+        "duration": 20.3,
+        "rejection_reason": "Opening baseline: test first-three-second false positives",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 0,
+          "standalone_clarity_score": 84,
+          "emotional_arousal_score": 43,
+          "pacing_density_score": 83
+        },
+        "composite_score": 53.4,
+        "hook_text": "Medium shot as the guard drags Juliana toward the doorway, wrestling her backward.",
+        "cliffhanger_text": "\"A clever story, girl.\"",
+        "hook_evidence": {
+          "beat_id": "28:1",
+          "kind": "CAMERA",
+          "start": 0.0,
+          "end": 2.3
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "28:17",
+          "kind": "DIALOGUE",
+          "start": 18.9,
+          "end": 20.3
+        },
+        "editorial_flags": [
+          "Weak or resolved endpoint"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cMedium shot as the guard drags Juliana toward the doorway, wrestling her backward.\u201d \u2192 \u201cA clever story, girl.\u201d; the consequences are withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 0/100; cold-viewer clarity 84/100. Review: Weak or resolved endpoint",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 84/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E1-11.3-35.0",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 1,
+            "filename": "episode-001-Episode 1671703.txt",
+            "start": 11.3,
+            "end": 35.0,
+            "start_timestamp": "00:11.30",
+            "end_timestamp": "00:35.00",
+            "duration": 23.7
+          }
+        ],
+        "duration": 23.7,
+        "retrieval_score": 148,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 83,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 60,
+          "emotional_arousal_score": 43,
+          "pacing_density_score": 62
+        },
+        "composite_score": 66.9,
+        "hook_text": "\"You should turn around, Juliana.\"",
+        "cliffhanger_text": "\"Gerald?\"",
+        "hook_evidence": {
+          "beat_id": "1:8",
+          "kind": "DIALOGUE",
+          "start": 11.3,
+          "end": 13.1
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "1:23",
+          "kind": "DIALOGUE",
+          "start": 33.8,
+          "end": 35.0
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: \u201cYou should turn around, Juliana.\u201d \u2192 \u201cGerald?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 83/100; cut tension 65/100; cold-viewer clarity 60/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 60/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E1-11.3-70.4",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 1,
+            "filename": "episode-001-Episode 1671703.txt",
+            "start": 11.3,
+            "end": 70.4,
+            "start_timestamp": "00:11.30",
+            "end_timestamp": "01:10.40",
+            "duration": 59.1
+          }
+        ],
+        "duration": 59.1,
+        "retrieval_score": 148,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 83,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 59,
+          "pacing_density_score": 65
+        },
+        "composite_score": 76.0,
+        "hook_text": "\"You should turn around, Juliana.\"",
+        "cliffhanger_text": "\"And you knew?\"",
+        "hook_evidence": {
+          "beat_id": "1:8",
+          "kind": "DIALOGUE",
+          "start": 11.3,
+          "end": 13.1
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "1:47",
+          "kind": "DIALOGUE",
+          "start": 69.1,
+          "end": 70.4
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: \u201cYou should turn around, Juliana.\u201d \u2192 \u201cAnd you knew?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 83/100; cut tension 65/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 83/100, unresolved cut 65/100, clarity 96/100."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E1-39.1-70.4",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 1,
+            "filename": "episode-001-Episode 1671703.txt",
+            "start": 39.1,
+            "end": 70.4,
+            "start_timestamp": "00:39.10",
+            "end_timestamp": "01:10.40",
+            "duration": 31.3
+          }
+        ],
+        "duration": 31.3,
+        "retrieval_score": 165,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 100,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 68
+        },
+        "composite_score": 80.6,
+        "hook_text": "\"Because he is marrying me.\"",
+        "cliffhanger_text": "\"And you knew?\"",
+        "hook_evidence": {
+          "beat_id": "1:27",
+          "kind": "DIALOGUE",
+          "start": 39.1,
+          "end": 41.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "1:47",
+          "kind": "DIALOGUE",
+          "start": 69.1,
+          "end": 70.4
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: \u201cBecause he is marrying me.\u201d \u2192 \u201cAnd you knew?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 100/100; cut tension 65/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 100/100, unresolved cut 65/100, clarity 96/100."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E1-39.1-98.2",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 1,
+            "filename": "episode-001-Episode 1671703.txt",
+            "start": 39.1,
+            "end": 98.2,
+            "start_timestamp": "00:39.10",
+            "end_timestamp": "01:38.20",
+            "duration": 59.1
+          }
+        ],
+        "duration": 59.1,
+        "retrieval_score": 165,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 100,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 72
+        },
+        "composite_score": 81.0,
+        "hook_text": "\"Because he is marrying me.\"",
+        "cliffhanger_text": "\"Embarrassed you?\"",
+        "hook_evidence": {
+          "beat_id": "1:27",
+          "kind": "DIALOGUE",
+          "start": 39.1,
+          "end": 41.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "1:67",
+          "kind": "DIALOGUE",
+          "start": 96.2,
+          "end": 98.2
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: \u201cBecause he is marrying me.\u201d \u2192 \u201cEmbarrassed you?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 100/100; cut tension 65/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 100/100, unresolved cut 65/100, clarity 96/100."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E10-2.6-53.3",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 10,
+            "filename": "episode-010-Episode 1671712.txt",
+            "start": 2.6,
+            "end": 53.3,
+            "start_timestamp": "00:02.60",
+            "end_timestamp": "00:53.30",
+            "duration": 50.7
+          }
+        ],
+        "duration": 50.7,
+        "retrieval_score": 145,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 91,
+          "pacing_density_score": 48
+        },
+        "composite_score": 73.0,
+        "hook_text": "Medium wide shot framing the doorway as Alexander stands framed in the dark threshold, panting heavily, his hand pressed against his blood-soaked chest.",
+        "cliffhanger_text": "\"Does it hurt?\"",
+        "hook_evidence": {
+          "beat_id": "10:5",
+          "kind": "CAMERA",
+          "start": 2.6,
+          "end": 4.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "10:40",
+          "kind": "DIALOGUE",
+          "start": 52.0,
+          "end": 53.3
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cMedium wide shot framing the doorway as Alexander stands framed in the dark threshold, panting heavily\u2026\u201d \u2192 \u201cDoes it hurt?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 65/100; cold-viewer clarity 78/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 65/100, clarity 78/100."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E10-20.9-66.1",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 10,
+            "filename": "episode-010-Episode 1671712.txt",
+            "start": 20.9,
+            "end": 66.1,
+            "start_timestamp": "00:20.90",
+            "end_timestamp": "01:06.10",
+            "duration": 45.2
+          }
+        ],
+        "duration": 45.2,
+        "retrieval_score": 160,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 83,
+          "pacing_density_score": 40
+        },
+        "composite_score": 75.9,
+        "hook_text": "\"I need to see the wound.\"",
+        "cliffhanger_text": "\"Why do you look at me like that?\"",
+        "hook_evidence": {
+          "beat_id": "10:20",
+          "kind": "DIALOGUE",
+          "start": 20.9,
+          "end": 22.9
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "10:48",
+          "kind": "DIALOGUE",
+          "start": 63.9,
+          "end": 66.1
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cI need to see the wound.\u201d \u2192 \u201cWhy do you look at me like that?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 78/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 78/100."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E10-36.5-66.1",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 10,
+            "filename": "episode-010-Episode 1671712.txt",
+            "start": 36.5,
+            "end": 66.1,
+            "start_timestamp": "00:36.50",
+            "end_timestamp": "01:06.10",
+            "duration": 29.6
+          }
+        ],
+        "duration": 29.6,
+        "retrieval_score": 160,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 75,
+          "pacing_density_score": 41
+        },
+        "composite_score": 75.2,
+        "hook_text": "Tight pan over the scarred, wounded flesh along his chest and ribs.",
+        "cliffhanger_text": "\"Why do you look at me like that?\"",
+        "hook_evidence": {
+          "beat_id": "10:28",
+          "kind": "CAMERA",
+          "start": 36.5,
+          "end": 38.0
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "10:48",
+          "kind": "DIALOGUE",
+          "start": 63.9,
+          "end": 66.1
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cTight pan over the scarred, wounded flesh along his chest and ribs.\u201d \u2192 \u201cWhy do you look at me like that?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 78/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 78/100."
+      }
+    },
+    {
+      "stratum": "rejected",
+      "candidate": {
+        "id": "E10-6.8-53.3",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 10,
+            "filename": "episode-010-Episode 1671712.txt",
+            "start": 6.8,
+            "end": 53.3,
+            "start_timestamp": "00:06.80",
+            "end_timestamp": "00:53.30",
+            "duration": 46.5
+          }
+        ],
+        "duration": 46.5,
+        "retrieval_score": 145,
+        "rejection_reason": "Redundant overlap or lower retrieval rank",
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 83,
+          "pacing_density_score": 47
+        },
+        "composite_score": 72.1,
+        "hook_text": "Close-up of Alexander struggling to breathe, clutching his bloodied coat over his chest.",
+        "cliffhanger_text": "\"Does it hurt?\"",
+        "hook_evidence": {
+          "beat_id": "10:8",
+          "kind": "CAMERA",
+          "start": 6.8,
+          "end": 9.1
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "10:40",
+          "kind": "DIALOGUE",
+          "start": 52.0,
+          "end": 53.3
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: \u201cClose-up of Alexander struggling to breathe, clutching his bloodied coat over his chest.\u201d \u2192 \u201cDoes it hurt?\u201d; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 65/100; cold-viewer clarity 78/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook \u2014 Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 65/100, clarity 78/100."
+      }
+    }
+  ]
+}

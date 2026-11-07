@@ -6,7 +6,7 @@ Validated 295 candidates (64 shortlisted / 231 rejected); 295 passed hard constr
 
 
 
-Hard source validity is proven; hook, clarity, and unresolved tension remain heuristic/editorial judgments.
+Structural cut checks pass when reported; hook, clarity, and unresolved tension remain heuristic/editorial judgments.
 
 
 

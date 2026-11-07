@@ -1,0 +1,578 @@
+{
+  "method": "Eleven hand-selected development cases, reviewed from complete source tracks. Not independent human validation or a general accuracy estimate.",
+  "cases": [
+    {
+      "expected_shortlist": false,
+      "actual_shortlist": false,
+      "matches": true,
+      "review_note": "Decorative pocket-watch chain is not an attack.",
+      "candidate": {
+        "id": "REVIEW-30-3.0-43.5",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 30,
+            "filename": "episode-030-Episode 1678583.txt",
+            "start": 3.0,
+            "end": 43.5,
+            "start_timestamp": "00:03.00",
+            "end_timestamp": "00:43.50",
+            "duration": 40.5
+          }
+        ],
+        "duration": 40.5,
+        "scores": {
+          "hook_3s_score": 0,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 59,
+          "pacing_density_score": 76
+        },
+        "composite_score": 55.5,
+        "hook_text": "The Elder Nobleman walks with stern, unhurried authority, dressed in an immaculate black tailcoat and dark vest with a gold pocket watch chain.",
+        "cliffhanger_text": "\"What are you suggesting?\"",
+        "hook_evidence": {
+          "beat_id": "30:3",
+          "kind": "ACTION",
+          "start": 3.0,
+          "end": 5.5
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "30:21",
+          "kind": "DIALOGUE",
+          "start": 41.8,
+          "end": 43.5
+        },
+        "editorial_flags": [
+          "Weak first-3s hook / atmospheric or lexical false positive"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: “The Elder Nobleman walks with stern, unhurried authority, dressed in an immaculate black tailcoat and …” → “What are you suggesting?”; the response is withheld.",
+        "ranking_rationale": "Hook 0/100; cut tension 80/100; cold-viewer clarity 90/100. Review: Weak first-3s hook / atmospheric or lexical false positive",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "expected_shortlist": false,
+      "actual_shortlist": false,
+      "matches": true,
+      "review_note": "Eyes burning with ambition is metaphor, not visible injury.",
+      "candidate": {
+        "id": "REVIEW-49-84.0-112.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 49,
+            "filename": "episode-049-Episode 1688398.txt",
+            "start": 84.0,
+            "end": 112.8,
+            "start_timestamp": "01:24.00",
+            "end_timestamp": "01:52.80",
+            "duration": 28.8
+          }
+        ],
+        "duration": 28.8,
+        "scores": {
+          "hook_3s_score": 0,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 30,
+          "emotional_arousal_score": 43,
+          "pacing_density_score": 92
+        },
+        "composite_score": 43.5,
+        "hook_text": "Frontal close-up of Catherine raising two fingers in the candlelight, her eyes burning with ruthless intent.",
+        "cliffhanger_text": "\"If I keep the hearing open, if I feed you every word spoken behind those doors, what happens to me when the Duke finds out a crowned priest conspired against him?\"",
+        "hook_evidence": {
+          "beat_id": "49:36",
+          "kind": "CAMERA",
+          "start": 84.0,
+          "end": 91.4
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "49:46",
+          "kind": "DIALOGUE",
+          "start": 104.2,
+          "end": 112.8
+        },
+        "editorial_flags": [
+          "Weak first-3s hook / atmospheric or lexical false positive",
+          "Backstory / named-entity dependence",
+          "Visual action onset uncertain within long source beat"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A direct threat or challenge: “Frontal close-up of Catherine raising two fingers in the candlelight, her eyes burning with ruthless i…” → “If I keep the hearing open, if I feed you every word spoken behind those doors, what happens to me whe…”; the response is withheld.",
+        "ranking_rationale": "Hook 0/100; cut tension 80/100; cold-viewer clarity 30/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Backstory / named-entity dependence; Visual action onset uncertain within long source beat",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 30/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "expected_shortlist": false,
+      "actual_shortlist": false,
+      "matches": true,
+      "review_note": "Burning ambition creates a false hook and the cut changes scenes.",
+      "candidate": {
+        "id": "REVIEW-47-14.8-59.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 47,
+            "filename": "episode-047-Episode 1688396.txt",
+            "start": 14.8,
+            "end": 59.8,
+            "start_timestamp": "00:14.80",
+            "end_timestamp": "00:59.80",
+            "duration": 45.0
+          }
+        ],
+        "duration": 45.0,
+        "scores": {
+          "hook_3s_score": 18,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 85
+        },
+        "composite_score": 61.0,
+        "hook_text": "\"Then you will make sure I remain inside these walls.\"",
+        "cliffhanger_text": "\"You dare show your face in Ashbourne courtyard?\"",
+        "hook_evidence": {
+          "beat_id": "47:7",
+          "kind": "DIALOGUE",
+          "start": 15.0,
+          "end": 18.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "47:27",
+          "kind": "DIALOGUE",
+          "start": 56.8,
+          "end": 59.8
+        },
+        "editorial_flags": [
+          "Weak first-3s hook / atmospheric or lexical false positive",
+          "Hook line exceeds 3s; verify exact word onset in footage"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: “Then you will make sure I remain inside these walls.” → “You dare show your face in Ashbourne courtyard?”; the response is withheld.",
+        "ranking_rationale": "Hook 18/100; cut tension 80/100; cold-viewer clarity 90/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Hook line exceeds 3s; verify exact word onset in footage",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "expected_shortlist": false,
+      "actual_shortlist": false,
+      "matches": true,
+      "review_note": "The child recovers before an unrelated Duchess subplot question.",
+      "candidate": {
+        "id": "REVIEW-21-47.3-99.2",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 21,
+            "filename": "episode-021-Episode 1678574.txt",
+            "start": 47.3,
+            "end": 99.2,
+            "start_timestamp": "00:47.30",
+            "end_timestamp": "01:39.20",
+            "duration": 51.9
+          }
+        ],
+        "duration": 51.9,
+        "scores": {
+          "hook_3s_score": 18,
+          "cliffhanger_score": 25,
+          "standalone_clarity_score": 84,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 96
+        },
+        "composite_score": 44.4,
+        "hook_text": "\"Prudence, fetch hot water immediately!\"",
+        "cliffhanger_text": "\"What do you mean? Is someone ill? The Dowager Duchess?\"",
+        "hook_evidence": {
+          "beat_id": "21:35",
+          "kind": "DIALOGUE",
+          "start": 48.9,
+          "end": 50.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "21:68",
+          "kind": "DIALOGUE",
+          "start": 96.5,
+          "end": 99.2
+        },
+        "editorial_flags": [
+          "Weak first-3s hook / atmospheric or lexical false positive",
+          "Main conflict resolves before cut; unrelated subplot pivot"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A loved one in danger: “Prudence, fetch hot water immediately!” → “What do you mean? Is someone ill? The Dowager Duchess?”; the response is withheld.",
+        "ranking_rationale": "Hook 18/100; cut tension 25/100; cold-viewer clarity 84/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Main conflict resolves before cut; unrelated subplot pivot",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 84/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "expected_shortlist": false,
+      "actual_shortlist": false,
+      "matches": true,
+      "review_note": "Slow door handle opening and medicine context fail a cold-viewer hook.",
+      "candidate": {
+        "id": "REVIEW-24-0.0-20.5",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 24,
+            "filename": "episode-024-Episode 1678577.txt",
+            "start": 0.0,
+            "end": 20.5,
+            "start_timestamp": "00:00.00",
+            "end_timestamp": "00:20.50",
+            "duration": 20.5
+          }
+        ],
+        "duration": 20.5,
+        "scores": {
+          "hook_3s_score": 0,
+          "cliffhanger_score": 0,
+          "standalone_clarity_score": 39,
+          "emotional_arousal_score": 35,
+          "pacing_density_score": 62
+        },
+        "composite_score": 17.5,
+        "hook_text": "Close-up of the ornate brass handle turning slowly on the dark wooden chamber door as it swings open.",
+        "cliffhanger_text": "Behind her grey skirt, Juliana quickly slips the small glass remedy vial into her apron pocket with her charcoal-dusted fingers.",
+        "hook_evidence": {
+          "beat_id": "24:1",
+          "kind": "CAMERA",
+          "start": 0.0,
+          "end": 3.5
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "24:12",
+          "kind": "ACTION",
+          "start": 18.8,
+          "end": 20.5
+        },
+        "editorial_flags": [
+          "Weak first-3s hook / atmospheric or lexical false positive",
+          "Weak or resolved endpoint",
+          "Backstory / named-entity dependence",
+          "Visual action onset uncertain within long source beat"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A direct threat or challenge: “Close-up of the ornate brass handle turning slowly on the dark wooden chamber door as it swings open.” → “Behind her grey skirt, Juliana quickly slips the small glass remedy vial into her apron pocket with he…”; the consequences are withheld.",
+        "ranking_rationale": "Hook 0/100; cut tension 0/100; cold-viewer clarity 39/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Weak or resolved endpoint; Backstory / named-entity dependence; Visual action onset uncertain within long source beat",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 39/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "expected_shortlist": false,
+      "actual_shortlist": false,
+      "matches": true,
+      "review_note": "Touching a feverish forehead is not itself a visceral opening.",
+      "candidate": {
+        "id": "REVIEW-9-13.8-54.0",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 9,
+            "filename": "episode-009-Episode 1671711.txt",
+            "start": 13.8,
+            "end": 54.0,
+            "start_timestamp": "00:13.80",
+            "end_timestamp": "00:54.00",
+            "duration": 40.2
+          }
+        ],
+        "duration": 40.2,
+        "scores": {
+          "hook_3s_score": 0,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 59,
+          "pacing_density_score": 63
+        },
+        "composite_score": 55.4,
+        "hook_text": "Close-up of Juliana gently placing her fingers against the boy's burning forehead.",
+        "cliffhanger_text": "\"Why isn't it working?\"",
+        "hook_evidence": {
+          "beat_id": "9:13",
+          "kind": "CAMERA",
+          "start": 13.8,
+          "end": 15.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "9:42",
+          "kind": "DIALOGUE",
+          "start": 52.5,
+          "end": 54.0
+        },
+        "editorial_flags": [
+          "Weak first-3s hook / atmospheric or lexical false positive"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A loved one in danger: “Close-up of Juliana gently placing her fingers against the boy's burning forehead.” → “Why isn't it working?”; the response is withheld.",
+        "ranking_rationale": "Hook 0/100; cut tension 80/100; cold-viewer clarity 96/100. Review: Weak first-3s hook / atmospheric or lexical false positive",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 96/100; confirm the conflict without backstory."
+      }
+    },
+    {
+      "expected_shortlist": true,
+      "actual_shortlist": true,
+      "matches": true,
+      "review_note": "Chained victim defies a tormentor. The camera DOES show the burning book; dialogue alone would miss it.",
+      "candidate": {
+        "id": "REVIEW-32-3.0-24.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 32,
+            "filename": "episode-032-Episode 1681365.txt",
+            "start": 3.0,
+            "end": 24.8,
+            "start_timestamp": "00:03.00",
+            "end_timestamp": "00:24.80",
+            "duration": 21.8
+          }
+        ],
+        "duration": 21.8,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 67,
+          "pacing_density_score": 72
+        },
+        "composite_score": 79.9,
+        "hook_text": "Close-up of Juliana, chained against the brick wall, tears glistening on her cheeks as she trembles in grief.",
+        "cliffhanger_text": "\"What?\"",
+        "hook_evidence": {
+          "beat_id": "32:3",
+          "kind": "CAMERA",
+          "start": 3.0,
+          "end": 4.5
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "32:20",
+          "kind": "DIALOGUE",
+          "start": 23.8,
+          "end": 24.8
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: “Close-up of Juliana, chained against the brick wall, tears glistening on her cheeks as she trembles in…” → “What?”; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 90/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 90/100."
+      }
+    },
+    {
+      "expected_shortlist": true,
+      "actual_shortlist": true,
+      "matches": true,
+      "review_note": "Painful shoulder grab and wound reveal lead to an unanswered demand for the attacker.",
+      "candidate": {
+        "id": "REVIEW-25-13.2-33.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 25,
+            "filename": "episode-025-Episode 1678578.txt",
+            "start": 13.2,
+            "end": 33.8,
+            "start_timestamp": "00:13.20",
+            "end_timestamp": "00:33.80",
+            "duration": 20.6
+          }
+        ],
+        "duration": 20.6,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 78,
+          "emotional_arousal_score": 83,
+          "pacing_density_score": 61
+        },
+        "composite_score": 78.0,
+        "hook_text": "Two-shot profile of Alexander grabbing Juliana's shoulder as she recoils.",
+        "cliffhanger_text": "\"Who?\"",
+        "hook_evidence": {
+          "beat_id": "25:10",
+          "kind": "CAMERA",
+          "start": 13.2,
+          "end": 16.2
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "25:22",
+          "kind": "DIALOGUE",
+          "start": 32.8,
+          "end": 33.8
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: “Two-shot profile of Alexander grabbing Juliana's shoulder as she recoils.” → “Who?”; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 78/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 78/100."
+      }
+    },
+    {
+      "expected_shortlist": true,
+      "actual_shortlist": true,
+      "matches": true,
+      "review_note": "You stole my wedding establishes the betrayal without decorative injury keywords.",
+      "candidate": {
+        "id": "REVIEW-3-8.8-40.4",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 3,
+            "filename": "episode-003-Episode 1671705.txt",
+            "start": 8.8,
+            "end": 40.4,
+            "start_timestamp": "00:08.80",
+            "end_timestamp": "00:40.40",
+            "duration": 31.6
+          }
+        ],
+        "duration": 31.6,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 96,
+          "emotional_arousal_score": 51,
+          "pacing_density_score": 81
+        },
+        "composite_score": 80.4,
+        "hook_text": "\"You stole my wedding.\"",
+        "cliffhanger_text": "\"And what happens to me?\"",
+        "hook_evidence": {
+          "beat_id": "3:7",
+          "kind": "DIALOGUE",
+          "start": 8.8,
+          "end": 10.8
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "3:29",
+          "kind": "DIALOGUE",
+          "start": 38.5,
+          "end": 40.4
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Wedding conflict: “You stole my wedding.” → “And what happens to me?”; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 96/100."
+      }
+    },
+    {
+      "expected_shortlist": true,
+      "actual_shortlist": true,
+      "matches": true,
+      "review_note": "A desperate plea for a dying child ends before help is agreed or the child is cured.",
+      "candidate": {
+        "id": "REVIEW-21-11.2-35.8",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 21,
+            "filename": "episode-021-Episode 1678574.txt",
+            "start": 11.2,
+            "end": 35.8,
+            "start_timestamp": "00:11.20",
+            "end_timestamp": "00:35.80",
+            "duration": 24.6
+          }
+        ],
+        "duration": 24.6,
+        "scores": {
+          "hook_3s_score": 100,
+          "cliffhanger_score": 70,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 59,
+          "pacing_density_score": 98
+        },
+        "composite_score": 84.7,
+        "hook_text": "\"My little brother Toby... his chest is burning! He cannot breathe!\"",
+        "cliffhanger_text": "\"He is only seven! If you do not come, he will die! You are his only hope, Lady Juliana!\"",
+        "hook_evidence": {
+          "beat_id": "21:10",
+          "kind": "DIALOGUE",
+          "start": 11.2,
+          "end": 15.0
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "21:22",
+          "kind": "DIALOGUE",
+          "start": 31.0,
+          "end": 35.8
+        },
+        "editorial_flags": [
+          "Hook line exceeds 3s; verify exact word onset in footage"
+        ],
+        "evaluation_source": "heuristic",
+        "why_it_works": "A loved one in danger: “My little brother Toby... his chest is burning! He cannot breathe!” → “He is only seven! If you do not come, he will die! You are his only hope, Lady Juliana!”; the consequences are withheld.",
+        "ranking_rationale": "Hook 100/100; cut tension 70/100; cold-viewer clarity 90/100. Review: Hook line exceeds 3s; verify exact word onset in footage",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
+        "posting_reason": "Post as a cold-audience test: hook 100/100, unresolved cut 70/100, clarity 90/100."
+      }
+    },
+    {
+      "expected_shortlist": true,
+      "actual_shortlist": true,
+      "matches": true,
+      "review_note": "Guard is struck; a stranger protects a woman, whose question remains unanswered.",
+      "candidate": {
+        "id": "REVIEW-3-84.0-112.5",
+        "kind": "single",
+        "segments": [
+          {
+            "episode": 3,
+            "filename": "episode-003-Episode 1671705.txt",
+            "start": 84.0,
+            "end": 112.5,
+            "start_timestamp": "01:24.00",
+            "end_timestamp": "01:52.50",
+            "duration": 28.5
+          }
+        ],
+        "duration": 28.5,
+        "scores": {
+          "hook_3s_score": 80,
+          "cliffhanger_score": 80,
+          "standalone_clarity_score": 90,
+          "emotional_arousal_score": 67,
+          "pacing_density_score": 79
+        },
+        "composite_score": 80.6,
+        "hook_text": "The Bearded Stranger effortlessly blocks the guard's strike and drives a devastating strike into him, dropping the armed guard instantly to the floor.",
+        "cliffhanger_text": "\"Why are you doing this?\"",
+        "hook_evidence": {
+          "beat_id": "3:71",
+          "kind": "ACTION",
+          "start": 84.0,
+          "end": 85.5
+        },
+        "cliffhanger_evidence": {
+          "beat_id": "3:94",
+          "kind": "DIALOGUE",
+          "start": 110.9,
+          "end": 112.5
+        },
+        "editorial_flags": [],
+        "evaluation_source": "heuristic",
+        "why_it_works": "Abuse or injury: “The Bearded Stranger effortlessly blocks the guard's strike and drives a devastating strike into him, …” → “Why are you doing this?”; the response is withheld.",
+        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 90/100. Strong lexicon-based retrieval; confirm in footage.",
+        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
+        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 90/100."
+      }
+    }
+  ],
+  "matched": 11,
+  "total": 11
+}

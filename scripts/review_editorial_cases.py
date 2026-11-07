@@ -27,9 +27,7 @@ def main():
     episodes=parse_folder(DEFAULT_INPUT);lookup={e.number:e for e in episodes};results=[]
     for number,a,z,expected,note in CASES:
         item=evaluate_offline(make_candidate([segment(lookup[number],a,z)],f'REVIEW-{number}-{a}-{z}'),episodes)
-        scores=item['scores']
-        actual=(scores['hook_3s_score']>=55 and scores['cliffhanger_score']>=55 and scores['standalone_clarity_score']>=55
-                and not any('De-escalation' in f or 'Main conflict resolves' in f or 'Music sting alone' in f for f in item['editorial_flags']))
+        actual=item['decision']['eligible']
         results.append(dict(expected_shortlist=expected,actual_shortlist=actual,matches=actual==expected,review_note=note,candidate=item))
     output=Path(__file__).resolve().parents[1]/'raw_outputs/editorial_regression_review.json'
     output.write_text(json.dumps({'method':'Eleven hand-selected development cases, reviewed from complete source tracks. Not independent human validation or a general accuracy estimate.',

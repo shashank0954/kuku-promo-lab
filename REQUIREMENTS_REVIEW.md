@@ -70,3 +70,12 @@ The app now lets users upload the full pack once and select a subset by numbers/
 ## Visual submission review
 
 The submission PDF has been redesigned as two visual A4 pages with actual posting cards, a code/AI/editor architecture diagram, rubric weights, exact source timeline and concrete failure examples. Both pages fit above their footers and are verified as exactly two PDF pages. SVG assets and a self-contained searchable playbook derive from the saved JSON; `deliverables/visual_source.json` identifies that snapshot. Presentation files have their own checksum manifest and do not modify the raw outputs. The repository now opens with required-deliverable links, page previews and a real offline app capture. No fictional video frames or campaign results are presented. The current app also shows the source hook/cliffhanger timeline. All 56 tests pass after those UI changes. Public-clone run instructions launch the saved-results app without requiring the excluded original pack.
+
+## Editorial policy revision (current implementation)
+
+- Structural constraints remain deterministic and independent from editorial recommendation. `src/editorial_policy.py` is shared by pipeline, evaluator and development review.
+- Six AI assessments require source beat IDs; unsupported references discard the batch. Opening/ending evidence must overlap their proper windows. Semantic truth of a valid reference still needs an editor.
+- Ranking preserves heuristic scores. AI diagnostics are displayed separately; supported AI concerns may veto. Long-beat onset, missing evidence and mashup continuity create categorical review needs, never invented confidence percentages.
+- UI leads with three cuts, offers two-candidate comparison and scoped decisions, separates script from footage approval, and exports editor selections independently.
+- Frozen sample: 24 cases, including borderline/rejected; genuine human labels pending. Acceptance precision and pairwise agreement are undefined until labels arrive. No recall claim. Eleven cases remain development regressions.
+- History is preserved before regeneration. No live inference or campaign outcomes are asserted. Structured AI critiques can exceed the old 160-output-token scenario; the calculator is an estimate, not measured cost.

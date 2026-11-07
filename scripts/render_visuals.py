@@ -37,7 +37,7 @@ class CDP:
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='kuku-visual-browser-',dir='/private/tmp' if Path('/private/tmp').exists() else None) as profile:
+    with tempfile.TemporaryDirectory(prefix='kuku-visual-browser-',ignore_cleanup_errors=True,dir='/private/tmp' if Path('/private/tmp').exists() else None) as profile:
         log=open(Path(profile)/'chrome.log','w')
         process=subprocess.Popen([CHROME,'--headless=new','--disable-gpu','--disable-background-networking','--no-first-run','--no-default-browser-check',f'--user-data-dir={profile}','--remote-debugging-port=0','about:blank'],stdout=subprocess.DEVNULL,stderr=log)
         browser=None

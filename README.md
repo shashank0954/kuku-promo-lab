@@ -164,3 +164,13 @@ The optional renderer uses local Chrome and the installed `websockets` dependenc
 `deliverables/visual_source.json` records the source snapshot. The full development narrative remains in `SOLUTION_DOC.md`; the generated HTML/PDF is its concise visual submission layout. No show footage or generated screenshots of fictional scenes are used. The prototype screenshot is a real offline browser capture.
 
 If you regenerate raw outputs, rebuild the visual HTML and render the PDF before packaging. The package builder verifies both the source snapshot and visual-file checksums to prevent mixing old presentation assets with new results.
+
+## Editorial review update
+
+The results now lead with three script recommendations. Expand **AI provider & API key** to opt into live inference, and **Advanced duration, rubric & AI budget** for scoring controls. Episode selection, uploads, source timelines and original exports remain available.
+
+Ranking uses heuristic scores only, with timing-supported recommendations before review-required candidates. AI critiques can reject a candidate or add review needs; their five scores stay separate and uncalibrated. The bounded judging sample includes top-scoring and borderline retrievals. Six structured AI findings must cite valid selected source beat IDs. Reference validation proves the cited beat exists in the relevant window, not that an AI interpretation is correct.
+
+Under **Compare candidates & record editor decisions**, choose up to two cuts, record notes and independent script/footage decisions. Decisions persist across reruns within the session and are scoped to input content plus exact candidate cuts. Download them for persistence after closing the session; import only into the same input. Download **editor-selected shortlist** separately; original pipeline JSON remains unchanged. Script approval never implies footage approval.
+
+`evaluation/` contains a frozen 24-case sample, blank genuine-human labeling sheets and a reproducible metric command. Current evaluation is pending human labels. The eleven existing cases are development regressions, not independent accuracy evidence. See [evaluation instructions](evaluation/README.md). Historical outputs are preserved under `raw_outputs/history/` before regeneration. Review annotations remain separate.
