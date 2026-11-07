@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 from src.parser import parse_folder
 from src.inputs import read_uploads
-from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error,GEMINI_FREE_TEST_MODEL
+from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error,GEMINI_FREE_TEST_MODELS
 from src.economics import estimate,cost,RATES
 from run_pipeline import execute,DEFAULT_INPUT,format_segments
 
@@ -37,12 +37,12 @@ with st.expander('AI provider & API key', expanded=True):
         st.caption('Upload screenplay TXT files or a ZIP in the sidebar, then click Find promos to run with this provider. Saved results stay unchanged until you run again.')
     if provider=='Anthropic': st.caption('Claude 3.5 presets are legacy and may be retired. Use an available model ID; API errors are reported with offline fallback.')
     if provider=='Gemini':
-        st.info('Free-tier testing: Google lists gemini-3.8-flash with free standard text input/output, subject to project eligibility and quota. Create your own AI Studio key; YOUR_API_KEY in the docs is a placeholder, not a working shared key.')
+        st.info('Free-tier testing: Google lists gemini-3.8-flash and gemini-3.5-flash-lite with free standard text input/output, subject to project eligibility and quota. Create your own AI Studio key; YOUR_API_KEY in the docs is a placeholder, not a working shared key.')
         st.markdown('[Create or manage your API key](https://aistudio.google.com/apikey) · [Official free-tier pricing](https://ai.google.dev/gemini-api/docs/pricing) · [Check project limits](https://ai.google.dev/gemini-api/docs/rate-limits)')
         st.caption('Use a project shown as Free Tier in AI Studio. Paid-project keys may be billed; this app cannot determine billing tier from the key.')
         if st.button('Prepare small Gemini test'):
-            if model!=GEMINI_FREE_TEST_MODEL:
-                st.warning('Select gemini-3.8-flash above, then prepare the test again.')
+            if model not in GEMINI_FREE_TEST_MODELS:
+                st.warning('Select gemini-3.8-flash or gemini-3.5-flash-lite above, then prepare the test again.')
             else:
                 st.session_state['input_source']='Try a sample screenplay'
                 st.session_state['judge_budget']=1
@@ -52,16 +52,26 @@ with st.expander('AI provider & API key', expanded=True):
         if not test_key:
             st.error('Enter an API key or configure a provider environment key first.')
         else:
+            retry_status=st.empty()
             try:
                 with st.spinner('Checking the selected model with a short JSON request…'):
-                    reply,usage=JudgeProvider(provider,model,test_key).request('Return only a JSON object with status set to ok.')
+                    adapter=JudgeProvider(provider,model,test_key,on_retry=retry_status.info)
+                    reply,usage=adapter.request('Return only a JSON object with status set to ok.')
                 if not isinstance(reply,dict) or reply.get('status')!='ok':
                     st.error('The model responded, but did not return the requested status JSON.')
                 else:
                     st.success(f'API connection succeeded: {provider} / {model}. This was a connection test; choose Find promos to analyze scripts.')
                     st.json(usage)
+                    if adapter.last_attempts>1: st.caption(f'Connection recovered after {adapter.last_attempts} HTTP attempts.')
             except Exception as exc:
-                st.error(describe_error(provider,exc))
+                if getattr(exc,'code',None) in (500,502,503,504):
+                    st.warning(describe_error(provider,exc))
+                    st.info('The provider connection has not succeeded. Wait and test again later, or use Heuristic/Offline while the service recovers. No model or billing tier was changed automatically.')
+                    if provider=='Gemini': st.info('You can also manually select gemini-3.5-flash-lite and test it. Google lists a free tier for it, but availability and quota depend on your project; it may also be busy.')
+                else:
+                    st.error(describe_error(provider,exc))
+            finally:
+                retry_status.empty()
     if model and st.checkbox('Show API endpoint and example request body'):
         url,headers,body=JudgeProvider(provider,model,'YOUR_API_KEY').build_request('Return only a JSON object with status set to ok.')
         st.code('POST '+url)

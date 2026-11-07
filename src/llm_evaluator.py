@@ -2,15 +2,20 @@
 import json
 import math
 import os
+import random
 import re
 import time
+import urllib.error
 import urllib.request
+from datetime import datetime,timezone
+from email.utils import parsedate_to_datetime
 from .candidate_generator import hook, cliff, hits, physical_conflict, ARCHETYPE, LORE, RESOLUTION, PHYSICAL, CONFRONT
 
 DIMENSIONS = ['hook_3s_score','cliffhanger_score','standalone_clarity_score','emotional_arousal_score','pacing_density_score']
 DEFAULT_WEIGHTS = dict(zip(DIMENSIONS,[.3,.3,.2,.1,.1]))
 GEMINI_FREE_TEST_MODEL = 'gemini-3.8-flash'
-MODELS = {'Gemini':[GEMINI_FREE_TEST_MODEL,'gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
+GEMINI_FREE_TEST_MODELS = (GEMINI_FREE_TEST_MODEL,'gemini-3.5-flash-lite')
+MODELS = {'Gemini':[*GEMINI_FREE_TEST_MODELS,'gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
           'Anthropic':['claude-sonnet-4-5','claude-haiku-4-5','claude-3-5-sonnet-20241022','claude-3-5-haiku-20241022']}
 ENV_KEYS = {'Gemini':'GEMINI_API_KEY','OpenAI':'OPENAI_API_KEY','Anthropic':'ANTHROPIC_API_KEY'}
 
@@ -119,7 +124,42 @@ class InvalidJudgeResponse(ValueError):
 
 class JudgeProvider:
     """Small REST adapters avoid heavyweight SDK lock-in; all use the same JSON contract."""
-    def __init__(self,name,model,key): self.name,self.model,self.key=name,model,key
+    def __init__(self,name,model,key,on_retry=None):
+        self.name,self.model,self.key=name,model,key
+        self.on_retry=on_retry
+        self.last_attempts=0
+
+    def fetch_json(self,request):
+        """Retry explicit transient server errors only; never switch models or retry bad keys."""
+        self.last_attempts=0
+        deadline=time.monotonic()+55
+        for attempt in range(1,4):
+            self.last_attempts=attempt
+            try:
+                with urllib.request.urlopen(request,timeout=max(.1,min(45,deadline-time.monotonic()))) as response:
+                    return json.load(response)
+            except urllib.error.HTTPError as exc:
+                exc.attempts=attempt
+                if exc.code not in (500,502,503,504) or attempt==3:
+                    raise
+                delay=2**(attempt-1)+random.uniform(0,.25)
+                retry_after=exc.headers.get('Retry-After') if exc.headers else None
+                if retry_after:
+                    try:
+                        wait=float(retry_after)
+                    except ValueError:
+                        try:
+                            wait=(parsedate_to_datetime(retry_after)-datetime.now(timezone.utc)).total_seconds()
+                        except (ValueError,TypeError,OverflowError):
+                            wait=0
+                    delay=max(delay,wait)
+                # Do not ignore long Retry-After values or tie up an interview session indefinitely.
+                if delay>8 or time.monotonic()+delay>=deadline:
+                    raise
+                if self.on_retry:
+                    self.on_retry(f'{self.name} is temporarily unavailable (HTTP {exc.code}). Retrying in {delay:.1f}s — attempt {attempt+1}/3.')
+                if exc.fp is not None: exc.close()
+                time.sleep(delay)
     def build_request(self,prompt):
         if self.name=='Gemini':
             url=f'https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent'
@@ -140,7 +180,7 @@ class JudgeProvider:
     def request(self,prompt):
         url,headers,payload=self.build_request(prompt)
         req=urllib.request.Request(url,json.dumps(payload).encode(),headers)
-        with urllib.request.urlopen(req,timeout=45) as response: data=json.load(response)
+        data=self.fetch_json(req)
         if self.name=='Gemini':
             result=''.join(p.get('text','') for p in data['candidates'][0]['content']['parts'] if not p.get('thought'))
             usage=data.get('usageMetadata',{}); inp=usage.get('promptTokenCount',0); out=usage.get('candidatesTokenCount',0)+usage.get('thoughtsTokenCount',0)
@@ -160,9 +200,15 @@ def describe_error(provider,exc):
     hint={404:'Model unavailable for this account. Select an available model ID.',
           401:'Authentication failed. Check the selected provider and API key.',
           403:'Access denied. Check API key restrictions and model access.',
-          429:'Quota or rate limit reached. Check provider quota and retry.'}.get(code,'')
-    status=f' HTTP {code}' if isinstance(code,int) else ''
-    return f'{provider}: {type(exc).__name__}{status}. {hint}'.strip()
+          429:'Quota or rate limit reached. Check provider quota and retry.',
+          500:'The provider returned a temporary server error. Try again later.',
+          502:'The provider gateway is temporarily unavailable. Try again later.',
+          503:'The provider is temporarily overloaded or unavailable. Try again later; a 503 alone does not indicate a bad API key.',
+          504:'The provider gateway timed out. Try again later.'}.get(code,'')
+    status=f' HTTP {code}' if isinstance(code,int) else ' request failed'
+    attempts=getattr(exc,'attempts',0)
+    retry_note=f' After {attempts} attempt(s).' if attempts else ''
+    return f'{provider}:{status}.{retry_note} {hint or type(exc).__name__}'.strip()
 
 def judge(episodes,items,provider='auto',model=None,api_key=None,weights=None,budget=8):
     started=time.perf_counter()
@@ -170,7 +216,7 @@ def judge(episodes,items,provider='auto',model=None,api_key=None,weights=None,bu
     weights=validate_weights(weights or DEFAULT_WEIGHTS)
     items=[evaluate_offline(x,episodes,weights) for x in items]
     items.sort(key=lambda x:(-x['composite_score'],x['id']))
-    stats=dict(requested_provider=provider,provider='Heuristic/Offline',model=None,calls=0,input_tokens=0,output_tokens=0,errors=[],judged_candidates=0)
+    stats=dict(requested_provider=provider,provider='Heuristic/Offline',model=None,calls=0,http_attempts=0,retries=0,input_tokens=0,output_tokens=0,errors=[],judged_candidates=0)
     if provider=='auto': provider=next((p for p,k in ENV_KEYS.items() if os.getenv(k)),'Heuristic/Offline')
     key=api_key or os.getenv(ENV_KEYS.get(provider,''),'')
     if provider!='Heuristic/Offline' and not key: stats['errors'].append('Requested provider has no API key; explicit offline fallback.')
@@ -217,6 +263,10 @@ def judge(episodes,items,provider='auto',model=None,api_key=None,weights=None,bu
                 if isinstance(exc,InvalidJudgeResponse):
                     stats['input_tokens']+=exc.usage['input_tokens']; stats['output_tokens']+=exc.usage['output_tokens']
                 stats['errors'].append(describe_error(provider,exc)+' Batch retained heuristic scores.')
+            finally:
+                attempts=max(1,adapter.last_attempts)
+                stats['http_attempts']+=attempts
+                stats['retries']+=attempts-1
     items.sort(key=lambda x:(-x['composite_score'],x['id']))
     for rank,item in enumerate(items,1):
         item['rank']=rank

@@ -104,3 +104,29 @@ def test_small_gemini_setup_selects_sample_and_one_candidate_without_api_call():
     assert app.radio[0].value=='Try a sample screenplay'
     assert next(x for x in app.slider if x.label=='Maximum AI-judged finalists').value==1
     assert any('placeholder' in x.value for x in app.info)
+
+
+def test_persistent_provider_outage_is_not_reported_as_success():
+    from streamlit.testing.v1 import AppTest
+    from unittest.mock import patch
+    from urllib.error import HTTPError
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
+    next(x for x in app.selectbox if x.label=='Provider').select('Gemini').run()
+    next(x for x in app.text_input if x.label=='API key (session only)').input('fake-key').run()
+    with patch('src.llm_evaluator.JudgeProvider.request',side_effect=HTTPError('https://example.test',503,'busy',{},None)):
+        next(x for x in app.button if x.label=='Test API connection').click().run()
+    assert not app.exception
+    assert any('503' in x.value and 'temporarily' in x.value for x in app.warning)
+    assert not any('API connection succeeded' in x.value for x in app.success)
+    assert any('connection has not succeeded' in x.value for x in app.info)
+
+
+def test_flash_lite_alternative_can_prepare_small_test():
+    from streamlit.testing.v1 import AppTest
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
+    next(x for x in app.selectbox if x.label=='Provider').select('Gemini').run()
+    next(x for x in app.selectbox if x.label=='Model preset').select('gemini-3.5-flash-lite').run()
+    assert next(x for x in app.text_input if x.label=='Model name (editable)').value=='gemini-3.5-flash-lite'
+    next(x for x in app.button if x.label=='Prepare small Gemini test').click().run()
+    assert not app.exception and app.radio[0].value=='Try a sample screenplay'
+    assert next(x for x in app.slider if x.label=='Maximum AI-judged finalists').value==1

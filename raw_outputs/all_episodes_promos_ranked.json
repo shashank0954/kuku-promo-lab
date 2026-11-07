@@ -10,11 +10,13 @@
       "provider": "Heuristic/Offline",
       "model": null,
       "calls": 0,
+      "http_attempts": 0,
+      "retries": 0,
       "input_tokens": 0,
       "output_tokens": 0,
       "errors": [],
       "judged_candidates": 0,
-      "elapsed_seconds": 0.1152,
+      "elapsed_seconds": 0.1214,
       "actual_cost_at_reference_rates_usd": 0
     },
     "weights": {
@@ -26,7 +28,7 @@
     },
     "minimum": 20,
     "maximum": 60,
-    "elapsed_seconds": 0.7727,
+    "elapsed_seconds": 0.7913,
     "raw_script_token_estimate": 67762,
     "disclaimer": "Script-only editorial shortlist. Not validated against footage or ad performance.",
     "episode_coverage": [

@@ -162,3 +162,59 @@ def test_question_cannot_outscore_its_later_answer():
     item=evaluate_offline(make_candidate([segment(e,7,30.5)],'answered-question'),[e])
     assert item['scores']['cliffhanger_score']<55
     assert item['cliffhanger_evidence']['beat_id']=='test-a'
+
+
+def gemini_ok_response():
+    payload={'candidates':[{'content':{'parts':[{'text':'{"status":"ok"}'}]}}],
+             'usageMetadata':{'promptTokenCount':10,'candidatesTokenCount':4}}
+    class Reply:
+        def __enter__(self):return self
+        def __exit__(self,*args):pass
+        def read(self):return json.dumps(payload).encode()
+    return Reply()
+
+
+def test_transient_503_recovers_with_bounded_backoff():
+    from urllib.error import HTTPError
+    messages=[];adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key',on_retry=messages.append)
+    failures=[HTTPError('https://example.test',503,'unavailable',{},None) for _ in range(2)]
+    with patch('urllib.request.urlopen',side_effect=[*failures,gemini_ok_response()]) as call, \
+         patch('src.llm_evaluator.time.sleep') as sleep,patch('src.llm_evaluator.random.uniform',return_value=0):
+        reply,usage=adapter.request('Return JSON status ok')
+    assert reply=={'status':'ok'} and usage['input_tokens']==10
+    assert call.call_count==3 and adapter.last_attempts==3
+    assert [x.args[0] for x in sleep.call_args_list]==[1,2]
+    assert len(messages)==2 and 'attempt 3/3' in messages[-1]
+
+
+def test_persistent_503_stops_and_explains_outage():
+    from urllib.error import HTTPError
+    from src.llm_evaluator import describe_error
+    adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key')
+    failures=[HTTPError('https://example.test?key=never-display',503,'private response body',{},None) for _ in range(3)]
+    with patch('urllib.request.urlopen',side_effect=failures) as call,patch('src.llm_evaluator.time.sleep'), \
+         pytest.raises(HTTPError) as error:
+        adapter.request('Return JSON')
+    assert call.call_count==3
+    message=describe_error('Gemini',error.value)
+    assert '503' in message and '3 attempt' in message and 'temporarily' in message
+    assert 'never-display' not in message and 'private response body' not in message
+
+
+@pytest.mark.parametrize('code',[400,401,403,404,429])
+def test_auth_model_and_quota_failures_are_not_retried(code):
+    from urllib.error import HTTPError
+    adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key')
+    with patch('urllib.request.urlopen',side_effect=HTTPError('https://example.test',code,'error',{},None)) as call, \
+         patch('src.llm_evaluator.time.sleep') as sleep,pytest.raises(HTTPError):
+        adapter.request('Return JSON')
+    assert call.call_count==1 and not sleep.called
+
+
+def test_long_retry_after_does_not_retry_early():
+    from urllib.error import HTTPError
+    adapter=JudgeProvider('Gemini','gemini-3.8-flash','fake-key')
+    with patch('urllib.request.urlopen',side_effect=HTTPError('https://example.test',503,'busy',{'Retry-After':'120'},None)) as call, \
+         patch('src.llm_evaluator.time.sleep') as sleep,pytest.raises(HTTPError):
+        adapter.request('Return JSON')
+    assert call.call_count==1 and not sleep.called
