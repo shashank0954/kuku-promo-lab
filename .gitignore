@@ -10,3 +10,7 @@ __pycache__/
 .pytest_cache/
 *.pyc
 .DS_Store
+
+# Submission PDF is a deliverable, not an original input document
+!SOLUTION_DOC.pdf
+/.deployment/

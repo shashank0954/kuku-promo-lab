@@ -1,0 +1,72 @@
+EPISODE NUMBER: Episode 101
+EPISODE LOGLINE: An abandoned bride is attacked by her groom and sister until a stranger claims to be her husband. Original synthetic demo, not Kuku source material.
+CONTINUITY NOTES: Self-contained public demonstration screenplay. No prior episodes are required.
+
+--- SCRIPT START ---
+
+SCENE 01
+Scene heading: INT. WEDDING CHAPEL - DAY
+Scene start: 00:00.00
+Scene end: 00:45.00
+
+**CAMERA:**
+Start: (00:00.00) | End: (00:45.00)
+A bride, her groom and her sister stand at the altar in front of shocked wedding guests.
+
+**ACTION:**
+Start: (00:00.00) | End: (00:03.00)
+The groom grabs the bride's wrist and tears her wedding veil away.
+
+**BRIDE (Desperate, Accusing):**
+Start: (00:00.00) | End: (00:03.00)
+"You're leaving me at the altar for my sister?"
+
+**GROOM (Cold, Cruel):**
+Start: (00:03.00) | End: (00:07.00)
+"She has the inheritance. You have nothing."
+
+**ACTION:**
+Start: (00:07.00) | End: (00:10.00)
+The sister slaps the bride across her face.
+
+**SISTER (Scornful):**
+Start: (00:10.00) | End: (00:14.00)
+"Take off Mother's necklace. He gave it to me."
+
+**BRIDE (Furious):**
+Start: (00:14.00) | End: (00:18.00)
+"You stole my wedding and now you want her necklace?"
+
+**ACTION:**
+Start: (00:18.00) | End: (00:21.00)
+The groom reaches toward the bride's throat and yanks the necklace.
+
+**STRANGER (Cold, Commanding):**
+Start: (00:21.00) | End: (00:24.00)
+"Let go of my wife."
+
+**ACTION:**
+Start: (00:24.00) | End: (00:27.00)
+A stranger draws his sword and points the blade at the groom.
+
+**GROOM (Thunderstruck):**
+Start: (00:27.00) | End: (00:31.00)
+"Your wife? Who are you?"
+
+**ACTION:**
+Start: (00:31.00) | End: (00:34.00)
+The stranger grabs the groom's wrist and forces his hand away from the bride.
+
+**STRANGER (Seething):**
+Start: (00:34.00) | End: (00:38.00)
+"Touch her again and you will lose that hand."
+
+**SISTER (Terrified):**
+Start: (00:38.00) | End: (00:42.00)
+"Why are the royal guards bowing to him?"
+
+**ACTION:**
+Start: (00:42.00) | End: (00:45.00)
+The guards kneel before the stranger as the groom stares in disbelief.
+
+--- SCRIPT END ---

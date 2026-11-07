@@ -8,26 +8,30 @@ from pathlib import Path
 from time import perf_counter
 from src.parser import parse_folder
 from src.candidate_generator import generate
-from src.llm_evaluator import judge,evaluate_offline,DEFAULT_WEIGHTS
+from src.llm_evaluator import judge,evaluate_offline,DEFAULT_WEIGHTS,validate_weights
 from src.quality_auditor import audit,audit_markdown
 from src.economics import estimate,cost,RATES
 
 DEFAULT_INPUT=Path(__file__).parent/'I Married a Broken Soldier. He was a Duke'
 
 def execute(episodes,provider='auto',model=None,api_key=None,minimum=20,maximum=60,weights=None,budget=8):
+    if not episodes: raise ValueError('At least one parsed episode is required')
+    weights=validate_weights(weights or DEFAULT_WEIGHTS)
     start=perf_counter(); candidates,rejected=generate(episodes,minimum,maximum)
     items,usage=judge(episodes,candidates,provider,model,api_key,weights,budget)
     rejected=[evaluate_offline(x,episodes,weights) for x in rejected]
     eligible=[]
     for item in items:
         scores=item['scores']
-        if scores['hook_3s_score']<55 or scores['cliffhanger_score']<55 or scores['standalone_clarity_score']<55 or any('De-escalation' in f or 'Music sting alone' in f for f in item['editorial_flags']):
+        if scores['hook_3s_score']<55 or scores['cliffhanger_score']<55 or scores['standalone_clarity_score']<55 or any('De-escalation' in f or 'Music sting alone' in f or 'Main conflict resolves' in f for f in item['editorial_flags']):
             rejected.append(dict(item,rejection_reason='Editorial gate: hook, unresolved endpoint or cold-viewer clarity below threshold'))
         else:
             item['editorial_status']='Shortlisted — confirm in footage'
             eligible.append(item)
     items=eligible
     for rank,item in enumerate(items,1): item['rank']=rank
+    posting=sorted(items,key=lambda x:(int(x['posting_strategy'][5]),len(x['editorial_flags']),-x['composite_score'],x['id']))
+    for priority,item in enumerate(posting,1): item['posting_priority']=priority
     quality=audit(episodes,items,rejected,minimum,maximum)
     if quality['hard_failures']: raise ValueError(f"Hard audit failed: {quality['hard_failures']}")
     rates=RATES.get(usage['model'])
@@ -43,7 +47,7 @@ def execute(episodes,provider='auto',model=None,api_key=None,minimum=20,maximum=
 def write_outputs(result,out):
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
     (out/'all_episodes_promos_ranked.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
-    fields=['rank','posting_strategy','episodes','segments','duration','hook_text','cliffhanger_text','why_it_works','composite_score','evaluation_source',*DEFAULT_WEIGHTS,'editorial_flags']
+    fields=['rank','posting_priority','posting_strategy','posting_reason','episodes','segments','duration','hook_text','cliffhanger_text','why_it_works','ranking_rationale','composite_score','evaluation_source',*DEFAULT_WEIGHTS,'editorial_flags']
     with (out/'top_promos_ranked.csv').open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader()
         for x in result['promos']:
@@ -54,10 +58,13 @@ def write_outputs(result,out):
             writer.writerow({k:("'"+v if isinstance(v,str) and v.startswith(('=','+','-','@')) else v) for k,v in row.items()})
     lines=['# Promo posting playbook','',f"{result['run']['episode_count']} episodes · {len(result['promos'])} promos · {result['run']['provider']['provider']}",'',result['run']['disclaimer'],'',
            '## Posting strategy','Release reviewed Tier 1 interpersonal hooks first. Test humiliation versus protective rage with equal spend; compare 3-second retention and click-through. Use Tier 2 for audiences familiar with the characters. Review Tier 3 bridges as trailers. Scores predict editorial fit, not measured performance.','',
-           '## Episode coverage','']
+           '## Recommended posting order','']
+    for x in sorted(result['promos'],key=lambda x:x['posting_priority'])[:5]:
+        lines.append(f"{x['posting_priority']}. {format_segments(x)} ({x['duration']:.2f}s): {x['posting_reason']} Review: {'; '.join(x['editorial_flags']) or 'No automated flags; footage review still required.'}")
+    lines.extend(['','## Episode coverage',''])
     lines += [f"- Episode {e['episode']}: {e['candidates']} candidates" for e in result['run']['episode_coverage']]
     for x in result['promos']:
-        lines.extend(['',f"## #{x['rank']} · {x['composite_score']}/100 · {format_segments(x)}",f"**{x['posting_strategy']}** · {x['duration']:.2f}s",f"Hook: {x['hook_text']}",f"Cut: {x['cliffhanger_text']}",f"Why: {x['why_it_works']}",f"Rationale: {x['ranking_rationale']}",f"Scores: {json.dumps(x['scores'])}",f"Review flags: {'; '.join(x['editorial_flags']) or 'Footage confirmation required'}"])
+        lines.extend(['',f"## #{x['rank']} · {x['composite_score']}/100 · {format_segments(x)}",f"**{x['posting_strategy']}** · {x['duration']:.2f}s · Posting priority {x['posting_priority']}",f"Hook: {x['hook_text']}",f"Cut: {x['cliffhanger_text']}",f"Why: {x['why_it_works']}",f"Posting reason: {x['posting_reason']}",f"Rationale: {x['ranking_rationale']}",f"Score source: {x['evaluation_source']}",f"Scores: {json.dumps(x['scores'])}",f"Review flags: {'; '.join(x['editorial_flags']) or 'Footage confirmation required'}"])
     (out/'top_promos_report.md').write_text('\n\n'.join(lines)+'\n')
     (out/'quality_and_failure_audit.md').write_text(audit_markdown(result['audit'])+'\n')
     manifest={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.iterdir()) if p.name in ['all_episodes_promos_ranked.json','top_promos_ranked.csv','top_promos_report.md','quality_and_failure_audit.md']}

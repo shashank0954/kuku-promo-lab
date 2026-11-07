@@ -25,6 +25,10 @@ def test_parse_all_lossless_overlap(episodes):
         assert all(a['end']==b['start'] for a,b in zip(e.timeline,e.timeline[1:]))
     assert episodes[21].warnings
     assert seconds('(02:18.00)')==138
+    assert any(e.dialogue_joins for e in episodes)
+    for e in episodes:
+        for a,z in e.dialogue_joins:
+            assert not e.safe(a) and not e.safe(z)
 
 def test_safety_and_timestamp_tampering(episodes):
     items,_=generate(episodes)
@@ -38,8 +42,8 @@ def test_safety_and_timestamp_tampering(episodes):
     x=deepcopy(items[0]);x['duration']+=1
     assert 'Total duration mismatch' in validate(x,episodes)
 
-def test_regression_music_and_tears(episodes):
-    b=deepcopy(episodes[0].beats[0]);b.kind='SOUND FX';b.text='A cliffhanger swell.'
+def test_regression_music_and_tears():
+    b=deepcopy(parse_folder('examples')[0].beats[0]);b.kind='SOUND FX';b.text='A cliffhanger swell.'
     assert hook(b)==0 and cliff(b)<=22
     b.kind='CAMERA';b.text='Her tear-streaked face.'
     assert hook(b)==0
@@ -95,3 +99,66 @@ def test_rest_adapters(provider):
         config=json.loads(request.data)['generationConfig']
         assert config['thinkingConfig']=={'thinkingLevel':'low'}
         assert config['maxOutputTokens']==4096
+
+@pytest.mark.parametrize('text',[
+    'A gold pocket watch chain hangs from his immaculate coat.',
+    'Her eyes burning with ambition.',
+    'She watches with wounded pride.',
+    'The judge strikes the wooden block with his gavel.'
+])
+def test_false_positive_physical_hook(text):
+    from src.candidate_generator import physical_conflict
+    assert physical_conflict(text)==0
+    b=deepcopy(parse_folder('examples')[0].beats[0]);b.kind='CAMERA';b.speaker='CAMERA';b.text=text
+    assert hook(b)==0
+
+@pytest.mark.parametrize('number,start,end,expected',[
+    (30,3.0,43.5,False),
+    (49,84.0,112.8,False),
+    (47,14.8,59.8,False),
+    (21,47.3,99.2,False),
+    (24,0.0,20.5,False),
+    (9,13.8,54.0,False),
+    (32,3.0,24.8,True),
+    (25,13.2,33.8,True),
+    (3,8.8,40.4,True),
+    (21,11.2,35.8,True),
+    (3,84.0,112.5,True),
+])
+def test_reviewed_editorial_regressions(episodes,number,start,end,expected):
+    from src.candidate_generator import segment,make_candidate
+    ep=next(e for e in episodes if e.number==number)
+    item=evaluate_offline(make_candidate([segment(ep,start,end)],'review-case'),episodes)
+    scores=item['scores']
+    eligible=(scores['hook_3s_score']>=55 and scores['cliffhanger_score']>=55 and scores['standalone_clarity_score']>=55
+              and not any('De-escalation' in f or 'Main conflict resolves' in f or 'Music sting alone' in f for f in item['editorial_flags']))
+    assert eligible==expected
+    assert not validate(item,episodes)
+
+
+def test_malformed_ai_json_keeps_billed_usage():
+    from src.llm_evaluator import InvalidJudgeResponse
+    response={'candidates':[{'content':{'parts':[{'text':'not JSON'}]}}],
+              'usageMetadata':{'promptTokenCount':23,'candidatesTokenCount':7}}
+    class Reply:
+        def __enter__(self):return self
+        def __exit__(self,*args):pass
+        def read(self):return json.dumps(response).encode()
+    with patch('urllib.request.urlopen',return_value=Reply()):
+        with pytest.raises(InvalidJudgeResponse) as err:
+            JudgeProvider('Gemini','gemini-3.8-flash','fake-key').request('prompt')
+    assert err.value.usage=={'input_tokens':23,'output_tokens':7}
+
+
+def test_question_cannot_outscore_its_later_answer():
+    from src.parser import Beat
+    from src.candidate_generator import segment,make_candidate
+    e=parse_folder('examples')[0]
+    original=next(b for b in e.beats if b.kind=='DIALOGUE' and b.start==27)
+    e.beats.remove(original)
+    e.beats += [Beat('test-q','DIALOGUE','GROOM',27,29,'00:27.00','00:29.00','"Did you steal it?"','01'),
+                Beat('test-a','DIALOGUE','BRIDE',29,30.5,'00:29.00','00:30.50','"Yes."','01')]
+    e.beats.sort(key=lambda b:b.start)
+    item=evaluate_offline(make_candidate([segment(e,7,30.5)],'answered-question'),[e])
+    assert item['scores']['cliffhanger_score']<55
+    assert item['cliffhanger_evidence']['beat_id']=='test-a'

@@ -4,7 +4,7 @@ A complete Problem 1 submission: deterministic screenplay parsing and safe edit 
 
 ## Run
 
-Python 3.10+ recommended. From this directory:
+Python 3.11+ required (3.11 tested). From this directory:
 
 ```bash
 pip install -r requirements.txt
@@ -12,7 +12,7 @@ python run_pipeline.py
 streamlit run app.py
 ```
 
-Open http://localhost:8501. The dashboard loads the saved playbook immediately; **Find promos** reruns with the selected input and settings. Offline mode needs no account, API key, or network. Outputs are overwritten only by the CLI, never by dashboard runs.
+Open http://localhost:8501. The dashboard loads the saved playbook immediately; choose **Try a sample screenplay** for a fresh public demo input; **Find promos** reruns with the selected input and settings. Offline mode needs no account, API key, or network. Outputs are overwritten only by the CLI, never by dashboard runs.
 
 For isolated installation, optionally run `python -m venv .venv` and activate it first. One-command end-to-end launch after Python setup:
 
@@ -24,7 +24,7 @@ pip install -r requirements.txt && python run_pipeline.py && streamlit run app.p
 
 | File | Purpose |
 |---|---|
-| `SOLUTION_DOC.md` | Two-page submission narrative; print companion: `SOLUTION_DOC.html` |
+| `SOLUTION_DOC.pdf` | Required submission PDF, verified at two pages; Markdown and HTML sources included |
 | `src/parser.py` | Episode / scene / source beat objects; simultaneous audiovisual slices |
 | `src/candidate_generator.py` | Hook and endpoint retrieval; diverse continuous cuts and two-part mashups |
 | `src/llm_evaluator.py` | Five-score rubric; REST adapters for Gemini, OpenAI, Anthropic; explicit offline fallback |
@@ -82,3 +82,15 @@ Demo sequence: inspect the top playbook → Episode 25 wound reveal → compare 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for exact account/deployment steps. Use `app.py` on branch `main`, with Python 3.11. `streamlit_deploy.zip` contains the deployable files without the confidential original screenplays or input ZIP. Extract it before uploading its contents to GitHub.
 
 When the original folder is absent, the app loads the saved 50-episode playbook and uses saved episode metadata. To rerun or open full source timelines, upload the TXT/ZIP input and click **Find promos**. No API key is required for offline mode.
+
+## Assignment recheck
+
+See [REQUIREMENTS_REVIEW.md](REQUIREMENTS_REVIEW.md) for the item-by-item evidence and remaining verification limits. The latest complete input-pack run contains **64 shortlisted promos, 231 retained rejections and 295/295 passing source checks**. The stricter count replaces the earlier 83; false hook matches and a resolved-illness pivot were removed.
+
+Each promo now includes a specific one-line explanation, `posting_priority`, `posting_reason` and `evaluation_source`. The dashboard defaults to posting order and also offers composite score order. Eleven deliberately selected development cases are exported by `python scripts/review_editorial_cases.py`; they are regression examples, not a measured real-world accuracy rate.
+
+For an interview: select **Try a sample screenplay** → **Find promos** to demonstrate a fresh run without publishing the input pack. Then upload the interviewer’s TXT/ZIP files. Choose a supported provider and model, enter the key, and click **Test API connection**. The checkbox below exposes the actual provider endpoint and a placeholder-key request body. API tests send a tiny live request; selecting a provider alone does not call it. Pipeline runs show actual judged-candidate counts and per-candidate score sources.
+
+Build a distribution with `python scripts/package_deploy.py`. It contains the original synthetic demo and the two-page solution PDF, with the confidential original pack excluded. See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) for a short presentation and explanations you should understand.
+
+Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. All 31 tests pass there. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.

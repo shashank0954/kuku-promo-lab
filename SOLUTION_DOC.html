@@ -1,73 +1,75 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Kuku — Solution Doc</title></head><body><style>
-@page { size: A4; margin: 15mm; }
-body { font: 10pt/1.3 Arial, sans-serif; color: #172235; }
-h1 { font-size: 20pt; margin: 0 0 8pt; } h2 { font-size: 12pt; margin: 10pt 0 4pt; }
-table { border-collapse: collapse; width: 100%; font-size: 9pt; } td, th { text-align: left; padding: 5pt; border-bottom: 1px solid #ddd; }
-p { margin: 5pt 0; } .page-break { break-before: page; page-break-before: always; }
+<!doctype html><html><head><meta charset="utf-8"><title>Kuku Solution</title></head><body><style>
+@page { size: A4; margin: 14mm; }
+body { font: 10pt/1.28 Arial, sans-serif; color: #172235; }
+h1 { font-size: 19pt; margin: 0 0 7pt; } h2 { font-size: 11.5pt; margin: 10pt 0 4pt; }
+p { margin: 5pt 0; } table { border-collapse: collapse; width: 100%; font-size: 9pt; }
+td, th { text-align: left; vertical-align: top; padding: 5pt; border-bottom: 1px solid #ddd; }
+.page-break { break-before: page; page-break-before: always; }
+a { color: #264b7b; } code { font-size: 9pt; }
 </style>
 
 <h1>Kuku · Find the Promos / Ads</h1>
-<p><strong>Problem 1 · A hybrid editorial system, not a full-script LLM wrapper</strong></p>
-<h2>1. Choice &amp; explicit assumptions</h2>
-<p>Find 20–60s vertical-ad cuts that stop a stranger in three seconds and end before the emotional payoff. I chose this problem because safe edit boundaries are computational, while understanding betrayal and unresolved tension is editorial: each deserves a different tool.</p>
-<p>The 50 supplied screenplays are the timing authority; there is no video, audio or campaign performance data. Timestamps are episode-local. Duration limits are inclusive. Entire spoken utterances must survive edits; visual tracks may overlap a cut. Two segments satisfy the allowed 2–3-part mashup format. A scene can produce no qualifying promo rather than forcing an unsuitable one. Script-based scores are hypotheses, not observed ad lift.</p>
-<p><strong>Completed run:</strong> 50 episodes; 3,727 original beats; 83 shortlisted promos; 229 retained rejected candidates; <strong>312/312 source-validity checks passed</strong>. Offline execution takes about one second on this machine; exact telemetry is in the generated JSON. Every episode remains browsable, including episodes without shortlisted cuts.</p>
-<h2>2. Hybrid architecture &amp; human review</h2>
-<p><strong>Code:</strong> parse Episode → Scene → Beat; preserve source strings and full dialogue; partition overlapping tracks at every event boundary into unified half-open audiovisual slices. Generate high-signal windows, remove overlapping alternatives, and assemble chronologically ordered role-linked mashups. Every cut must use a real source start/end and cross no spoken line. Validate duration and arithmetic independently after judging.</p>
-<p><strong>AI:</strong> Gemini, OpenAI and Anthropic share one JSON rubric. Only a bounded shortlist reaches the provider; AI critiques cold-viewer clarity, emotional intensity, continuity and the exact endpoint. It cannot invent or move timestamps. Scores: hook <strong>30%</strong>, cliffhanger <strong>30%</strong>, clarity <strong>20%</strong>, arousal <strong>10%</strong>, pacing <strong>10%</strong>. Eight finalists maximum by default, four per request; remaining scores stay explicitly heuristic. Keys auto-enable the CLI judge; the UI offers an explicit provider selector. Invalid responses fall back visibly to offline scoring. Legacy Claude 3.5 IDs remain configurable but can be retired.</p>
-<p><strong>Editor:</strong> compare verbatim evidence with footage, confirm the action actually happens in the first three seconds, check that the question remains unanswered, and reject misleading mashup bridges. Automated gates exclude weak hooks, weak cuts, low clarity, music-only endings and detected de-escalation. Surviving cuts still carry review flags where appropriate.</p>
-<h2>3. Scale, latency &amp; unit economics</h2>
-<p>Default planning scenario: 8 × 1,800 input tokens + 8 × 160 output tokens. At Gemini 2.5 Flash reference rates of <strong>$0.30 input / $2.50 output per million</strong>, that is <strong>$0.00752/show</strong>, below $0.03. Offline costs $0. These are estimates, not a paid-run claim; live usage fields are recorded and costed separately.</p>
-<p>A premium naive scenario of 200k script tokens × three passes, plus 10k output tokens, at $2.50/$10 costs <strong>$1.60/show</strong>. The actual supplied text is approximately 67.8k tokens by characters/4: the same naive premium assumptions produce about <strong>$0.61</strong>, not $1.60. The calculator exposes both scenarios and editable rates; a same-model comparison is also shown.</p>
-<p>At 200 weekly shows, the default AI estimate is <strong>$1.50/week</strong>, excluding retries, hosting and editors. Two sequential AI batches at an assumed eight seconds each add ~16s/show; live latency is unmeasured. Scale through a show-level worker queue, content-hash caching, bounded shortlist budgets and rate-limited provider pools. Exhaustive window construction is quadratic in beat count per episode; production can use a sliding 60s boundary index.</p>
+<p><strong>Problem 1 — Source-grounded cuts, with an honest editorial review loop</strong></p>
+<h2>1. Problem choice &amp; assumptions</h2>
+<p>Editors need a small, useful shortlist rather than another full-script summary. I chose Problem 1 because code can enforce real edit boundaries while AI can critique emotional stakes and standalone comprehension.</p>
+<p>I treat the supplied timestamps as authoritative. Cuts last 20–60 seconds, inclusively; mashups use two segments. Spoken utterances remain whole even when other tracks overlap. These are script-based recommendations: no footage or ad-performance data was supplied. Some episodes have no suitable window. I do not force one promo per episode or claim exhaustive recall.</p>
+<p><strong>Full run:</strong> 50 episodes, 3,727 source beats, <strong>64 shortlisted promos</strong>, 231 retained rejections, <strong>295/295 hard checks passed</strong>. Runtime is approximately one second locally; exact telemetry is saved. Results are unedited pipeline exports, not hand-selected success examples.</p>
+<h2>2. What code does, what AI does, what an editor does</h2>
+<p><strong>Code:</strong> parse scenes and original beats; merge concurrent camera, action, sound and dialogue into timeline slices; retrieve high-hook / high-tension windows; remove near-duplicates; propose short trailer bridges; validate exact source boundaries and whole dialogue. Gates reject weak openings, weak endings, low clarity, music-only tension and detected resolution-to-subplot pivots.</p>
+<p><strong>AI:</strong> Gemini, OpenAI or Anthropic critiques a bounded shortlist using hook 30%, cliffhanger 30%, clarity 20%, arousal 10% and pacing 10%. Model IDs are editable; keys can be supplied live. Eight finalists are judged by default, in batches of four. Remaining scores stay labeled heuristic. Invalid responses, inaccessible models and quota errors fall back visibly. AI cannot edit source timestamps.</p>
+<p><strong>Editor:</strong> confirm the action/words occur in the opening three seconds, test whether a stranger understands the conflict, check that the ending remains unresolved, and approve mashup continuity. A high score does not replace footage review. Posting priority favors clearer continuous cuts before uncertain hooks and trailers; composite rank remains separately visible.</p>
+<h2>3. Scale, latency &amp; cost</h2>
+<p>The measured offline run costs <strong>$0 in API fees</strong>. Parallelize independent shows, cache by input/model version, bound the AI shortlist, and rate-limit provider calls. Current candidate construction is quadratic per episode; a 60-second sliding index is the next optimization.</p>
+<p>Planning example: 8 × 1,800 input + 8 × 160 output tokens at reference rates $0.30/$2.50 per million = <strong>$0.00752/show</strong>, or ~$1.50 for 200 shows/week. This is an editable historical-rate scenario, <strong>not a current Gemini 3.8 price quote</strong>. Usage is collected from API responses; unknown model rates remain unpriced.</p>
+<p>A premium naive scenario with 200k input tokens × three passes and 10k output tokens at $2.50/$10 costs $1.60. This sample is only ~67.8k estimated tokens, so the equivalent scenario is ~$0.61. Two AI batches at an assumed eight seconds each add ~16 seconds; paid live latency is unmeasured. Hosting, retries and editor time are separate.</p>
 <div class="page-break"></div>
 
-<h1>Editorial playbook &amp; quality evidence</h1>
-<h2>4. Top picks &amp; actual posting order</h2>
-<p>The full CSV/report preserve composite ranking. Posting order also considers review risk: start with clear single-scene conflict, then test protective rage, then use reviewed mashups. Do not interpret a high score as permission to publish an ambiguous cut.</p>
+<h1>Posting playbook &amp; evidence</h1>
+<h2>4. What I would post first, and why</h2>
+<p>The generated playbook gives every cut an explicit posting priority, episode, ordered segment timestamps, duration, hook, cliffhanger and specific one-line explanation. I would test these clear continuous conflicts first, subject to footage review:</p>
 <table>
 <thead>
 <tr>
-<th>Use</th>
-<th>Exact source cuts</th>
+<th>Order</th>
+<th>Exact source cut</th>
 <th style="text-align: right;">Duration</th>
-<th>Why / unresolved cut</th>
+<th>Conflict and withheld payoff</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>First test · ranked #1 · 84.7</td>
-<td>E21 00:11.20–00:35.80</td>
-<td style="text-align: right;">24.6s</td>
-<td>A child cannot breathe; desperate plea ends “he will die.” No cure is shown.</td>
+<td>1</td>
+<td>E1 00:39.10–01:14.30</td>
+<td style="text-align: right;">35.2s</td>
+<td>“Because he is marrying me” opens a stolen-wedding confrontation; cut on “How long?” before the answer.</td>
 </tr>
 <tr>
-<td>Rescue challenger · #6 · 80.6</td>
+<td>2</td>
 <td>E3 01:24.00–01:52.50</td>
 <td style="text-align: right;">28.5s</td>
-<td>Stranger strikes a guard; ends “Why are you doing this?” before his answer.</td>
+<td>A stranger drops a guard, defends an abused woman, then she asks “Why are you doing this?”</td>
 </tr>
 <tr>
-<td>Protective-rage challenger · #24 · 78.0</td>
+<td>3</td>
+<td>E3 00:08.80–00:40.40</td>
+<td style="text-align: right;">31.6s</td>
+<td>“You stole my wedding” makes the betrayal explicit; cut on “And what happens to me?”</td>
+</tr>
+<tr>
+<td>Challenger</td>
 <td>E25 00:13.20–00:33.80</td>
 <td style="text-align: right;">20.6s</td>
-<td>Painful shoulder grab → bloody welt → repeated “Who?” Cut before naming her attacker.</td>
-</tr>
-<tr>
-<td>Trailer · #3 · 81.6</td>
-<td>E28 01:10.50–01:21.90 + E31 01:48.80–02:02.00</td>
-<td style="text-align: right;">24.6s</td>
-<td>Necklace coercion → defiant “make me kneel?” Requires continuity approval.</td>
+<td>Painful shoulder grab, bloody wound reveal, repeated “Who?” before the attacker is named.</td>
 </tr>
 </tbody>
 </table>
-<p>Rank #2, E37 01:32.00–01:59.80 (84.7), opens on a chained hand and ends with an execution question; the long opening visual needs footage verification. Keep it behind a verified opening despite its high composite. Allocate equal test spend to the first three reviewed singles; compare three-second hold, click-through and downstream starts. Tier 2 serves warmer conflict audiences; Tier 3 is the trailer pool. No performance result is claimed.</p>
-<h2>5. Quality checks &amp; honest weak picks</h2>
-<p><strong>Hard evidence:</strong> source boundary existence, exact timestamp strings, correct episode/file pairing, 20–60s total, 1–3 segments, correct duration sums, no reused overlapping footage and no cut through any simultaneous dialogue. Every emitted accepted/rejected candidate is checked. Tests verify all 3,727 beats survive timeline partitioning without loss.</p>
-<p><strong>Actual failures retained in JSON and audit:</strong> E24 <strong>00:00.00–00:20.50</strong> begins with a slow door handle and needs medicine lore; an ominous sound is not a first-three-second hook. Reject or start on the later physical confrontation. E16 <strong>00:19.20–01:15.80</strong> reaches softening empathy near the endpoint; end before the comfort beat, then recheck duration. E21 <strong>00:11.20–00:18.20 + 01:19.80–01:39.20</strong> jumps from a sick child to the Dowager Duchess: shared “illness” semantics falsely suggest one victim. The explicit victim-change penalty rejects that mashup; an editor must preserve a single causal story.</p>
-<p><strong>Source anomaly:</strong> E22 beat 22:23 ends at <strong>00:42.80</strong>, while its scene is declared to end at <strong>00:42.50</strong>. Preserve the sound effect, record the warning, and use actual beat boundaries. Normalizing it silently would invent a timestamp.</p>
-<p>Remaining limitations: lexicons can mistake metaphor for injury; a question may be rhetorical or answered earlier; role overlap does not prove mashup causality; long visual descriptions do not establish exact action onset. The audit presents weaker and stronger evidence side by side so an editor can correct these cases. No claim of perfect semantic recall or video verification.</p>
-<h2>6. AI tools used &amp; one mistake during development</h2>
-<p>Codex assisted Python/UI implementation, rubric design and verification. An initial AI-authored lexical rule matched <strong>“hang” inside “cliffhanger”</strong>, promoting an emotional cello ending in E16 <strong>00:59.00–01:23.19</strong> as an execution threat. Reading the actual source revealed a calm, intimate resolution. Word boundaries, a music-only score cap and de-escalation checks fixed it; a regression test now protects this case. “Tear-streaked” was another false physical-conflict match and is also covered.</p>
-<p>The saved run uses <strong>heuristic/offline evaluation only</strong>. Provider request/response contracts are tested with mocks; no paid inference or invented LLM judgments are reported. The app's four tabs and rerun action were exercised through Streamlit AppTest. See README for reproduction and the unedited raw outputs for every candidate and reason.</p>
-<p>Pricing reference: <a href="https://ai.google.dev/gemini-api/docs/pricing">Google Gemini API pricing</a>. Model lifecycle: <a href="https://platform.claude.com/docs/en/about-claude/model-deprecations">Anthropic deprecations</a>. Reference rates remain editable and are not invoice guarantees.</p></body></html>
+<p>Use equal initial spend and compare three-second hold, click-through and downstream viewing starts. Tier 2 is for warmer conflict audiences; Tier 3 is a trailer pool requiring continuity approval. No conversion or retention improvement has been measured.</p>
+<h2>5. Quality checking &amp; where the tool picks badly</h2>
+<p><strong>Hard checks</strong> cover every emitted shortlisted/rejected candidate: correct episode/file, verbatim start/end boundary strings, 20–60s total, duration arithmetic, no overlapping reused footage and no cut through simultaneous dialogue. Tests check that all 3,727 source beats survive timeline partitioning. Eleven deliberately chosen script cases provide regression evidence, not an unbiased accuracy benchmark.</p>
+<p><strong>Real weak picks and corrections:</strong> E30 00:03.00–00:43.50 originally scored a pocket-watch “chain” as physical conflict. E49 01:24.00–01:52.80 matched eyes “burning” with ambition. Both now fail the hook gate. E21 00:47.30–01:39.20 shows the child recovering before pivoting to the Duchess; the original human conflict is resolved, so it is rejected. E24 00:00.00–00:20.50 wastes its opening on a door handle and depends on medicine context. These failures remain documented rather than hidden.</p>
+<p><strong>Input anomaly:</strong> E22's sound effect at 00:41.50–00:42.80 extends 0.3s beyond its declared scene end. Preserve the actual beat timestamp and report a warning. Never invent a “corrected” boundary.</p>
+<p>Limits remain: rhetorical questions can look unresolved; a long beat does not establish exact word/action onset; shared roles do not prove mashup causality. Full visual descriptions matter: E32's “Burn it” has a book shown onscreen, which dialogue-only review would miss.</p>
+<h2>6. AI tools used &amp; interview readiness</h2>
+<p>Codex assisted implementation, rubric design, testing and documentation. One AI-authored rule matched “hang” inside “cliffhanger,” falsely promoting a calm cello ending in E16 00:59.00–01:23.19. Word boundaries, music-only caps and de-escalation checks fixed it. Additional tests cover metaphorical injuries and decorative chains.</p>
+<p>The saved run is <strong>offline</strong>, not paid AI inference. Provider contracts and the connection-test UI are tested with mocks. Reviewers can run the original synthetic sample immediately, upload new TXT/ZIP scripts, change models/keys, test the API, rerun and download fresh results. The app exposes the provider endpoint/body; a separate REST service is not required. A live paid request and video-based editorial approval remain unverified.</p>
+<p>References: <a href="https://ai.google.dev/gemini-api/docs/pricing">Gemini pricing</a>; <a href="https://ai.google.dev/gemini-api/docs/models">Gemini models</a>. Code, raw outputs and reproduction steps accompany this PDF.</p></body></html>

@@ -24,14 +24,15 @@ def test_txt_and_zip_uploads():
 
 def test_dashboard_load_run_and_provider_switch():
     from streamlit.testing.v1 import AppTest
-    app=AppTest.from_file('app.py',default_timeout=40).run()
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
     assert not app.exception
     assert any(x.label=='API key (session only)' for x in app.text_input)
     assert not any(x.label=='API key (session only)' for x in app.sidebar.text_input)
 
     assert len(app.tabs)==4
-    app.button[0].click().run()
+    next(x for x in app.button if x.label=='Find promos').click().run()
     assert not app.exception
+
     provider=next(x for x in app.selectbox if x.label=='Provider')
     provider.select('Gemini').run()
     assert not app.exception
@@ -45,6 +46,32 @@ def test_dashboard_load_run_and_provider_switch():
     assert not app.exception
 
 
+def test_fresh_sample_run_replaces_saved_results():
+    from streamlit.testing.v1 import AppTest
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
+    app.radio[0].set_value('Try a sample screenplay').run()
+    next(x for x in app.button if x.label=='Find promos').click().run()
+    assert not app.exception
+    assert app.metric[0].value=='1'
+    result=app.session_state['result']
+    assert [e['episode'] for e in result['run']['episode_coverage']]==[101]
+    assert result['promos'] and result['audit']['hard_failures']==[]
+    assert all(s['episode']==101 for x in result['promos'] for s in x['segments'])
+
+
+def test_api_connection_test_uses_selected_model_without_exporting_key():
+    from streamlit.testing.v1 import AppTest
+    from unittest.mock import patch
+    app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
+    next(x for x in app.selectbox if x.label=='Provider').select('Gemini').run()
+    next(x for x in app.text_input if x.label=='API key (session only)').input('fake-interview-key').run()
+    with patch('src.llm_evaluator.JudgeProvider.request',return_value=({'status':'ok'},{'input_tokens':10,'output_tokens':4})) as request:
+        next(x for x in app.button if x.label=='Test API connection').click().run()
+    assert not app.exception and request.call_count==1
+    assert any('API connection succeeded' in x.value for x in app.success)
+    assert 'fake-interview-key' not in str(app.session_state['result'])
+
+
 def test_cloud_saved_results_without_confidential_sources(tmp_path):
     from unittest.mock import patch
     import streamlit as st
@@ -52,7 +79,7 @@ def test_cloud_saved_results_without_confidential_sources(tmp_path):
     st.cache_data.clear()
     try:
         with patch('run_pipeline.DEFAULT_INPUT', tmp_path / 'not-bundled'):
-            app=AppTest.from_file('app.py',default_timeout=40).run()
+            app=AppTest.from_file(Path(__file__).resolve().parents[1]/'app.py',default_timeout=40).run()
             assert not app.exception
             assert len(app.tabs)==4
             assert app.metric[0].value=='50'

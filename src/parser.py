@@ -42,10 +42,12 @@ class Episode:
     beats: list
     timeline: list
     warnings: list = field(default_factory=list)
+    dialogue_joins: list = field(default_factory=list)
 
     def safe(self, time):
         # Camera/action may span edits, but an audible utterance must remain whole.
-        return not any(b.kind == 'DIALOGUE' and b.start < time < b.end for b in self.beats)
+        return (not any(b.kind == 'DIALOGUE' and b.start < time < b.end for b in self.beats)
+                and not any(a<=time<=z for a,z in self.dialogue_joins))
 
     def boundary(self, time, side):
         return any(getattr(b, side) == time for b in self.beats) and self.safe(time)
@@ -88,7 +90,15 @@ def parse_text(text, filename='upload.txt'):
     if not beats: raise ValueError(f'{filename}: no beats parsed')
     bounds = sorted({t for b in beats for t in (b.start,b.end)})
     timeline = [dict(start=a,end=z,beat_ids=[b.id for b in beats if b.start<z and b.end>a]) for a,z in zip(bounds,bounds[1:])]
-    return Episode(number,filename,meta('EPISODE LOGLINE'),meta('CONTINUITY NOTES'),scenes,beats,timeline,warnings)
+    dialogue=sorted((b for b in beats if b.kind=='DIALOGUE'),key=lambda b:b.start)
+    joins=[]
+    for left,right in zip(dialogue,dialogue[1:]):
+        same_speaker=left.speaker.split('(')[0].strip()==right.speaker.split('(')[0].strip()
+        if (same_speaker and 0<=right.start-left.end<=2
+                and left.text.strip().strip('"“”').endswith(('...','…'))
+                and right.text.strip().strip('"“”').startswith(('...','…'))):
+            joins.append((left.end,right.start))
+    return Episode(number,filename,meta('EPISODE LOGLINE'),meta('CONTINUITY NOTES'),scenes,beats,timeline,warnings,joins)
 
 
 def parse_folder(folder):

@@ -5,10 +5,11 @@ from zipfile import ZipFile, ZIP_DEFLATED
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ['app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.md',
          'SOLUTION_DOC.md','SOLUTION_DOC.html','.gitignore','.streamlit/config.toml',
-         'scripts/package_deploy.py']
+         'SOLUTION_DOC.pdf','REQUIREMENTS_REVIEW.md','INTERVIEW_GUIDE.md',
+         'examples/demo_screenplay.txt','scripts/package_deploy.py','scripts/review_editorial_cases.py']
 FILES += [str(p.relative_to(ROOT)) for folder in ('src','tests') for p in sorted((ROOT/folder).glob('*.py'))]
 FILES += ['raw_outputs/'+name for name in ('all_episodes_promos_ranked.json',
-          'top_promos_ranked.csv','top_promos_report.md','quality_and_failure_audit.md','manifest.json')]
+          'top_promos_ranked.csv','top_promos_report.md','quality_and_failure_audit.md','editorial_regression_review.json','manifest.json')]
 
 def main():
     target=ROOT/'streamlit_deploy.zip'
@@ -17,7 +18,7 @@ def main():
             archive.write(ROOT/name,name)
     with ZipFile(target) as archive:
         assert set(archive.namelist())==set(FILES)
-        assert all('secrets.toml' not in name and not name.endswith('.txt') or name=='requirements.txt' for name in archive.namelist())
+        assert all('secrets.toml' not in name and (not name.endswith('.txt') or name in ('requirements.txt','examples/demo_screenplay.txt')) for name in archive.namelist())
         assert 'app.py' in archive.namelist()
     print(f'{target.name}: {len(FILES)} files; {target.stat().st_size:,} bytes. No original screenplay files, input archives, or API secrets included.')
 

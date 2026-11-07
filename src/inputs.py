@@ -5,7 +5,7 @@ from pathlib import Path
 from .parser import parse_text
 
 def read_uploads(files):
-    episodes=[];total_bytes=0
+    episodes=[];total_bytes=0;expanded_bytes=0;file_count=0
     for f in files:
         raw=f.getvalue();total_bytes+=len(raw)
         if total_bytes>20_000_000: raise ValueError('Upload limit: 20 MB total')
@@ -13,9 +13,14 @@ def read_uploads(files):
             with zipfile.ZipFile(io.BytesIO(raw)) as archive:
                 entries=[x for x in archive.infolist() if x.filename.lower().endswith('.txt') and not x.filename.startswith('__MACOSX/')]
                 if len(entries)>500 or sum(x.file_size for x in entries)>20_000_000: raise ValueError('ZIP expands beyond 500 files / 20 MB')
+                expanded_bytes+=sum(x.file_size for x in entries);file_count+=len(entries)
+                if expanded_bytes>20_000_000 or file_count>500: raise ValueError('Combined upload exceeds 500 screenplay files / 20 MB expanded')
                 for entry in entries:
                     episodes.append(parse_text(archive.read(entry).decode('utf-8-sig'),Path(entry.filename).name))
-        else: episodes.append(parse_text(raw.decode('utf-8-sig'),f.name))
+        else:
+            expanded_bytes+=len(raw);file_count+=1
+            if expanded_bytes>20_000_000 or file_count>500: raise ValueError('Combined upload exceeds 500 screenplay files / 20 MB expanded')
+            episodes.append(parse_text(raw.decode('utf-8-sig'),f.name))
     if not episodes: raise ValueError('No screenplay text files found')
     if len({e.number for e in episodes})!=len(episodes): raise ValueError('Duplicate episode numbers in upload')
     return sorted(episodes,key=lambda e:e.number)

@@ -30,13 +30,20 @@ def audit(episodes,items,rejected,minimum=20,maximum=60):
     for x in items+rejected:
         flags=x.get('editorial_flags',[])
         if flags:
+            reason=x.get('rejection_reason','')
+            fix=('Move the in-point to a physical action or shocking line, then revalidate duration.' if any('Weak first' in f for f in flags) else
+                 'Cut before the recovery; reject the clip if the remaining unresolved stretch is too short.' if any('Main conflict resolves' in f or 'De-escalation' in f for f in flags) else
+                 'Preserve a single victim and causal conflict; remove the misleading bridge.' if any('changes apparent victim' in f for f in flags) else
+                 'Choose a cut with explicit human relationships and threats instead of unexplained lore.' if any('Backstory' in f for f in flags) else
+                 'Check exact first-three-second action/word timing in footage and reject if the hook starts late.' if any('onset' in f or 'exceeds 3s' in f for f in flags) else
+                 'Watch the exact cut in footage; verify unresolved stakes and identity continuity.')
             examples.append(dict(id=x['id'],segments=x['segments'],score=x.get('composite_score'),
                                  hook=x.get('hook_text',''),cut=x.get('cliffhanger_text',''),
-                                 categories=flags,status='borderline' if x in items else 'rejected baseline',
-                                 human_fix='Watch the exact cut in footage; re-anchor on the action, cut before the answer, or reject if context cannot fit.'))
+                                 categories=flags,status='shortlisted but flagged' if x in items else 'rejected candidate',
+                                 rejection_reason=reason,human_fix=fix))
     # Retain diverse concrete failures, not 20 near-duplicates.
     diverse=[]; counts={}
-    for x in sorted(examples,key=lambda x:(x['status']!='rejected baseline',x['score'] or 0)):
+    for x in sorted(examples,key=lambda x:(x['status']!='rejected candidate',x['score'] or 0)):
         category=x['categories'][0]
         if counts.get(category,0)<5:
             diverse.append(x); counts[category]=counts.get(category,0)+1

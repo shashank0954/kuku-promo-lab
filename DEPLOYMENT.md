@@ -30,7 +30,7 @@ This is deliberate: original confidential scripts are not published as part of t
 
 ## 4. Optional AI keys
 
-A reviewer can enter a personal key in the expanded **AI provider & API key** section at the top of the page. If you want to provide a server-side key instead, add it in Streamlit's app secrets settings:
+A reviewer can enter a personal key in the expanded **AI provider & API key** section at the top of the page, then use **Test API connection** before running the full pipeline. **Show API endpoint and example request body** exposes a placeholder-key request contract. If you want to provide a server-side key instead, add it in Streamlit's app secrets settings:
 
 ```toml
 GEMINI_API_KEY = "your-key"
@@ -41,7 +41,8 @@ Root-level Streamlit secrets are available as environment variables. Never commi
 
 ## 5. Smoke test after deployment
 
-- Saved playbook shows 50 episodes and 83 shortlisted cuts.
+- Saved playbook shows 50 episodes and 64 shortlisted cuts.
+- Select **Try a sample screenplay**, click **Find promos**, and verify the result changes to one episode (Episode 101).
 - All four tabs open; Episode 25 is selectable.
 - Upload the original ZIP, choose offline mode, and click **Find promos**.
 - Verbatim timeline opens after the uploaded source run.

@@ -1,11 +1,13 @@
 """Kuku • script-to-promo editorial workbench."""
 import json
+import hashlib
+import os
 from pathlib import Path
 import pandas as pd
 import streamlit as st
 from src.parser import parse_folder
 from src.inputs import read_uploads
-from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS
+from src.llm_evaluator import MODELS,DEFAULT_WEIGHTS,DIMENSIONS,JudgeProvider,ENV_KEYS,describe_error
 from src.economics import estimate,cost,RATES
 from run_pipeline import execute,DEFAULT_INPUT,format_segments
 
@@ -16,6 +18,7 @@ st.title('Find the moment. Leave them wanting more.')
 st.write('Source-grounded promo cuts, ranked for a viewer who has never seen the show.')
 APP_ROOT = Path(__file__).resolve().parent
 SAVED_OUTPUT = APP_ROOT / 'raw_outputs/all_episodes_promos_ranked.json'
+DEMO_INPUT = APP_ROOT / 'examples'
 
 with st.expander('AI provider & API key', expanded=True):
     provider_col, model_col, key_col = st.columns(3)
@@ -33,6 +36,25 @@ with st.expander('AI provider & API key', expanded=True):
     else:
         st.caption('Upload screenplay TXT files or a ZIP in the sidebar, then click Find promos to run with this provider. Saved results stay unchanged until you run again.')
     if provider=='Anthropic': st.caption('Claude 3.5 presets are legacy and may be retired. Use an available model ID; API errors are reported with offline fallback.')
+    if st.button('Test API connection',disabled=provider=='Heuristic/Offline'):
+        test_key=key or os.getenv(ENV_KEYS.get(provider,''),'')
+        if not test_key:
+            st.error('Enter an API key or configure a provider environment key first.')
+        else:
+            try:
+                with st.spinner('Checking the selected model with a short JSON request…'):
+                    reply,usage=JudgeProvider(provider,model,test_key).request('Return only a JSON object with status set to ok.')
+                if not isinstance(reply,dict) or reply.get('status')!='ok':
+                    st.error('The model responded, but did not return the requested status JSON.')
+                else:
+                    st.success(f'API connection succeeded: {provider} / {model}. This was a connection test; choose Find promos to analyze scripts.')
+                    st.json(usage)
+            except Exception as exc:
+                st.error(describe_error(provider,exc))
+    if model and st.checkbox('Show API endpoint and example request body'):
+        url,headers,body=JudgeProvider(provider,model,'YOUR_API_KEY').build_request('Return only a JSON object with status set to ok.')
+        st.code('POST '+url)
+        st.json(dict(headers=headers,body=body))
 
 @st.cache_data
 def preload():
@@ -44,6 +66,7 @@ with st.sidebar:
     st.header('Run your show')
     saved_label = 'Preloaded 50 episodes' if DEFAULT_INPUT.exists() else 'Saved 50-episode playbook'
     options = [saved_label, 'Upload screenplay files'] if DEFAULT_INPUT.exists() or SAVED_OUTPUT.exists() else ['Upload screenplay files']
+    if (DEMO_INPUT/'demo_screenplay.txt').exists(): options.append('Try a sample screenplay')
     source=st.radio('Input',options)
     uploads=st.file_uploader('TXT files or a ZIP pack',type=['txt','zip'],accept_multiple_files=True) if source.startswith('Upload') else []
     minimum,maximum=st.slider('Total duration (seconds)',20,60,(20,60))
@@ -53,8 +76,12 @@ with st.sidebar:
     run=st.button('Find promos',type='primary',use_container_width=True)
     st.caption('Offline is reproducible and free. AI calls send shortlisted script excerpts to the selected provider.')
 
+input_signature=(source,tuple((f.name,hashlib.sha256(f.getvalue()).hexdigest()) for f in uploads))
 try:
-    episodes=read_uploads(uploads) if source.startswith('Upload') and uploads else (preload() if not source.startswith('Upload') else [])
+    if source=='Try a sample screenplay':
+        episodes=parse_folder(DEMO_INPUT)
+    else:
+        episodes=read_uploads(uploads) if source.startswith('Upload') and uploads else (preload() if not source.startswith('Upload') else [])
 except Exception as exc:
     st.error(f'Input validation: {exc}');episodes=[]
 
@@ -67,13 +94,15 @@ if run:
                 st.session_state['result']=execute(episodes,provider,model,key,minimum,maximum,weights,budget)
                 st.session_state['episodes']=episodes
                 st.session_state['run_input']=source
+                st.session_state['run_input_signature']=input_signature
             except Exception as exc: st.error(f'Run failed: {type(exc).__name__}: {exc}')
 
-if 'result' not in st.session_state and not source.startswith('Upload'):
+if 'result' not in st.session_state and source not in ('Upload screenplay files','Try a sample screenplay'):
     if SAVED_OUTPUT.exists():
         st.session_state['result']=json.loads(SAVED_OUTPUT.read_text());st.session_state['episodes']=episodes;st.session_state['run_input']=source
     elif episodes:
         st.session_state['result']=execute(episodes,'Heuristic/Offline');st.session_state['episodes']=episodes;st.session_state['run_input']=source
+    if 'result' in st.session_state: st.session_state['run_input_signature']=input_signature
 
 if 'result' not in st.session_state:
     st.info('Load screenplay files and choose Find promos to create your playbook.');st.stop()
@@ -81,10 +110,11 @@ r=st.session_state['result'];eps=st.session_state['episodes'];lookup={e.number:e
 coverage={e['episode']: e for e in r['run']['episode_coverage']}
 if not eps:
     st.info('Showing saved results from all 50 episodes. Upload the original TXT files or ZIP to rerun the pipeline and inspect full verbatim timelines. Source screenplays are not bundled with the deployment.')
-if st.session_state.get('run_input')!=source: st.info('Showing the previous run. Choose Find promos to analyze the selected input.')
+if st.session_state.get('run_input_signature')!=input_signature: st.info('Showing the previous run. Choose Find promos to analyze the selected input.')
 metrics=st.columns(4)
 for col,label,value in zip(metrics,['Episodes analyzed','Ranked cuts','Source checks passed','Run time'],[r['run']['episode_count'],len(r['promos']),f"{r['audit']['passed']}/{r['audit']['hard_checks']}",f"{r['run']['elapsed_seconds']:.2f}s"]): col.metric(label,value)
 st.caption(f"Results: {r['run']['provider']['provider']} · {r['run']['beat_count']:,} source beats · Scores are editorial estimates, not measured ad performance.")
+st.caption(f"AI-judged candidates before editorial gates: {r['run']['provider']['judged_candidates']}. Each promo shows its own score source; the remaining candidates use heuristics.")
 for warning in r['run']['provider']['errors']: st.warning(warning)
 
 def timeline(item):
@@ -112,6 +142,7 @@ def timeline(item):
 def detail(item):
     st.subheader(f"#{item['rank']} · {format_segments(item)}")
     st.write(item['posting_strategy']);st.caption(item['posting_reason'])
+    st.caption(f"Posting priority: {item.get('posting_priority',item['rank'])} · Score source: {item['evaluation_source']}")
     a,b=st.columns(2);a.success('FIRST 3s · '+item['hook_text']);b.error('CLIFFHANGER · '+item['cliffhanger_text'])
     st.write(item['why_it_works']);st.caption(item['ranking_rationale'])
     st.bar_chart(pd.DataFrame({'Score':item['scores']}))
@@ -124,8 +155,10 @@ with tabs[0]:
     tier=left.multiselect('Posting tiers',sorted({x['posting_strategy'] for x in r['promos']}))
     threshold=right.slider('Minimum composite score',0,100,0)
     kind=st.selectbox('Edit type',['All','single','mashup'])
+    ordering=st.selectbox('Sort playbook by',['Posting priority','Composite score'])
     items=[x for x in r['promos'] if (not tier or x['posting_strategy'] in tier) and x['composite_score']>=threshold and (kind=='All' or x['kind']==kind)]
-    rows=[dict(Rank=x['rank'],Priority=x['posting_strategy'],Episodes=', '.join(str(s['episode']) for s in x['segments']),Cuts=format_segments(x),Seconds=x['duration'],Score=x['composite_score'],Hook=x['hook_text'],Cliffhanger=x['cliffhanger_text'],Why=x['why_it_works'],**x['scores']) for x in items]
+    items=sorted(items,key=lambda x:x.get('posting_priority',x['rank']) if ordering=='Posting priority' else x['rank'])
+    rows=[dict(Rank=x['rank'],Posting_order=x.get('posting_priority',x['rank']),Priority=x['posting_strategy'],Posting_reason=x['posting_reason'],Score_source=x['evaluation_source'],Episodes=', '.join(str(s['episode']) for s in x['segments']),Cuts=format_segments(x),Seconds=x['duration'],Score=x['composite_score'],Hook=x['hook_text'],Cliffhanger=x['cliffhanger_text'],Why=x['why_it_works'],**x['scores']) for x in items]
     st.dataframe(pd.DataFrame(rows),hide_index=True,use_container_width=True)
     if items:
         labels=[f"#{x['rank']} · {format_segments(x)}" for x in items]

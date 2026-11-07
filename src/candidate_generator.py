@@ -5,17 +5,29 @@ from itertools import combinations
 PHYSICAL = r'\b(slap\w*|whip\w*|welt\w*|blood\w*|kneel\w*|grab\w*|chok\w*|shatter\w*|tears? (?:her|his|the) (?:dress|gown)|tearing|torn|strik\w*|struck|collaps\w*|sword|burn\w*|chain\w*|drag\w*|wound\w*)\b'
 INTENSE = r'seething|scornful|cold|desperate|thunderstruck|furious|commanding|terrified'
 CONFRONT = r'\b(who did this|turn around|strip her|get out|kill\w*|execut\w*|marrying me|witch\w*|arrest\w*|traitor|how dare|hang|cannot breathe|disown\w*|abandon\w*)\b'
-ARCHETYPE = r'bride|groom|husband|wife|sister|mother|father|marry|marrying|wedding|servant|master|poison|betray|child|brother'
+ARCHETYPE = r'\b(?:bride|groom|husband|wife|sister|mother|father(?!\s+Thomas)|marry|marrying|wedding|servant|master|poison\w*|betray\w*|child|brother)\b'
 RESOLUTION = r'\b(safe now|thank you|forgive you|all right|everything is fine|reassuring|relaxes|relief|reassured|comforting|tender kiss|gently cradles|tearful reunion|embraces her son|unspoken bond|gaze deeply|softening with deep empathy|resolving chord)\b'
 LORE = r'ashbourne|ashburton|ashbury|crest|ledger|herbarium|council|license|charcoal|antidote|grimoire|signet'
 
 def hits(pattern,text): return len(re.findall(pattern,text,re.I))
+def physical_conflict(text):
+    """Do not confuse an ornament or metaphor with an injury or attack."""
+    cleaned=re.sub(r'\b(?:wounded (?:pride|ego|expression|look)|look so wounded)\b','',text,flags=re.I)
+    cleaned=re.sub(r'\b(?:eyes?|gaze|sorrow)\b[^.!?]{0,35}\bburn\w*\b','',cleaned,flags=re.I)
+    cleaned=re.sub(r'\bburning (?:with |into )?(?:ambition|outrage|rage|desire|intent|ruthless intent)\b','',cleaned,flags=re.I)
+    cleaned=re.sub(r'\bburning (?:forehead|hot)\b','',cleaned,flags=re.I)
+    cleaned=re.sub(r'\b(?:(?:gold|silver) )?(?:pocket watch|watch) chain\b','',cleaned,flags=re.I)
+    if re.search(r'\b(?:gavel|wooden block|cane striking|clock strikes)\b',cleaned,re.I):
+        cleaned=re.sub(r'\bstrik\w*\b','',cleaned,flags=re.I)
+    return hits(PHYSICAL,cleaned)
+
 def hook(b):
     if b.kind=='SOUND FX': return 0
-    physical=bool(hits(PHYSICAL,b.text))
+    physical=bool(physical_conflict(b.text))
     confrontation=bool(hits(CONFRONT,b.text))
     # Parenthetical heat alone is recall evidence, not a shocking opening line.
-    score=80*physical+65*confrontation
+    betrayal=bool(hits(r'you stole my wedding|marrying (?:her|me|my sister)|leaving me at the altar',b.text))
+    score=80*physical+65*confrontation+80*betrayal
     if b.kind=='DIALOGUE' and len(b.text.split())>=5:
         score+=18*bool(hits(INTENSE,b.speaker))
     elif hits(INTENSE,b.speaker): score+=8
@@ -77,7 +89,7 @@ def generate(episodes,minimum=20,maximum=60,per_episode=8):
     shorts=[]
     for item in short:
         if sum(x['segments'][0]['episode']==item['segments'][0]['episode'] for x in shorts)<2: shorts.append(item)
-    mashups=[]
+    mashups=[]; bridges=set()
     for left,right in combinations(shorts,2):
         a,b=left['segments'][0],right['segments'][0]
         if (a['episode'],a['start'])>(b['episode'],b['start']): a,b=b,a
@@ -87,5 +99,8 @@ def generate(episodes,minimum=20,maximum=60,per_episode=8):
         tb=' '.join(x['text'] for x in lookup[b['episode']].excerpt(b['start'],b['end']))
         roles=set(re.findall(ARCHETYPE,ta.lower())) & set(re.findall(ARCHETYPE,tb.lower()))
         if minimum<=a['duration']+b['duration']<=maximum and roles:
-            mashups.append(make_candidate([a,b],f'M-{a["episode"]}-{a["start"]}-{a["end"]}-{b["episode"]}-{b["start"]}-{b["end"]}'))
+            bridge=(a['episode'],a['start'],b['episode'],b['start'])
+            if bridge not in bridges:
+                mashups.append(make_candidate([a,b],f'M-{a["episode"]}-{a["start"]}-{a["end"]}-{b["episode"]}-{b["start"]}-{b["end"]}'))
+                bridges.add(bridge)
     return singles+mashups[:30],rejected

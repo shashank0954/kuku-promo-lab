@@ -6,7 +6,7 @@ secondaryBackgroundColor = "#141e2d"
 textColor = "#edf1f6"
 
 [server]
-fileWatcherType = "none"
+fileWatcherType = "poll"
 
 [browser]
 gatherUsageStats = false
