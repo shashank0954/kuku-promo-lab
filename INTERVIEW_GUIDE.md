@@ -15,7 +15,7 @@ Use this as an explanation guide, not a script for claiming work you did not do.
 
 **Why not send all scripts directly to an LLM?** Code can enumerate safe source boundaries consistently. Keeping cuts in code reduces timestamp hallucination, token volume and the amount of confidential text sent to providers. AI then critiques the difficult editorial questions.
 
-**Does every ranked promo use AI?** No. The saved run is offline. A live run judges at most the configured finalist budget, eight by default; the rest keep labeled heuristic scores. Comparing differently scored candidates is approximate and needs calibration with editor labels.
+**Does every ranked promo use AI?** No. The saved run is offline. A live run judges at most the configured finalist budget, eight by default; the rest keep labeled heuristic scores. Ranking keeps the heuristic score; AI scores remain separate and uncalibrated. AI critique can veto or require review. Independent human-label evaluation remains pending.
 
 **How do you know a cliffhanger is unresolved?** The code looks for questions, threats and reveals and penalizes known resolutions. It is not a proof of story meaning. AI and an editor can notice answers already supplied or misleading changes of victim.
 

@@ -112,5 +112,8 @@ Offline measured API usage: zero calls, zero tokens, $0. Local elapsed {run['ela
     print(f'Built visual solution HTML, three SVG assets and searchable playbook from {len(ordered)} real promos. Raw outputs unchanged.')
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--tests-passed',type=int,default=62)
-    build(parser.parse_args().tests_passed)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--tests-passed',type=int,default=None)
+    args=parser.parse_args()
+    tests=args.tests_passed
+    if tests is None: tests=json.loads((ROOT/'deliverables/final_verification.json').read_text())['tests_passed']
+    build(tests)

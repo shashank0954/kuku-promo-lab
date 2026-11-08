@@ -1,11 +1,11 @@
 # Submission deliverables
 
-Submit these three links through the placement-cell form:
+Follow `../FINAL_SUBMISSION_GUIDE.md`. Submit the three required items through the placement-cell form. Generated results contain source quotations: use the intended reviewer sharing route and review public exposure before submission. The table below also identifies existing GitHub copies; it does not certify confidentiality or replace that check.
 
 | Required item | Link |
 |---|---|
 | Solution document — PDF, two pages | [SOLUTION_DOC.pdf](https://raw.githubusercontent.com/shashank0954/kuku-promo-lab/main/SOLUTION_DOC.pdf) |
-| Prototype — runnable repository | [Kuku Promo Lab](https://github.com/shashank0954/kuku-promo-lab) |
+| Prototype — live Streamlit app, repository fallback | [Live app](https://kuku-promo-lab-shashank.streamlit.app/) · [Runnable repository](https://github.com/shashank0954/kuku-promo-lab) |
 | Raw outputs — full 50-episode input pack | [Unedited output folder](https://github.com/shashank0954/kuku-promo-lab/tree/main/raw_outputs) |
 
 ## Visual companions

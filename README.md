@@ -6,9 +6,13 @@ Find **20–60 second** microdrama ads with an immediate hook, an unresolved end
 
 **[Download the complete submission bundle](SUBMISSION_BUNDLE.zip)** — extract it to open the visual playbook locally.
 
+**Live prototype:** https://kuku-promo-lab-shashank.streamlit.app/
+
+**Submission steps:** [Final submission guide](FINAL_SUBMISSION_GUIDE.md) · [Verification report](deliverables/final_verification.json)
+
 **Required deliverables:** [Two-page solution PDF](SOLUTION_DOC.pdf) · [Prototype & run steps](#run) · [Full unedited raw outputs](raw_outputs/)
 
-**Read the evidence first.** All 50 episodes are analyzed. The saved run contains 64 shortlisted promos and 295/295 passing source audits; scores are editorial estimates, not measured campaign performance. Optional live AI reviews only the configured finalist budget, and every score's origin is labeled.
+**Read the evidence first.** All 50 episodes are analyzed. The saved run contains 64 shortlisted promos and 295/295 passing structural audits; scores are editorial estimates, not measured campaign performance. Optional live AI reviews only the configured finalist budget, and every score's origin is labeled.
 
 ## The solution, in two pages
 
@@ -130,7 +134,7 @@ For an interview: select **Try a sample screenplay** → **Find promos** to demo
 
 Build a distribution with `python scripts/package_deploy.py`. It contains the original synthetic demo and the two-page solution PDF, with the confidential original pack excluded. See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) for a short presentation and explanations you should understand.
 
-Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. All 56 tests pass there. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
+Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. The latest verification run passed 71 tests; see `deliverables/final_verification.json`. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
 
 ## Free Gemini API test
 
@@ -155,7 +159,7 @@ The CLI supports the same selection: `python run_pipeline.py --episodes "2,5,8-1
 The diagrams and playbook are generated from the saved output JSON, without modifying `raw_outputs/`. The solution PDF remains exactly two pages; its source hash is printed in the footer.
 
 ```bash
-python scripts/build_visual_deliverables.py --tests-passed 56
+python scripts/build_visual_deliverables.py
 python scripts/render_visuals.py
 ```
 
