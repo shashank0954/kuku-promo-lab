@@ -21,7 +21,7 @@
   "human_evaluation": "pending human labels",
   "live_api_verified": false,
   "live_app_url": "https://kuku-promo-lab-shashank.streamlit.app/",
-  "live_app_status": "Unverified externally: HTTP redirect loop; clean-browser automation timed out. Applicant previously reported app working. Manual incognito check required.",
+  "live_app_status": "Anonymous HTTP 200 verified on 2026-11-08 after a fresh unauthenticated cookie exchange. Rendered UI build remains a manual incognito check.",
   "source_sha256": "c9b8e2104f0b4d854f7e379355a577aca7260f1fb057b29ab2606fc64f27e9ff",
   "pdf_pages": 2,
   "pdf_browser_layout_checks": "Final regenerated PDF: both pages fit above footers; current counts and E9 regression confirmed",
@@ -39,5 +39,6 @@
   "editorial_regression_expectation_revisions": [
     "E25 Who? now rejected",
     "E32 What? now rejected"
-  ]
+  ],
+  "public_prototype_http_verified": true
 }
