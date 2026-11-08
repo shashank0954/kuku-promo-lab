@@ -5,7 +5,7 @@ import json
 from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['pytest.ini','FINAL_SUBMISSION_GUIDE.md','deliverables/final_verification.json','API_KEY_SECURITY.md','app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.md',
+FILES = ['FORM_SUBMISSION_ANSWERS.md','pytest.ini','FINAL_SUBMISSION_GUIDE.md','deliverables/final_verification.json','API_KEY_SECURITY.md','app.py','run_pipeline.py','requirements.txt','README.md','DEPLOYMENT.md',
          'SOLUTION_DOC.md','SOLUTION_DOC.html','.gitignore','.streamlit/config.toml',
          'SOLUTION_DOC.pdf','REQUIREMENTS_REVIEW.md','INTERVIEW_GUIDE.md','FREE_API_TESTING.md',
          'examples/demo_screenplay.txt','scripts/package_deploy.py','scripts/review_editorial_cases.py']
