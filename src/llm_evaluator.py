@@ -9,14 +9,15 @@ import urllib.error
 import urllib.request
 from datetime import datetime,timezone
 from email.utils import parsedate_to_datetime
+from .editorial_explanations import content_text,classify_theme,one_liner
 from .editorial_policy import apply_policy, judging_sample, validate_assessment, ASSESSMENTS
 from .candidate_generator import hook, cliff, hits, physical_conflict, ARCHETYPE, LORE, RESOLUTION, PHYSICAL, CONFRONT
 
 DIMENSIONS = ['hook_3s_score','cliffhanger_score','standalone_clarity_score','emotional_arousal_score','pacing_density_score']
 DEFAULT_WEIGHTS = dict(zip(DIMENSIONS,[.3,.3,.2,.1,.1]))
-GEMINI_FREE_TEST_MODEL = 'gemini-3.8-flash'
-GEMINI_FREE_TEST_MODELS = (GEMINI_FREE_TEST_MODEL,'gemini-3.5-flash-lite')
-MODELS = {'Gemini':[*GEMINI_FREE_TEST_MODELS,'gemini-2.5-flash','gemini-2.5-pro'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
+GEMINI_FREE_TEST_MODEL = 'gemini-3.5-flash-lite'
+GEMINI_FREE_TEST_MODELS = (GEMINI_FREE_TEST_MODEL,'gemini-3.8-flash')
+MODELS = {'Gemini':[*GEMINI_FREE_TEST_MODELS,'gemini-2.5-flash','gemini-2.5-pro','gemini-2.0-flash'], 'OpenAI':['gpt-4o-mini','gpt-4o'],
           'Anthropic':['claude-sonnet-4-5','claude-haiku-4-5','claude-3-5-sonnet-20241022','claude-3-5-haiku-20241022']}
 ENV_KEYS = {'Gemini':'GEMINI_API_KEY','OpenAI':'OPENAI_API_KEY','Anthropic':'ANTHROPIC_API_KEY'}
 
@@ -61,13 +62,13 @@ def evaluate_offline(item,episodes,weights=None):
     hs=max([hook(b) for b in opening_onsets] or [0])
     cs=max([cliff(b) for b in endpoint] or [0])
     allbeats=[b for _,bs in tracks for b in bs]
-    text=' '.join(b.text for b in allbeats)
-    visible=' '.join(b.text for b in fb)
+    text=content_text(allbeats)
+    visible=content_text(fb)
     clarity=max(15,min(96,48+12*min(4,hits(ARCHETYPE,visible))+30*bool(physical_conflict(visible))-9*min(7,hits(LORE,visible))))
     if len(tracks)>1: clarity=max(10,clarity-25)
     resolved=bool(any(hits(RESOLUTION,b.text) for b in ending))
     if resolved: cs=max(0,cs-65)
-    arousal=min(98,35+8*min(8,hits(PHYSICAL+'|'+CONFRONT,text)))
+    arousal=min(98,35+8*min(8,physical_conflict(text)+hits(CONFRONT,text)))
     occupied=0
     for s,bs in tracks:
         intervals=sorted((max(s['start'],b.start),min(s['end'],b.end)) for b in bs if b.kind in ('ACTION','DIALOGUE'))
@@ -82,6 +83,22 @@ def evaluate_offline(item,episodes,weights=None):
     concerns=[]
     def concern(code,reason): concerns.append(dict(code=code,reason=reason))
     if resolved: concern("resolved","De-escalation near cut")
+    if len(tracks)==1:
+        early_resolutions=[b for b in allbeats if b.start>=first['start'] and b.end<=first['start']+.8*item['duration'] and hits(RESOLUTION,b.text)]
+        def unrelated_conversation(resolution):
+            before=[b for b in allbeats if b.kind=='DIALOGUE' and b.end<=resolution.end]
+            after=[b for b in allbeats if b.kind=='DIALOGUE' and b.start>resolution.end]
+            before_speakers={b.speaker.split('(')[0].strip() for b in before}
+            ending_speakers={b.speaker.split('(')[0].strip() for b in after[-2:]}
+            medical=hits(r'\b(child|boy|fever|breathe|saved him|chest is quiet)\b',content_text(before))
+            new_topic=hits(r'\b(inheritance|dowry|wedding|registry|duchess|estate)\b',content_text(after[-2:]))
+            return bool(before_speakers and ending_speakers and not before_speakers & ending_speakers and medical and new_topic)
+        pivots=[b for b in early_resolutions if any(later.start>=b.end and later.scene!=b.scene for later in allbeats) or unrelated_conversation(b)]
+        if pivots:
+            concerns.append(dict(code='resolved_mid_clip',reason='Opening conflict resolves within first 80%, then pivots to another scene or unrelated conversation',evidence=[b.id for b in pivots]))
+            flags.append('Resolved mid-clip before a scene pivot; ending question belongs to another conversation')
+            scores['cliffhanger_score']=min(25,scores['cliffhanger_score'])
+
     if c.kind=="SOUND FX": concern("music_only","Music alone cannot establish unresolved stakes")
     if hs<40: flags.append('Weak first-3s hook / atmospheric or lexical false positive')
     if cs<35: flags.append('Weak or resolved endpoint')
@@ -109,12 +126,9 @@ def evaluate_offline(item,episodes,weights=None):
         value=' '.join(text.strip('"“”').split())
         return value if len(value)<=105 else value[:102]+'…'
     hs=scores['hook_3s_score'];cs=scores['cliffhanger_score'];clarity=scores['standalone_clarity_score']
-    theme=('Wedding conflict' if hits(r'wedding|bride|marrying|groom',text) else
-           'A loved one in danger' if hits(r'child|boy|brother',text) and hits(r'ill|fever|breathe',text) else
-           'Abuse or injury' if physical_conflict(text) else 'A direct threat or challenge')
-    why=(f'{theme}: “{short(h.text)}” → “{short(c.text)}”; the response is withheld.' if '?' in c.text else
-         f'{theme}: “{short(h.text)}” → “{short(c.text)}”; the consequences are withheld.')
-    item.update(scores=scores,composite_score=composite(scores,weights),hook_text=h.text,cliffhanger_text=c.text,
+    theme=classify_theme(text)
+    why=one_liner(theme,h,c,scores,concerns)
+    item.update(theme=theme,scores=scores,composite_score=composite(scores,weights),hook_text=h.text,cliffhanger_text=c.text,
                 hook_evidence=dict(beat_id=h.id,kind=h.kind,start=h.start,end=h.end),
                 cliffhanger_evidence=dict(beat_id=c.id,kind=c.kind,start=c.start,end=c.end),
                 editorial_flags=flags,evaluation_source='heuristic',

@@ -1,17 +1,17 @@
 {
-  "source_sha256": "692578c95c0a1650b8004a5563e61385bd27295b20ba545db352485401414f7a",
+  "source_sha256": "c9b8e2104f0b4d854f7e379355a577aca7260f1fb057b29ab2606fc64f27e9ff",
   "presentation_only": true,
   "files": {
-    "SOLUTION_DOC.pdf": "6f833996ef817bfdba4f5c8ba7a8a315b5dccacb493f9d12ba5ea30674717ad1",
-    "SOLUTION_DOC.html": "a60eafaba6ecbeb4f6ad3ced008b2366a9aa3ad2902479d94e77a5b42412ee1e",
-    "deliverables/visual_playbook.html": "559d044e2a1b43c3bf815985251f7f612c2bfd3193ac2f8ed069a04fd13495a1",
-    "deliverables/visual_source.json": "99077bd0b220de714ed3f55364aa20acfcf89e9e8dde33b7977c22bd55914a08",
+    "SOLUTION_DOC.pdf": "b94a51b7b616ed9407b9ff6427aafa0c326099a94584f2fc39acfb3aa38cc283",
+    "SOLUTION_DOC.html": "c88ae1fcf5e9234f749478599f08f9b632a500ef165498d306a06183f558aba0",
+    "deliverables/visual_playbook.html": "d0a118443866dd5896ef9d11666f836e7c36668c8101041f3eea77caad16c6d5",
+    "deliverables/visual_source.json": "48aa0c73a2219cc85bde8fb9a04a7b67b02ffe9d29694806b56029d9fdb5370d",
     "assets/app_preview.png": "485efaddc24c8dae3d0d431b35fa1ff49b82f319ba6cfcc950327df87fd69b87",
     "assets/architecture.svg": "bbb82d73653cda460f454e958467423b9c2405da130cb2472de0c8482a898333",
-    "assets/playbook_preview.png": "77470f8be4842d23f89962b7327ee8c408bbd641ff11decd0a2c24a81d947e2c",
-    "assets/promo_timeline.svg": "5e090289f5c85be775fd1b26c4ae2f87f8d26ef54d5eb11414297073fca66a45",
-    "assets/solution_page_1.png": "761cae208a455f3eee709bb925d6f466f99590b8ff133281fbf69e0a714b5fde",
-    "assets/solution_page_2.png": "c85f9ff26f6ce2690cfe946149f4cfb0abcc924e113b7dd2f147372c28067c6f",
-    "assets/submission_overview.svg": "c7ded6148bee809dbd26eb898f169ae7ce46de64c658cdb878967563264dcd2d"
+    "assets/playbook_preview.png": "b0f9a3268333d44a9220dae1b3801e2e6468ea44f920aca67f7bd2ff3764cf9e",
+    "assets/promo_timeline.svg": "8f44e52eb8d6748d9772add55e953d4942baadd0d01ecf36130b2136dafc9584",
+    "assets/solution_page_1.png": "d408883d4b045d8a2b2480d845fca68ca20c6920302931aa0cf522a2096288f9",
+    "assets/solution_page_2.png": "73738936609304518295bbcea2429cb931cafa838232abee3b45410f82c1b122",
+    "assets/submission_overview.svg": "497052b3d19c1ded66a1ea9fe4880daf156f7974e9cd4c4dfe93cc72cfd1d3ec"
   }
 }

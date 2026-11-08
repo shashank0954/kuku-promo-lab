@@ -1,5 +1,5 @@
 {
-  "method": "Eleven hand-selected development cases, reviewed from complete source tracks. Not independent human validation or a general accuracy estimate.",
+  "method": "Eleven hand-selected development cases; E25 and E32 expectations revised after the explicit filler-ending audit. Prior expectations preserved in history. Reviewed from complete source tracks. Not independent human validation or a general accuracy estimate.",
   "cases": [
     {
       "expected_shortlist": false,
@@ -21,14 +21,15 @@
           }
         ],
         "duration": 40.5,
+        "theme": "Physical Peril & Protective Rage",
         "scores": {
           "hook_3s_score": 0,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 59,
+          "emotional_arousal_score": 43,
           "pacing_density_score": 76
         },
-        "composite_score": 55.5,
+        "composite_score": 53.9,
         "hook_text": "The Elder Nobleman walks with stern, unhurried authority, dressed in an immaculate black tailcoat and dark vest with a gold pocket watch chain.",
         "cliffhanger_text": "\"What are you suggesting?\"",
         "hook_evidence": {
@@ -47,7 +48,7 @@
           "Weak first-3s hook / atmospheric or lexical false positive"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "Abuse or injury: “The Elder Nobleman walks with stern, unhurried authority, dressed in an immaculate black tailcoat and …” → “What are you suggesting?”; the response is withheld.",
+        "why_it_works": "Physical Peril & Protective Rage: “The Elder Nobleman walks with stern, unhurried authority, dressed in an immaculate b…” offers no substantiated first-three-second confrontation; “What are you suggesting?” leaves the decision demanded by the question open.",
         "ranking_rationale": "Hook 0/100; cut tension 80/100; cold-viewer clarity 90/100. Review: Weak first-3s hook / atmospheric or lexical false positive",
         "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
         "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory.",
@@ -55,10 +56,10 @@
           "hook_3s_score": 0,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 59,
+          "emotional_arousal_score": 43,
           "pacing_density_score": 76
         },
-        "heuristic_composite_score": 55.5,
+        "heuristic_composite_score": 53.9,
         "heuristic_concerns": [],
         "uncertainty": [
           "insufficient evidence"
@@ -98,14 +99,15 @@
           }
         ],
         "duration": 28.8,
+        "theme": "Aristocratic Conspiracy",
         "scores": {
           "hook_3s_score": 0,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 30,
-          "emotional_arousal_score": 43,
+          "emotional_arousal_score": 35,
           "pacing_density_score": 92
         },
-        "composite_score": 43.5,
+        "composite_score": 42.7,
         "hook_text": "Frontal close-up of Catherine raising two fingers in the candlelight, her eyes burning with ruthless intent.",
         "cliffhanger_text": "\"If I keep the hearing open, if I feed you every word spoken behind those doors, what happens to me when the Duke finds out a crowned priest conspired against him?\"",
         "hook_evidence": {
@@ -126,7 +128,7 @@
           "Visual action onset uncertain within long source beat"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "A direct threat or challenge: “Frontal close-up of Catherine raising two fingers in the candlelight, her eyes burning with ruthless i…” → “If I keep the hearing open, if I feed you every word spoken behind those doors, what happens to me whe…”; the response is withheld.",
+        "why_it_works": "Aristocratic Conspiracy: “Frontal close-up of Catherine raising two fingers in the candlelight, her eyes burni…” offers no substantiated first-three-second confrontation; “If I keep the hearing open, if I feed you every word spoken behind those doors, what…” leaves the abandoned bride’s future undecided.",
         "ranking_rationale": "Hook 0/100; cut tension 80/100; cold-viewer clarity 30/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Backstory / named-entity dependence; Visual action onset uncertain within long source beat",
         "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
         "posting_reason": "Use after clearer singles: cold-viewer clarity is 30/100; confirm the conflict without backstory.",
@@ -134,10 +136,10 @@
           "hook_3s_score": 0,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 30,
-          "emotional_arousal_score": 43,
+          "emotional_arousal_score": 35,
           "pacing_density_score": 92
         },
-        "heuristic_composite_score": 43.5,
+        "heuristic_composite_score": 42.7,
         "heuristic_concerns": [],
         "uncertainty": [
           "uncertain within a long source beat",
@@ -180,21 +182,22 @@
           }
         ],
         "duration": 45.0,
+        "theme": "Aristocratic Conspiracy",
         "scores": {
-          "hook_3s_score": 18,
-          "cliffhanger_score": 80,
-          "standalone_clarity_score": 90,
-          "emotional_arousal_score": 51,
+          "hook_3s_score": 0,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 60,
+          "emotional_arousal_score": 35,
           "pacing_density_score": 85
         },
-        "composite_score": 61.0,
-        "hook_text": "\"Then you will make sure I remain inside these walls.\"",
+        "composite_score": 43.5,
+        "hook_text": "Close-up profile of Catherine leaning close to the man's shoulder, her eyes burning with ambition.",
         "cliffhanger_text": "\"You dare show your face in Ashbourne courtyard?\"",
         "hook_evidence": {
-          "beat_id": "47:7",
-          "kind": "DIALOGUE",
-          "start": 15.0,
-          "end": 18.2
+          "beat_id": "47:6",
+          "kind": "CAMERA",
+          "start": 14.8,
+          "end": 18.3
         },
         "cliffhanger_evidence": {
           "beat_id": "47:27",
@@ -204,21 +207,21 @@
         },
         "editorial_flags": [
           "Weak first-3s hook / atmospheric or lexical false positive",
-          "Hook line exceeds 3s; verify exact word onset in footage"
+          "Visual action onset uncertain within long source beat"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "Abuse or injury: “Then you will make sure I remain inside these walls.” → “You dare show your face in Ashbourne courtyard?”; the response is withheld.",
-        "ranking_rationale": "Hook 18/100; cut tension 80/100; cold-viewer clarity 90/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Hook line exceeds 3s; verify exact word onset in footage",
+        "why_it_works": "Aristocratic Conspiracy: “Close-up profile of Catherine leaning close to the man's shoulder, her eyes burning …” offers no substantiated first-three-second confrontation; “You dare show your face in Ashbourne courtyard?” leaves the decision demanded by the question open.",
+        "ranking_rationale": "Hook 0/100; cut tension 65/100; cold-viewer clarity 60/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Visual action onset uncertain within long source beat",
         "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
-        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory.",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 60/100; confirm the conflict without backstory.",
         "heuristic_scores": {
-          "hook_3s_score": 18,
-          "cliffhanger_score": 80,
-          "standalone_clarity_score": 90,
-          "emotional_arousal_score": 51,
+          "hook_3s_score": 0,
+          "cliffhanger_score": 65,
+          "standalone_clarity_score": 60,
+          "emotional_arousal_score": 35,
           "pacing_density_score": 85
         },
-        "heuristic_composite_score": 61.0,
+        "heuristic_composite_score": 43.5,
         "heuristic_concerns": [],
         "uncertainty": [
           "uncertain within a long source beat",
@@ -260,21 +263,22 @@
           }
         ],
         "duration": 51.9,
+        "theme": "Life-or-Death Medical Crisis",
         "scores": {
-          "hook_3s_score": 18,
+          "hook_3s_score": 0,
           "cliffhanger_score": 25,
           "standalone_clarity_score": 84,
-          "emotional_arousal_score": 51,
+          "emotional_arousal_score": 43,
           "pacing_density_score": 96
         },
-        "composite_score": 44.4,
-        "hook_text": "\"Prudence, fetch hot water immediately!\"",
+        "composite_score": 38.2,
+        "hook_text": "\"His skin is burning hot.\"",
         "cliffhanger_text": "\"What do you mean? Is someone ill? The Dowager Duchess?\"",
         "hook_evidence": {
-          "beat_id": "21:35",
+          "beat_id": "21:32",
           "kind": "DIALOGUE",
-          "start": 48.9,
-          "end": 50.8
+          "start": 47.3,
+          "end": 48.8
         },
         "cliffhanger_evidence": {
           "beat_id": "21:68",
@@ -287,18 +291,18 @@
           "Main conflict resolves before cut; unrelated subplot pivot"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "A loved one in danger: “Prudence, fetch hot water immediately!” → “What do you mean? Is someone ill? The Dowager Duchess?”; the response is withheld.",
-        "ranking_rationale": "Hook 18/100; cut tension 25/100; cold-viewer clarity 84/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Main conflict resolves before cut; unrelated subplot pivot",
+        "why_it_works": "Life-or-Death Medical Crisis: “His skin is burning hot.” offers no substantiated first-three-second confrontation; “What do you mean? Is someone ill? The Dowager Duchess?” leaves the decision demanded by the question open.",
+        "ranking_rationale": "Hook 0/100; cut tension 25/100; cold-viewer clarity 84/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Main conflict resolves before cut; unrelated subplot pivot",
         "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
         "posting_reason": "Use after clearer singles: cold-viewer clarity is 84/100; confirm the conflict without backstory.",
         "heuristic_scores": {
-          "hook_3s_score": 18,
+          "hook_3s_score": 0,
           "cliffhanger_score": 25,
           "standalone_clarity_score": 84,
-          "emotional_arousal_score": 51,
+          "emotional_arousal_score": 43,
           "pacing_density_score": 96
         },
-        "heuristic_composite_score": 44.4,
+        "heuristic_composite_score": 38.2,
         "heuristic_concerns": [
           {
             "code": "subplot_pivot",
@@ -350,6 +354,7 @@
           }
         ],
         "duration": 20.5,
+        "theme": "Life-or-Death Medical Crisis",
         "scores": {
           "hook_3s_score": 0,
           "cliffhanger_score": 0,
@@ -379,7 +384,7 @@
           "Visual action onset uncertain within long source beat"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "A direct threat or challenge: “Close-up of the ornate brass handle turning slowly on the dark wooden chamber door as it swings open.” → “Behind her grey skirt, Juliana quickly slips the small glass remedy vial into her apron pocket with he…”; the consequences are withheld.",
+        "why_it_works": "Life-or-Death Medical Crisis: “Close-up of the ornate brass handle turning slowly on the dark wooden chamber door a…” offers no substantiated first-three-second confrontation; “Behind her grey skirt, Juliana quickly slips the small glass remedy vial into her ap…” cuts before the threat or accusation receives a response.",
         "ranking_rationale": "Hook 0/100; cut tension 0/100; cold-viewer clarity 39/100. Review: Weak first-3s hook / atmospheric or lexical false positive; Weak or resolved endpoint; Backstory / named-entity dependence; Visual action onset uncertain within long source beat",
         "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
         "posting_reason": "Use after clearer singles: cold-viewer clarity is 39/100; confirm the conflict without backstory.",
@@ -434,14 +439,15 @@
           }
         ],
         "duration": 40.2,
+        "theme": "Life-or-Death Medical Crisis",
         "scores": {
           "hook_3s_score": 0,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 96,
-          "emotional_arousal_score": 59,
+          "emotional_arousal_score": 43,
           "pacing_density_score": 63
         },
-        "composite_score": 55.4,
+        "composite_score": 53.8,
         "hook_text": "Close-up of Juliana gently placing her fingers against the boy's burning forehead.",
         "cliffhanger_text": "\"Why isn't it working?\"",
         "hook_evidence": {
@@ -460,7 +466,7 @@
           "Weak first-3s hook / atmospheric or lexical false positive"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "A loved one in danger: “Close-up of Juliana gently placing her fingers against the boy's burning forehead.” → “Why isn't it working?”; the response is withheld.",
+        "why_it_works": "Life-or-Death Medical Crisis: “Close-up of Juliana gently placing her fingers against the boy's burning forehead.” offers no substantiated first-three-second confrontation; “Why isn't it working?” demands a motive without supplying the reply.",
         "ranking_rationale": "Hook 0/100; cut tension 80/100; cold-viewer clarity 96/100. Review: Weak first-3s hook / atmospheric or lexical false positive",
         "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
         "posting_reason": "Use after clearer singles: cold-viewer clarity is 96/100; confirm the conflict without backstory.",
@@ -468,10 +474,10 @@
           "hook_3s_score": 0,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 96,
-          "emotional_arousal_score": 59,
+          "emotional_arousal_score": 43,
           "pacing_density_score": 63
         },
-        "heuristic_composite_score": 55.4,
+        "heuristic_composite_score": 53.8,
         "heuristic_concerns": [],
         "uncertainty": [
           "insufficient evidence"
@@ -492,10 +498,10 @@
       }
     },
     {
-      "expected_shortlist": true,
-      "actual_shortlist": true,
+      "expected_shortlist": false,
+      "actual_shortlist": false,
       "matches": true,
-      "review_note": "Chained victim defies a tormentor. The camera DOES show the burning book; dialogue alone would miss it.",
+      "review_note": "Revised after audit: book is visible, but this cut ends on filler What?; cut before the reaction or reject if under 20s.",
       "candidate": {
         "id": "REVIEW-32-3.0-24.8",
         "kind": "single",
@@ -511,14 +517,15 @@
           }
         ],
         "duration": 21.8,
+        "theme": "Physical Peril & Protective Rage",
         "scores": {
           "hook_3s_score": 80,
-          "cliffhanger_score": 80,
+          "cliffhanger_score": 25,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 67,
+          "emotional_arousal_score": 75,
           "pacing_density_score": 72
         },
-        "composite_score": 79.9,
+        "composite_score": 64.2,
         "hook_text": "Close-up of Juliana, chained against the brick wall, tears glistening on her cheeks as she trembles in grief.",
         "cliffhanger_text": "\"What?\"",
         "hook_evidence": {
@@ -533,43 +540,46 @@
           "start": 23.8,
           "end": 24.8
         },
-        "editorial_flags": [],
+        "editorial_flags": [
+          "Weak or resolved endpoint"
+        ],
         "evaluation_source": "heuristic",
-        "why_it_works": "Abuse or injury: “Close-up of Juliana, chained against the brick wall, tears glistening on her cheeks as she trembles in…” → “What?”; the response is withheld.",
-        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 90/100. Strong lexicon-based retrieval; confirm in footage.",
-        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
-        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 90/100.",
+        "why_it_works": "Physical Peril & Protective Rage: “Close-up of Juliana, chained against the brick wall, tears glistening on her cheeks …” makes an injury or restraint visible before the explanation; “What?” is filler, so this ending should be rejected.",
+        "ranking_rationale": "Hook 80/100; cut tension 25/100; cold-viewer clarity 90/100. Review: Weak or resolved endpoint",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 90/100; confirm the conflict without backstory.",
         "heuristic_scores": {
           "hook_3s_score": 80,
-          "cliffhanger_score": 80,
+          "cliffhanger_score": 25,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 67,
+          "emotional_arousal_score": 75,
           "pacing_density_score": 72
         },
-        "heuristic_composite_score": 79.9,
+        "heuristic_composite_score": 64.2,
         "heuristic_concerns": [],
         "uncertainty": [
-          "supported by script timing"
+          "insufficient evidence"
         ],
         "decision": {
-          "status": "recommended",
-          "eligible": true,
+          "status": "rejected",
+          "eligible": false,
           "hard_failures": [],
           "heuristic_concerns": [],
           "ai_findings": {},
           "reasons": [
-            "Script supports opening and unresolved endpoint; footage review remains required"
+            "cliffhanger_score below retrieval threshold (55)",
+            "insufficient evidence"
           ],
           "footage_approved": false
         },
-        "editorial_status": "recommended — script assessment only"
+        "editorial_status": "rejected — script assessment only"
       }
     },
     {
-      "expected_shortlist": true,
-      "actual_shortlist": true,
+      "expected_shortlist": false,
+      "actual_shortlist": false,
       "matches": true,
-      "review_note": "Painful shoulder grab and wound reveal lead to an unanswered demand for the attacker.",
+      "review_note": "Revised after audit: injury is real, but one-word Who? is a weak endpoint; prefer a substantive accusation or question.",
       "candidate": {
         "id": "REVIEW-25-13.2-33.8",
         "kind": "single",
@@ -585,14 +595,15 @@
           }
         ],
         "duration": 20.6,
+        "theme": "Physical Peril & Protective Rage",
         "scores": {
           "hook_3s_score": 80,
-          "cliffhanger_score": 80,
+          "cliffhanger_score": 25,
           "standalone_clarity_score": 78,
-          "emotional_arousal_score": 83,
+          "emotional_arousal_score": 75,
           "pacing_density_score": 61
         },
-        "composite_score": 78.0,
+        "composite_score": 60.7,
         "hook_text": "Two-shot profile of Alexander grabbing Juliana's shoulder as she recoils.",
         "cliffhanger_text": "\"Who?\"",
         "hook_evidence": {
@@ -607,36 +618,39 @@
           "start": 32.8,
           "end": 33.8
         },
-        "editorial_flags": [],
+        "editorial_flags": [
+          "Weak or resolved endpoint"
+        ],
         "evaluation_source": "heuristic",
-        "why_it_works": "Abuse or injury: “Two-shot profile of Alexander grabbing Juliana's shoulder as she recoils.” → “Who?”; the response is withheld.",
-        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 78/100. Strong lexicon-based retrieval; confirm in footage.",
-        "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
-        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 78/100.",
+        "why_it_works": "Physical Peril & Protective Rage: “Two-shot profile of Alexander grabbing Juliana's shoulder as she recoils.” puts a concrete action ahead of exposition; “Who?” is filler, so this ending should be rejected.",
+        "ranking_rationale": "Hook 80/100; cut tension 25/100; cold-viewer clarity 78/100. Review: Weak or resolved endpoint",
+        "posting_strategy": "Tier 2: High-Heat Conflict Retargeting",
+        "posting_reason": "Use after clearer singles: cold-viewer clarity is 78/100; confirm the conflict without backstory.",
         "heuristic_scores": {
           "hook_3s_score": 80,
-          "cliffhanger_score": 80,
+          "cliffhanger_score": 25,
           "standalone_clarity_score": 78,
-          "emotional_arousal_score": 83,
+          "emotional_arousal_score": 75,
           "pacing_density_score": 61
         },
-        "heuristic_composite_score": 78.0,
+        "heuristic_composite_score": 60.7,
         "heuristic_concerns": [],
         "uncertainty": [
-          "supported by script timing"
+          "insufficient evidence"
         ],
         "decision": {
-          "status": "recommended",
-          "eligible": true,
+          "status": "rejected",
+          "eligible": false,
           "hard_failures": [],
           "heuristic_concerns": [],
           "ai_findings": {},
           "reasons": [
-            "Script supports opening and unresolved endpoint; footage review remains required"
+            "cliffhanger_score below retrieval threshold (55)",
+            "insufficient evidence"
           ],
           "footage_approved": false
         },
-        "editorial_status": "recommended — script assessment only"
+        "editorial_status": "rejected — script assessment only"
       }
     },
     {
@@ -659,14 +673,15 @@
           }
         ],
         "duration": 31.6,
+        "theme": "Altar Betrayal & Humiliation",
         "scores": {
-          "hook_3s_score": 80,
+          "hook_3s_score": 85,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 96,
-          "emotional_arousal_score": 51,
+          "emotional_arousal_score": 35,
           "pacing_density_score": 81
         },
-        "composite_score": 80.4,
+        "composite_score": 80.3,
         "hook_text": "\"You stole my wedding.\"",
         "cliffhanger_text": "\"And what happens to me?\"",
         "hook_evidence": {
@@ -683,18 +698,18 @@
         },
         "editorial_flags": [],
         "evaluation_source": "heuristic",
-        "why_it_works": "Wedding conflict: “You stole my wedding.” → “And what happens to me?”; the response is withheld.",
-        "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
+        "why_it_works": "Altar Betrayal & Humiliation: “You stole my wedding.” makes the stolen wedding and humiliation instantly clear; “And what happens to me?” leaves the abandoned bride’s future undecided.",
+        "ranking_rationale": "Hook 85/100; cut tension 80/100; cold-viewer clarity 96/100. Strong lexicon-based retrieval; confirm in footage.",
         "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
-        "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 96/100.",
+        "posting_reason": "Post as a cold-audience test: hook 85/100, unresolved cut 80/100, clarity 96/100.",
         "heuristic_scores": {
-          "hook_3s_score": 80,
+          "hook_3s_score": 85,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 96,
-          "emotional_arousal_score": 51,
+          "emotional_arousal_score": 35,
           "pacing_density_score": 81
         },
-        "heuristic_composite_score": 80.4,
+        "heuristic_composite_score": 80.3,
         "heuristic_concerns": [],
         "uncertainty": [
           "supported by script timing"
@@ -733,14 +748,15 @@
           }
         ],
         "duration": 24.6,
+        "theme": "Life-or-Death Medical Crisis",
         "scores": {
-          "hook_3s_score": 100,
-          "cliffhanger_score": 70,
+          "hook_3s_score": 65,
+          "cliffhanger_score": 80,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 59,
+          "emotional_arousal_score": 51,
           "pacing_density_score": 98
         },
-        "composite_score": 84.7,
+        "composite_score": 76.4,
         "hook_text": "\"My little brother Toby... his chest is burning! He cannot breathe!\"",
         "cliffhanger_text": "\"He is only seven! If you do not come, he will die! You are his only hope, Lady Juliana!\"",
         "hook_evidence": {
@@ -759,18 +775,18 @@
           "Hook line exceeds 3s; verify exact word onset in footage"
         ],
         "evaluation_source": "heuristic",
-        "why_it_works": "A loved one in danger: “My little brother Toby... his chest is burning! He cannot breathe!” → “He is only seven! If you do not come, he will die! You are his only hope, Lady Juliana!”; the consequences are withheld.",
-        "ranking_rationale": "Hook 100/100; cut tension 70/100; cold-viewer clarity 90/100. Review: Hook line exceeds 3s; verify exact word onset in footage",
+        "why_it_works": "Life-or-Death Medical Crisis: “My little brother Toby... his chest is burning! He cannot breathe!” makes a child’s survival an immediate decision; “He is only seven! If you do not come, he will die! You are his only hope, Lady Julia…” leaves an execution or punishment unresolved.",
+        "ranking_rationale": "Hook 65/100; cut tension 80/100; cold-viewer clarity 90/100. Review: Hook line exceeds 3s; verify exact word onset in footage",
         "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
-        "posting_reason": "Post as a cold-audience test: hook 100/100, unresolved cut 70/100, clarity 90/100.",
+        "posting_reason": "Post as a cold-audience test: hook 65/100, unresolved cut 80/100, clarity 90/100.",
         "heuristic_scores": {
-          "hook_3s_score": 100,
-          "cliffhanger_score": 70,
+          "hook_3s_score": 65,
+          "cliffhanger_score": 80,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 59,
+          "emotional_arousal_score": 51,
           "pacing_density_score": 98
         },
-        "heuristic_composite_score": 84.7,
+        "heuristic_composite_score": 76.4,
         "heuristic_concerns": [],
         "uncertainty": [
           "uncertain within a long source beat"
@@ -809,14 +825,15 @@
           }
         ],
         "duration": 28.5,
+        "theme": "Physical Peril & Protective Rage",
         "scores": {
           "hook_3s_score": 80,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 67,
+          "emotional_arousal_score": 59,
           "pacing_density_score": 79
         },
-        "composite_score": 80.6,
+        "composite_score": 79.8,
         "hook_text": "The Bearded Stranger effortlessly blocks the guard's strike and drives a devastating strike into him, dropping the armed guard instantly to the floor.",
         "cliffhanger_text": "\"Why are you doing this?\"",
         "hook_evidence": {
@@ -833,7 +850,7 @@
         },
         "editorial_flags": [],
         "evaluation_source": "heuristic",
-        "why_it_works": "Abuse or injury: “The Bearded Stranger effortlessly blocks the guard's strike and drives a devastating strike into him, …” → “Why are you doing this?”; the response is withheld.",
+        "why_it_works": "Physical Peril & Protective Rage: “The Bearded Stranger effortlessly blocks the guard's strike and drives a devastating…” puts a physical attack on screen immediately; “Why are you doing this?” demands a motive without supplying the reply.",
         "ranking_rationale": "Hook 80/100; cut tension 80/100; cold-viewer clarity 90/100. Strong lexicon-based retrieval; confirm in footage.",
         "posting_strategy": "Tier 1: Flagship Cold-Audience Hook — Post First",
         "posting_reason": "Post as a cold-audience test: hook 80/100, unresolved cut 80/100, clarity 90/100.",
@@ -841,10 +858,10 @@
           "hook_3s_score": 80,
           "cliffhanger_score": 80,
           "standalone_clarity_score": 90,
-          "emotional_arousal_score": 67,
+          "emotional_arousal_score": 59,
           "pacing_density_score": 79
         },
-        "heuristic_composite_score": 80.6,
+        "heuristic_composite_score": 79.8,
         "heuristic_concerns": [],
         "uncertainty": [
           "supported by script timing"

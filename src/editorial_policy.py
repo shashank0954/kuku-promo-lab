@@ -1,6 +1,6 @@
 """Shared editorial policy. Structural validity is independent of script judgment."""
 ASSESSMENTS=('opening','conflict','unresolved','already_answered','missing_context','continuity')
-BLOCKING={'resolved','subplot_pivot','music_only','victim_change','missing_object'}
+BLOCKING={'resolved','subplot_pivot','music_only','victim_change','missing_object','resolved_mid_clip'}
 
 def decide(item,hard_failures=()):
     scores=item.get('heuristic_scores',item['scores'])

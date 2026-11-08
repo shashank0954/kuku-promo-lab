@@ -42,7 +42,16 @@ def execute(episodes,provider='auto',model=None,api_key=None,minimum=20,maximum=
         if not item['decision']['eligible']:
             rejected.append(dict(item,rejection_reason='; '.join(item['decision']['reasons'])))
         else: eligible.append(item)
-    items=sorted(eligible,key=ordering)
+    # Cap final singles after editorial gates, so early weak retrievals cannot occupy the quota.
+    capped=[];singles_per_episode={}
+    for item in sorted(eligible,key=ordering):
+        number=item['segments'][0]['episode']
+        if item['kind']=='single' and singles_per_episode.get(number,0)>=3:
+            rejected.append(dict(item,rejection_reason='Per-episode diversity cap: at most three shortlisted continuous cuts'))
+            continue
+        capped.append(item)
+        if item['kind']=='single':singles_per_episode[number]=singles_per_episode.get(number,0)+1
+    items=capped
     for rank,item in enumerate(items,1): item['rank']=rank
     posting=sorted(items,key=ordering)
     for priority,item in enumerate(posting,1): item['posting_priority']=priority
@@ -74,7 +83,7 @@ def write_outputs(result,out):
             for p in out.iterdir():
                 if p.is_file() and p.suffix in ('.json','.csv','.md'):shutil.copy2(p,snapshot/p.name)
     (out/'all_episodes_promos_ranked.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
-    fields=['rank','posting_priority','posting_strategy','posting_reason','episodes','segments','duration','hook_text','cliffhanger_text','why_it_works','ranking_rationale','composite_score','evaluation_source',*DEFAULT_WEIGHTS,'editorial_flags','decision','uncertainty','heuristic_scores','ai_scores','score_disagreements']
+    fields=['rank','posting_priority','posting_strategy','posting_reason','episodes','segments','duration','hook_text','cliffhanger_text','why_it_works','ranking_rationale','theme','composite_score','evaluation_source',*DEFAULT_WEIGHTS,'editorial_flags','decision','uncertainty','heuristic_scores','ai_scores','score_disagreements']
     with (out/'top_promos_ranked.csv').open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader()
         for x in result['promos']:

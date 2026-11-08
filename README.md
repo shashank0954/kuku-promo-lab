@@ -12,7 +12,7 @@ Find **20–60 second** microdrama ads with an immediate hook, an unresolved end
 
 **Required deliverables:** [Two-page solution PDF](SOLUTION_DOC.pdf) · [Prototype & run steps](#run) · [Full unedited raw outputs](raw_outputs/)
 
-**Read the evidence first.** All 50 episodes are analyzed. The saved run contains 64 shortlisted promos and 295/295 passing structural audits; scores are editorial estimates, not measured campaign performance. Optional live AI reviews only the configured finalist budget, and every score's origin is labeled.
+**Read the evidence first.** All 50 episodes are analyzed. The saved run contains 64 shortlisted promos and 282/282 passing structural audits; scores are editorial estimates, not measured campaign performance. Optional live AI reviews only the configured finalist budget, and every score's origin is labeled.
 
 ## The solution, in two pages
 
@@ -23,18 +23,18 @@ Find **20–60 second** microdrama ads with an immediate hook, an unresolved end
 
 ![Exact hook-to-cliffhanger timeline from the first recommended promo](assets/promo_timeline.svg)
 
-The first recommendation is **Episode 1, 00:39.10–01:14.30 (35.2s)**: “Because he is marrying me” opens the wedding betrayal; “How long?” is left unanswered. The timeline highlights review windows while preserving the original edit points.
+The first recommendation is **Episode 3, 00:08.80–00:40.40 (31.6s)**. Altar Betrayal & Humiliation: “You stole my wedding.” makes the stolen wedding and humiliation instantly clear; “And what happens to me?” leaves the abandoned bride’s future undecided. Exact source cuts remain unchanged; footage review is required.
 
 ![Visual playbook with the actual first-ranked promo](assets/playbook_preview.png)
 
 The companion [visual playbook](deliverables/visual_playbook.html) contains all 64 real promos, with search, episode/type filters, exact cuts, score breakdowns and review flags. **Open the downloaded HTML in your browser**; GitHub displays HTML source rather than running it. It works offline and makes no model API calls. The raw folder remains the complete unedited submission result.
 
 <details>
-<summary>See the actual Streamlit prototype</summary>
+<summary>See the historical Streamlit preview</summary>
 
-![Actual Streamlit app running locally with the full saved input-pack results](assets/app_preview.png)
+![Historical Streamlit screenshot from the prior verified build](assets/app_preview.png)
 
-Upload the pack once, select episodes such as `2, 5, 8-10`, and rerun. Provider keys stay out of exports; the connection test, bounded retries and labeled fallback make live interviews inspectable.
+This screenshot predates the latest editorial scoring update; use the regenerated playbook and PDF for current rankings. Upload the pack once, select episodes such as `2, 5, 8-10`, and rerun. Provider keys stay out of exports; the connection test, bounded retries and labeled fallback make live interviews inspectable.
 
 </details>
 
@@ -84,7 +84,7 @@ CLI automatically selects the first configured environment key in Gemini → Ope
 
 ```bash
 export GEMINI_API_KEY='your-key'
-python run_pipeline.py --provider Gemini --model gemini-3.8-flash --judge-budget 8
+python run_pipeline.py --provider Gemini --model gemini-3.5-flash-lite --judge-budget 8
 # Or configure OPENAI_API_KEY / ANTHROPIC_API_KEY and select that provider.
 python run_pipeline.py --provider Heuristic/Offline
 python run_pipeline.py --input /path/to/new/scripts --output /tmp/promo-run --min-duration 25 --max-duration 45
@@ -126,7 +126,7 @@ When the original folder is absent, the app loads the saved 50-episode playbook 
 
 ## Assignment recheck
 
-See [REQUIREMENTS_REVIEW.md](REQUIREMENTS_REVIEW.md) for the item-by-item evidence and remaining verification limits. The latest complete input-pack run contains **64 shortlisted promos, 231 retained rejections and 295/295 passing source checks**. The stricter count replaces the earlier 83; false hook matches and a resolved-illness pivot were removed.
+See [REQUIREMENTS_REVIEW.md](REQUIREMENTS_REVIEW.md) for the item-by-item evidence and remaining limits. The current complete input-pack run contains **64 shortlisted promos, 218 retained rejections and 282/282 passing structural checks**. All earlier snapshots remain under `raw_outputs/history/`.
 
 Each promo now includes a specific one-line explanation, `posting_priority`, `posting_reason` and `evaluation_source`. The dashboard defaults to posting order and also offers composite score order. Eleven deliberately selected development cases are exported by `python scripts/review_editorial_cases.py`; they are regression examples, not a measured real-world accuracy rate.
 
@@ -134,7 +134,7 @@ For an interview: select **Try a sample screenplay** → **Find promos** to demo
 
 Build a distribution with `python scripts/package_deploy.py`. It contains the original synthetic demo and the two-page solution PDF, with the confidential original pack excluded. See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md) for a short presentation and explanations you should understand.
 
-Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. The latest verification run passed 71 tests; see `deliverables/final_verification.json`. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
+Runtime versions are pinned to the clean installation used for the final audit: Streamlit 1.67.0, pandas 2.3.3 and pytest 9.2.0. The latest verification run passed 121 tests; see `deliverables/final_verification.json`. Source-dependent tests skip deliberately when the confidential pack is absent; fresh sample and dashboard tests still run.
 
 ## Free Gemini API test
 
@@ -178,3 +178,9 @@ Ranking uses heuristic scores only, with timing-supported recommendations before
 Under **Compare candidates & record editor decisions**, choose up to two cuts, record notes and independent script/footage decisions. Decisions persist across reruns within the session and are scoped to input content plus exact candidate cuts. Download them for persistence after closing the session; import only into the same input. Download **editor-selected shortlist** separately; original pipeline JSON remains unchanged. Script approval never implies footage approval.
 
 `evaluation/` contains a frozen 24-case sample, blank genuine-human labeling sheets and a reproducible metric command. Current evaluation is pending human labels. The eleven existing cases are development regressions, not independent accuracy evidence. See [evaluation instructions](evaluation/README.md). Historical outputs are preserved under `raw_outputs/history/` before regeneration. Review annotations remain separate.
+
+## Editorial audit corrections
+
+The latest run represents **38/50 episodes**, with at most three continuous shortlisted cuts per episode. Context-aware signals exclude decorative chains, ordinary light/heat and routine kneeling; substantive questions or explicit threats/reveals replace filler endpoints. E9 00:40.80–01:27.40 is explicitly rejected for resolving the rescue before a new-scene greeting. Two development expectations (E25 “Who?” and E32 “What?”) were revised openly; the frozen evaluation and blank human labels are unchanged.
+
+Gemini defaults to `gemini-3.5-flash-lite`. Google documents 2.0 Flash as shut down and restricts 2.5 to existing users; these remain legacy presets with warnings, not promises of API success. See [official models](https://ai.google.dev/gemini-api/docs/models) and [2.5 access note](https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash?authuser=3&hl=en).

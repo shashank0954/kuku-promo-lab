@@ -43,6 +43,8 @@ with st.expander('AI provider & API key', expanded=False):
         st.caption('Offline mode selected. To use an API key, choose Gemini, OpenAI or Anthropic above.')
     else:
         st.caption('Upload screenplay TXT files or a ZIP in the sidebar, then click Find promos to run with this provider. Saved results stay unchanged until you run again.')
+    if provider=='Gemini' and model in ('gemini-2.5-flash','gemini-2.5-pro'): st.warning('Google restricts 2.5 access to existing users. For a new project, select a current 3.x model.')
+    if provider=='Gemini' and model=='gemini-2.0-flash': st.warning('Google lists Gemini 2.0 Flash as shut down. This preset is retained for legacy compatibility, not live testing.')
     if provider=='Anthropic': st.caption('Claude 3.5 presets are legacy and may be retired. Use an available model ID; API errors are reported with offline fallback.')
     if provider=='Gemini':
         st.info('Free-tier testing: Google lists gemini-3.8-flash and gemini-3.5-flash-lite with free standard text input/output, subject to project eligibility and quota. Create your own AI Studio key; YOUR_API_KEY in the docs is a placeholder, not a working shared key.')
@@ -192,6 +194,7 @@ if st.session_state.get('run_input_signature')!=input_signature: st.info('Showin
 metrics=st.columns(4)
 for col,label,value in zip(metrics,['Episodes analyzed','Ranked cuts','Source checks passed','Run time'],[r['run']['episode_count'],len(r['promos']),f"{r['audit']['passed']}/{r['audit']['hard_checks']}",f"{r['run']['elapsed_seconds']:.2f}s"]): col.metric(label,value)
 st.caption(f"Results: {r['run']['provider']['provider']} · {r['run']['beat_count']:,} source beats · Scores are editorial estimates, not measured ad performance.")
+st.caption(f"Episode representation: {sum(e['candidates']>0 for e in r['run']['episode_coverage'])}/{r['run']['episode_count']} have shortlisted candidates; up to three continuous cuts per episode. Coverage is not a human quality score.")
 st.caption('Episodes in this result: '+', '.join(str(e['episode']) for e in r['run']['episode_coverage']))
 st.caption(f"AI-judged candidates before editorial gates: {r['run']['provider']['judged_candidates']}. Each promo shows its own score source; the remaining candidates use heuristics.")
 for warning in r['run']['provider']['errors']: st.warning(warning)
@@ -224,6 +227,7 @@ def detail(item):
     st.caption(f"Posting priority: {item.get('posting_priority',item['rank'])} · Score source: {item['evaluation_source']}")
     st.image(promo_timeline_svg(item),width='stretch',alt='Timeline showing the opening hook window, any segment joins, and the final cliffhanger window')
     a,b=st.columns(2);a.success('FIRST 3s · '+item['hook_text']);b.error('CLIFFHANGER · '+item['cliffhanger_text'])
+    if item.get('theme'): st.caption('Conflict archetype: '+item['theme'])
     st.write(item['why_it_works']);st.caption(item['ranking_rationale'])
     st.bar_chart(pd.DataFrame({'Heuristic':item.get('heuristic_scores',item['scores']),**({'AI (uncalibrated)':item['ai_scores']} if item.get('ai_scores') else {})}))
     if item.get('ai_assessment'): st.json(item['ai_assessment'],expanded=False)
@@ -280,7 +284,7 @@ with tabs[0]:
     ordering=st.selectbox('Sort playbook by',['Posting priority','Composite score'])
     items=[x for x in r['promos'] if (not tier or x['posting_strategy'] in tier) and x['composite_score']>=threshold and (kind=='All' or x['kind']==kind)]
     items=sorted(items,key=lambda x:x.get('posting_priority',x['rank']) if ordering=='Posting priority' else x['rank'])
-    rows=[dict(Rank=x['rank'],Posting_order=x.get('posting_priority',x['rank']),Priority=x['posting_strategy'],Posting_reason=x['posting_reason'],Score_source=x['evaluation_source'],Episodes=', '.join(str(s['episode']) for s in x['segments']),Cuts=format_segments(x),Seconds=x['duration'],Score=x['composite_score'],Hook=x['hook_text'],Cliffhanger=x['cliffhanger_text'],Why=x['why_it_works'],**x['scores']) for x in items]
+    rows=[dict(Rank=x['rank'],Posting_order=x.get('posting_priority',x['rank']),Priority=x['posting_strategy'],Trope=x.get('theme','Legacy assessment'),Posting_reason=x['posting_reason'],Score_source=x['evaluation_source'],Episodes=', '.join(str(s['episode']) for s in x['segments']),Cuts=format_segments(x),Seconds=x['duration'],Score=x['composite_score'],Hook=x['hook_text'],Cliffhanger=x['cliffhanger_text'],Why=x['why_it_works'],**x['scores']) for x in items]
     st.dataframe(pd.DataFrame(rows),hide_index=True,width='stretch')
     if items:
         labels=[f"#{x['rank']} · {format_segments(x)}" for x in items]

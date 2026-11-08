@@ -15,7 +15,7 @@ Follow `../FINAL_SUBMISSION_GUIDE.md`. Submit the three required items through t
 - `../assets/architecture.svg`: deterministic code, optional AI and editor approval workflow.
 - `../assets/promo_timeline.svg`: exact first recommendation, with first-3s and last-4s windows.
 - `../assets/solution_page_1.png` and `solution_page_2.png`: previews of the two-page solution layout.
-- `../assets/app_preview.png`: actual Streamlit prototype running with empty key fields and offline results.
+- `../assets/app_preview.png`: historical Streamlit preview from the prior build, with empty key fields. Current rankings are shown in the regenerated PDF and visual playbook.
 - `visual_source.json`: identifies the unedited JSON snapshot used to generate these assets.
 
 These presentation assets do not replace or rewrite `raw_outputs/`. Script scores are editorial estimates, not measured CTR, retention or conversion performance. No video frames are fabricated.

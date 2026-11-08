@@ -31,7 +31,9 @@ def audit(episodes,items,rejected,minimum=20,maximum=60):
         flags=x.get('editorial_flags',[])
         if flags:
             reason=x.get('rejection_reason','')
-            fix=('Move the in-point to a physical action or shocking line, then revalidate duration.' if any('Weak first' in f for f in flags) else
+            codes={c['code'] for c in x.get('heuristic_concerns',[])}
+            fix=('Cut before the rescue resolves; discard the later routine greeting and revalidate the remaining duration.' if 'resolved_mid_clip' in codes else
+                 'Move the in-point to a physical action or shocking line, then revalidate duration.' if any('Weak first' in f for f in flags) else
                  'Cut before the recovery; reject the clip if the remaining unresolved stretch is too short.' if any('Main conflict resolves' in f or 'De-escalation' in f for f in flags) else
                  'Preserve a single victim and causal conflict; remove the misleading bridge.' if any('changes apparent victim' in f for f in flags) else
                  'Choose a cut with explicit human relationships and threats instead of unexplained lore.' if any('Backstory' in f for f in flags) else
@@ -39,7 +41,7 @@ def audit(episodes,items,rejected,minimum=20,maximum=60):
                  'Watch the exact cut in footage; verify unresolved stakes and identity continuity.')
             examples.append(dict(id=x['id'],segments=x['segments'],score=x.get('composite_score'),
                                  hook=x.get('hook_text',''),cut=x.get('cliffhanger_text',''),
-                                 categories=flags,status='shortlisted but flagged' if x in items else 'rejected candidate',
+                                 categories=flags,concern_codes=sorted(codes),status='shortlisted but flagged' if x in items else 'rejected candidate',
                                  rejection_reason=reason,human_fix=fix))
     # Retain diverse concrete failures, not 20 near-duplicates.
     diverse=[]; counts={}
@@ -49,7 +51,7 @@ def audit(episodes,items,rejected,minimum=20,maximum=60):
             diverse.append(x); counts[category]=counts.get(category,0)+1
     represented=set()
     for x in examples:
-        if any(c not in represented for c in x['categories']):
+        if 'resolved_mid_clip' in x.get('concern_codes',[]) or any(c not in represented for c in x['categories']):
             represented.update(x['categories'])
             if x not in diverse: diverse.insert(0,x)
     return dict(ranked_checks=len(items),rejected_checks=len(rejected),hard_checks=len(checks),hard_failures=failures,passed=len(checks)-len(failures),

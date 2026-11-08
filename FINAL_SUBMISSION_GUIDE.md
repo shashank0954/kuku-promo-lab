@@ -4,7 +4,7 @@ Verified on 8 November 2026. The required prototype, two-page solution and full-
 
 The live app URL was supplied by you. External automated verification encountered an HTTP redirect loop and a browser timeout; this does not prove the app is broken. Complete the incognito check below. The GitHub PDF and raw-output links returned HTTP 200.
 
-Final checks: 71 tests passed with the pack; the extracted source-free submission passed 55 tests with 16 expected source-dependent skips. The full run has 64 shortlisted promos and 295/295 structural checks; the PDF is two pages.
+Final checks: 121 tests passed with the pack. See final_verification.json for the extracted source-free package check. The full run has 64 shortlisted promos and 282/282 structural checks; the PDF is two pages.
 
 ## 1. Read the final document
 
@@ -39,7 +39,7 @@ Use the intended placement-cell/reviewer sharing method. If the form requires â€
 
 1. Open the deployed app in an incognito window; confirm it opens without your owner account.
 2. Choose **Try a sample screenplay**, select **Heuristic/Offline**, then **Find promos**. Expect Episode 101, two shortlisted promos, and successful structural checks.
-3. Privately upload the original pack. Under **Choose episodes**, enter `5-8`, then **Find promos**. Expect exactly episodes 5, 6, 7 and 8 analyzed; the verified offline defaults yield two shortlisted promos and 12/12 structural checks across shortlisted/rejected candidates. Different duration or scoring settings can change these counts.
+3. Privately upload the original pack. Under **Choose episodes**, enter `5-8`, then **Find promos**. Expect exactly episodes 5, 6, 7 and 8 analyzed; the verified offline defaults yield 3 shortlisted promos and 10/10 structural checks across shortlisted/rejected candidates. Different duration or scoring settings can change these counts.
 4. In Tab 1, inspect the exact segment cuts, total seconds, hook, unresolved ending, ranking reason and review needs. Each segment must belong to your selected episodes. A mashup need not include every selected episode.
 5. Compare two candidates, record a note and separate script/footage decisions. Download the editor-selected shortlist separately from the original ranked JSON. Script approval does not grant footage approval.
 6. Optional: enter a fresh restricted provider key, test the connection, set AI budget to one and run the sample. A successful connection probe alone does not prove candidate judging worked: confirm `judged_candidates > 0`, usage and any warnings. Clear API keys afterward. No live inference is claimed by the verification report.

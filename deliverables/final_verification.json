@@ -1,12 +1,12 @@
 {
   "verified_date": "2026-11-08",
-  "tests_passed": 71,
+  "tests_passed": 121,
   "full_pack_episodes": 50,
   "beats": 3727,
   "shortlisted": 64,
-  "structural_checks": 295,
+  "structural_checks": 282,
   "structural_failures": 0,
-  "saved_output_matches_fresh_offline_run": true,
+  "saved_output_matches_fresh_offline_run": "Full offline outputs regenerated after editorial audit; every emitted cut independently revalidated",
   "raw_manifest_valid": true,
   "subset_episodes": [
     5,
@@ -14,22 +14,30 @@
     7,
     8
   ],
-  "subset_promos": 2,
-  "subset_structural_checks": 12,
+  "subset_promos": 3,
+  "subset_structural_checks": 10,
   "fresh_sample_promos": 2,
   "development_regressions": 11,
   "human_evaluation": "pending human labels",
   "live_api_verified": false,
   "live_app_url": "https://kuku-promo-lab-shashank.streamlit.app/",
   "live_app_status": "Unverified externally: HTTP redirect loop; clean-browser automation timed out. Applicant previously reported app working. Manual incognito check required.",
-  "source_sha256": "692578c95c0a1650b8004a5563e61385bd27295b20ba545db352485401414f7a",
+  "source_sha256": "c9b8e2104f0b4d854f7e379355a577aca7260f1fb057b29ab2606fc64f27e9ff",
   "pdf_pages": 2,
-  "pdf_browser_layout_checks": "Both pages fit above footers; visual previews reviewed",
+  "pdf_browser_layout_checks": "Final regenerated PDF: both pages fit above footers; current counts and E9 regression confirmed",
   "public_pdf_link_http_status": 200,
   "public_raw_outputs_link_http_status": 200,
   "confidentiality_status": "Original source excluded; public derived quotations require sharing review",
-  "source_free_bundle_tests_passed": 55,
-  "source_free_bundle_tests_skipped": 16,
+  "source_free_bundle_tests_passed": 103,
+  "source_free_bundle_tests_skipped": 18,
   "source_free_skip_reason": "Tests requiring the confidential source pack are explicitly skipped",
-  "original_input_or_secret_files_tracked": false
+  "original_input_or_secret_files_tracked": false,
+  "represented_episodes": 38,
+  "max_shortlisted_singles_per_episode": 3,
+  "fresh_sample_structural_checks": 8,
+  "frozen_evaluation_unchanged": true,
+  "editorial_regression_expectation_revisions": [
+    "E25 Who? now rejected",
+    "E32 What? now rejected"
+  ]
 }

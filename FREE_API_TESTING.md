@@ -1,19 +1,21 @@
 # Test Gemini through the app using Google's free tier
 
-Official documentation checked: **7 November 2026**.
+Official documentation checked: **8 November 2026**.
 
 ## Model and key
 
-Google's [Gemini API pricing page](https://ai.google.dev/gemini-api/docs/pricing) lists **`gemini-3.8-flash`** with free-tier standard text input and output. This model is the app's default Gemini preset. Google also lists **`gemini-3.5-flash-lite`** with free-tier text input/output; it is available as a manually selected alternative. Free access is subject to project eligibility and quota; a model being listed does not prove your particular project has remaining quota.
+Google's [Gemini API pricing page](https://ai.google.dev/gemini-api/docs/pricing) lists **`gemini-3.8-flash`** with free-tier standard text input and output. Google also lists **`gemini-3.5-flash-lite`** with free-tier text input/output; Flash-Lite is the app's default small-test preset, with 3.8 Flash available as an alternative. Free access is subject to project eligibility and quota; a model being listed does not prove your particular project has remaining quota.
 
 The documentation uses placeholders such as `YOUR_API_KEY`, not a shared working API credential. Generate your own key in [Google AI Studio](https://aistudio.google.com/apikey). Google's [key setup guide](https://ai.google.dev/gemini-api/docs/api-key) explains project/key creation. Paste the key only into the app's password field, not into chat or GitHub.
 
 Check that the project is shown as **Free Tier** in AI Studio. A key attached to a paid project can incur paid API charges. The app cannot infer your project's billing tier from the key. See [Google's billing guide](https://ai.google.dev/gemini-api/docs/billing) and [project-specific rate limits](https://ai.google.dev/gemini-api/docs/rate-limits); no universal quota is hardcoded into the app.
 
+Google's current [model catalogue](https://ai.google.dev/gemini-api/docs/models) lists Gemini 2.0 Flash as shut down. The [2.5 model note](https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash?authuser=3&hl=en) restricts access to existing users; these legacy IDs stay selectable but are not recommended defaults for new projects. Custom model IDs remain editable.
+
 ## Small live test
 
 1. Refresh your deployed app and choose **Gemini** under **AI provider & API key**.
-2. Choose **gemini-3.8-flash**, or manually select **gemini-3.5-flash-lite** if the former is unavailable.
+2. Keep **gemini-3.5-flash-lite**, or select **gemini-3.8-flash** as an alternative. No preset guarantees success for every project.
 3. Paste your personal AI Studio key into **API key (session only)**.
 4. Click **Prepare small Gemini test**. This selects the original synthetic sample and an AI budget of **1**. It does not call Google.
 5. Click **Test API connection**. This sends one short JSON request. Success confirms that the selected key/model can respond, not that the promo pipeline has already run.

@@ -6,7 +6,7 @@ The six-page original brief is the authority for submission requirements. This r
 |---|---|
 | Choose one problem and explain framing/assumptions | Problem 1; solution PDF describes the editor's shortlist, source timing assumptions and limits. |
 | Process all 50 episodes | Fresh offline run: 50 episodes, 3,727 beats; matches saved shortlisted cuts, scores and decisions. |
-| 20–60s promos with exact source segments | All 295 emitted candidates pass structural validation; 64 shortlisted. Every endpoint matches source, duration arithmetic is checked, dialogue stays whole and footage is not reused in overlapping mashup segments. |
+| 20–60s promos with exact source segments | All 282 emitted candidates pass structural validation; 64 shortlisted. Every endpoint matches source, duration arithmetic is checked, dialogue stays whole and footage is not reused in overlapping mashup segments. |
 | Hook in first 3s, unresolved ending, standalone conflict | Deterministic retrieval plus optional structured AI critique. Timing/continuity uncertainties affect recommendations; an editor must judge actual footage. These semantic conditions are not proven by timestamp tests. |
 | Continuous and joined moments | Singles and two-segment intra/cross-episode mashups implemented; automatic three-segment search is not implemented or required by the original “few moments” wording. |
 | Ranked outputs with hook, cliffhanger, one-line why and posting rationale | Full JSON, CSV and report include these fields. Heuristic ordering is preserved; AI findings and diagnostic scores stay separate and uncalibrated. |
@@ -27,3 +27,7 @@ The six-page original brief is the authority for submission requirements. This r
 ## Readiness judgment
 
 The core prototype and required artifacts are sufficient for a defensible submission. This is not a claim of exhaustive retrieval, perfect editorial choices, secure infrastructure certification or successful live provider inference. Complete the link/access and confidentiality checks in `FINAL_SUBMISSION_GUIDE.md`, then submit. A model API success is optional; the brief explicitly permits a free smaller implementation and a rerunnable repository.
+
+## Six-point editorial audit follow-up
+
+121 tests passed. Coverage is 38/50 episodes, including 58 singles and 6 mashups; final singles are capped at three per episode. New regressions cover benign/violent chain and heat contexts, routine/forced kneeling, filler/substantive endings, scene-pivot rejection, speaker-label themes and model presets. E25/E32 development labels were revised because their old endpoints are now explicitly prohibited; no independent human labels were manufactured.
